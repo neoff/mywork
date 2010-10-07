@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<mvideoxml date="{{ $date }}">
+		<regions>
+			<region>
+				<id></id>
+				<name></name>
+				<coordinates></coordinates>
+			</region>
+		</regions>
+		
+		<shops>
+			<shop>
+				<id></id>
+				<name></name>
+				<metro></metro>
+				<address></address>
+				<dayhours></dayhours>
+				<holidayhours></holidayhours>
+				<phone></phone>
+				<coordinates></coordinates>
+				<wayTo></wayTo>
+				<zoom></zoom>
+				<images>
+					<image width="" height=""></image>
+				</images>
+			</shop>
+		</shops>
+		
+		
+		<parrent>
+			
+		</parrent>
+	</mvideoxml>

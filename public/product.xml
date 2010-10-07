@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<mvideoxml date="{{ $date }}">
+		<parent_category>
+			<category_id></category_id>
+			<category_name></category_name>
+		</parent_category>
+		<params>
+			<param param_name="" title="" current_value="">
+				<option value="value"></option>
+			</param>
+		</params>
+	</mvideoxml>
