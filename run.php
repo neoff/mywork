@@ -13,5 +13,5 @@
 
 
 	require_once ROOT_PATH . '/config/config.php';
-	require_once ROOT_PATH . '/controllers/routing.php';
 	require_once ROOT_PATH . '/controllers/template.php';
+	require_once ROOT_PATH . '/controllers/routing.php';

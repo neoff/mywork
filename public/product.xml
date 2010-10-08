@@ -6,7 +6,22 @@
 		</parent_category>
 		<params>
 			<param param_name="" title="" current_value="">
-				<option value="value"></option>
+				<option value=""></option>
 			</param>
 		</params>
+		<products category_id="" category_name="">
+			<product>
+				<product_id></product_id>
+				<title></title>
+				<description></description>
+				<rating></rating>
+				<price></price>
+				<image width="" height=""></image>
+			</product>
+		</products>
+		<pages>
+			<amount></amount>
+			<onpage></onpage>
+			<page></page>
+		</pages>
 	</mvideoxml>

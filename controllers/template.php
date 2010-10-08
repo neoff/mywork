@@ -9,19 +9,29 @@
  * @category   controller
  */
 
-class Template extends Blitz{
-	public function __construct(){}
-	public function __destruct(){}
-}
+	namespace Template;
 	
-	$tpl = new Blitz(ROOT_PATH . '/public/index.html');
-	print $tpl->parse();
-	
-	$obj = new SimpleXMLElement('<root>
-    <a>1.9</a>
-    <b>1.9</b>
-</root>');
+class Template{
+	public $xml;
+	private $x;
+	public function __construct()
+	{
+		$xmlstr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mvideo_xml date=\"" . date("Y-m-d H:i:s") . "\"></mvideo_xml>";
+		$this->xml = new SimpleXMLElement($xmlstr);
+	}
+	public function __destruct()
+	{
+		$this->x = False;
+		echo $this->xml->asXML();
+	}
+	public function set( $param, $val="" )
+	{
+		$this->x = $this->xml->addChild( $param, $val );
+	}
+	public function attr( $parm, $val = "" )
+	{
+		$this->x->addAttribute( $parm, $val );
+	}
 
-var_dump($obj->a + $obj->b);
-var_dump((float)$obj->a + (float)$obj->b);
-var_dump((string)$obj->a + (string)$obj->b);
+}
+
