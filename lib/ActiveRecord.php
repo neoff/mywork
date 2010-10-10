@@ -4,19 +4,19 @@ if (!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 50300)
 
 define('PHP_ACTIVERECORD_VERSION_ID','1.0');
 
-require 'ar/Singleton.php';
-require 'ar/Config.php';
-require 'ar/Utils.php';
-require 'ar/DateTime.php';
-require 'ar/Model.php';
-require 'ar/Table.php';
-require 'ar/ConnectionManager.php';
-require 'ar/Connection.php';
-require 'ar/SQLBuilder.php';
-require 'ar/Reflections.php';
-require 'ar/Inflector.php';
-require 'ar/CallBack.php';
-require 'ar/Exceptions.php';
+require_once 'ar/Singleton.php';
+require_once 'ar/Config.php';
+require_once 'ar/Utils.php';
+require_once 'ar/DateTime.php';
+require_once 'ar/Model.php';
+require_once 'ar/Table.php';
+require_once 'ar/ConnectionManager.php';
+require_once 'ar/Connection.php';
+require_once 'ar/SQLBuilder.php';
+require_once 'ar/Reflections.php';
+require_once 'ar/Inflector.php';
+require_once 'ar/CallBack.php';
+require_once 'ar/Exceptions.php';
 
 spl_autoload_register('activerecord_autoload');
 
@@ -39,6 +39,5 @@ function activerecord_autoload($class_name)
 	$file = "$root/$class_name.php";
 
 	if (file_exists($file))
-		require $file;
+		require_once $file;
 }
-?>

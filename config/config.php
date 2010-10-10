@@ -4,15 +4,10 @@
  * необходимо добавить коонекты к другим БД
  * (опционально)
  *
- * @package    config
- * @subpackage config
  * @since      07.10.2010 10:12:00
  * @author     enesterov
  * @category   none
  */
-
-
-	require_once ROOT_PATH . '/lib/ActiveRecord.php';
 
 	ActiveRecord\Config::initialize(function($cfg)
 	{
