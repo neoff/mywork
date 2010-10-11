@@ -3,7 +3,7 @@
 	
 	date_default_timezone_set( 'Europe/Moscow' );
 	define( "DEBUG", True );
-	define( 'CONNECTION', 'test' );
+	define( 'CONNECTION', 'develop' );
 	define( "ROOT_PATH", dirname(__FILE__) );
 
 	if(DEBUG)

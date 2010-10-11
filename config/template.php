@@ -1,6 +1,6 @@
 <?php
 /**  
- *  пакет подключения шаболнов и исполнения кода
+ *  РїР°РєРµС‚ РїРѕРґРєР»СЋС‡РµРЅРёСЏ С€Р°Р±РѕР»РЅРѕРІ Рё РёСЃРїРѕР»РЅРµРЅРёСЏ РєРѕРґР°
  * 
  * @package    controllers
  * @subpackage templaets
@@ -9,29 +9,30 @@
  * @category   controller
  */
 
-	namespace Template;
+	namespace Controllers;
 	
 class Template{
-	public $xml;
-	private $x;
+	private $xml;
+	
 	public function __construct()
 	{
+		header('Content-type: text/xml');
 		$xmlstr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mvideo_xml date=\"" . date("Y-m-d H:i:s") . "\"></mvideo_xml>";
-		$this->xml = new SimpleXMLElement($xmlstr);
+		$this->xml = new \SimpleXMLElement($xmlstr);
+		
 	}
 	public function __destruct()
 	{
-		$this->x = False;
 		echo $this->xml->asXML();
 	}
-	public function set( $param, $val="" )
+	
+	public function Set( $param, $val="" )
 	{
-		$this->x = $this->xml->addChild( $param, $val );
-	}
-	public function attr( $parm, $val = "" )
-	{
-		$this->x->addAttribute( $parm, $val );
+		return $this->xml->addChild( $param, $val );
 	}
 
+
 }
+
+
 
