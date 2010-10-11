@@ -10,19 +10,25 @@
  */
 
 	namespace Controllers;
-	//use Routing;
+	use Models;
 	
 class ControllerRegion extends Template{
 	
 	public function index( $region_id = 0 )
 	{
-		$regions = $this->addChild("regions");
-		for($i=0; $i<4; $i++)
+		$region = Models\Regions::all();
+		//$region = Models\Regions::first();
+		//print_r($region);
+		//foreach ($region as $key => $val) {
+		//	echo $val->region_id;
+		//}
+		$regions = $this->Set("regions");
+		foreach ($region as $key => $val)
 		{
 			$region = $regions->addChild("region");
 			
-			$region->addChild("id", "1");
-			$region->addChild("name", "2");
+			$region->addChild("region_id", $val->region_id );
+			$region->addChild("region_name", iconv("CP1251", "UTF-8", $val->region_name));
 			$region->addChild("coordinates", "3");
 			
 			

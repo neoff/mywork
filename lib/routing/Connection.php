@@ -51,7 +51,7 @@ class Routing extends Config{
     		$argv = self::$route[$arrKey][2];
     		$ins->$fnc($argv);
 		} else {
-			throw new ActiveRecord\ConfigException("Invalid or non-existent directory: $dir");
+			throw new ActiveRecord\ConfigException("Key not exist: $arrKey");
 		}
 	}
 }

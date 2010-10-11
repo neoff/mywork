@@ -9,10 +9,13 @@
  * @category   model
  */
 
+	namespace Models;
+	use ActiveRecord;
+	
 class Regions extends ActiveRecord\Model
 {
 	static $table_name = 'regions';
 	static $primary_key = 'id';
 	static $connection = CONNECTION;
-	static $db = 'test';
+	//static $db = 'test';
 }

@@ -1,0 +1,11 @@
+^.*\.pyc$
+^.*~$
+^.*\.sqlite$
+^.*\.settings*$
+^.*\.git$
+^.*\.project$
+^.*\.pydevproject$
+^.*\.db$
+^.*\.ropeproject$
+^.*\.lock$
+^.*\.cache$

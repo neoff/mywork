@@ -19,8 +19,7 @@
 		$search_name = false;
 		$product_name = false;
 		
-		
-		if($shop_id!=0) 
+		if($region_id!=0) 
 			$_SERVER['REQUEST_URI'] = "/shop/";
 		if($category_id!=0) 
 			$_SERVER['REQUEST_URI'] = "/category/";
