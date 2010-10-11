@@ -10,15 +10,23 @@
  */
 
 	namespace Controllers;
+	//use Routing;
 	
 class ControllerRegion extends Template{
 	
-	public function __construct()
+	public function index( $region_id = 0 )
 	{
-		parent::Template();
-	}
-	public function index( $region_id )
-	{
-		print "asd";
+		$regions = $this->addChild("regions");
+		for($i=0; $i<4; $i++)
+		{
+			$region = $regions->addChild("region");
+			
+			$region->addChild("id", "1");
+			$region->addChild("name", "2");
+			$region->addChild("coordinates", "3");
+			
+			
+			
+		}
 	}
 }
