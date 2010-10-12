@@ -11,30 +11,34 @@
 
 
 	namespace Controllers;
-	//use Routing;
+	use Models;
 	
 class ControllerShops extends Template{
 	
-	public function index( $region_id = 0 )
+	public function index( $shop_id = 0 )
 	{
+		$options = array('region_id' => $shop_id);
+		
+		$shops = Models\Shops::all($options);
+		//print_r($shops);
 		$regions = $this->Set("shops");
-		for($i=0; $i<4; $i++)
+		foreach ($shops as $key => $val)
 		{
 			$region = $regions->addChild("shop");
-				$region->addChild("shop_id", "1");
-				$region->addChild("shop_name", "2");
-				$region->addChild("metro", "3");
-				$region->addChild("address", "1");
-				$region->addChild("day_hours", "2");
-				$region->addChild("holiday_hours", "3");
-				$region->addChild("phone", "1");
-				$region->addChild("coordinates", "2");
-				$region->addChild("wayTo", "3");
-				$region->addChild("zoom", "1");
-				$images = $region->addChild("images");
-					$image = $images->addChild("image", "width", "height");
-					$image->addAttribute("width", "");
-					$image->addAttribute("height", "");
+				$region->addChild("shop_id", $val->shop_id);
+				$region->addChild("shop_name", ToUTF($val->shop_name));
+				$region->addChild("metro", ToUTF($val->metro));
+				$region->addChild("address", ToUTF($val->address));
+				$region->addChild("day_hours", ToUTF($val->day_hours));
+				$region->addChild("holiday_hours", ToUTF($val->holyday_hours));
+				$region->addChild("phone", ToUTF($val->phone));
+				$region->addChild("coordinates", $val->map_latlng);
+				$region->addChild("wayTo", StripTags($val->howto));
+				$region->addChild("zoom", $val->map_zoom);
+				$images = $region->addChild("images"); 
+					$image = $images->addChild("image", ""); #TODO узнать где брать image
+					$image->addAttribute("width", ""); 
+					$image->addAttribute("height", ""); 
 		}
 	}
 }

@@ -46,10 +46,11 @@ class Routing extends Config{
 			}
 		}
 		if(array_key_exists($arrKey, self::$route)) {
-    		$ins = new self::$route[$arrKey][0];
-    		$fnc = self::$route[$arrKey][1];
-    		$argv = self::$route[$arrKey][2];
-    		$ins->$fnc($argv);
+			//print_r(self::$route);
+			$ins = new self::$route[$arrKey][0];
+			$fnc = self::$route[$arrKey][1];
+			$argv = self::$route[$arrKey][2];
+			$ins->$fnc($argv);
 		} else {
 			throw new ActiveRecord\ConfigException("Key not exist: $arrKey");
 		}

@@ -15,7 +15,7 @@
 class Regions extends ActiveRecord\Model
 {
 	static $table_name = 'regions';
-	static $primary_key = 'id';
+	static $primary_key = 'region_id';
 	static $connection = CONNECTION;
 	//static $db = 'test';
 }

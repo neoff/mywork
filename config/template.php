@@ -16,7 +16,7 @@ class Template{
 	
 	public function __construct()
 	{
-		header('Content-type: text/xml');
+		header('Content-type: text/xml; charset=utf-8');
 		$xmlstr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mvideo_xml date=\"" . date("Y-m-d H:i:s") . "\"></mvideo_xml>";
 		$this->xml = new \SimpleXMLElement($xmlstr);
 		
