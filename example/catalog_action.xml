@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvideo_xml date="2010-06-16 01:28">
+    <action>
+        <image width="150" height="150">http://www.mvideo.ru/imgs/test.jpg</image>
+        <description>Успей купить с 10 по 1</description>
+        <url>http://www.mvideo.ru/action_url/</url>
+    </action>
+    <parent_category>
+        <category_id>1000</category_id>
+        <category_name>Телевизоры </category_name>
+    </parent_category>
+    <params>
+        <param param_name="mark_id" title="Производители" current_value="0">
+            <option value="0">Все производители</option>
+            <option value="11">Philips</option>
+        </param>
+        <param param_name="mark_id" title="Производители" current_value="0">
+            <option value="0">Все производители</option>
+            <option value="11">Philips</option>
+        </param>
+    </params>
+    <products category_id="2000" category_name="LED-телевизоры">
+        <product>
+            <product_id>11024203</product_id>
+            <title>ЖК-телевизор 32" LG 32 LH2000</title>
+            <description>ЖК-телевизор LG 32 LH2000 отличается простотой в эксплуатации и крайне низким энергопотреблением благодаря интеллектуальной технологии энергосбережения. Экран с диагональю экрана 81,2 см и динамической контрастностью 30 000:1 поддерживает разрешение 1366 х 768 пикс. (HD Ready)</description>
+            <rating>4.5</rating>
+            <small_price>15990</small_price>
+            <price>14390</price>
+            <image width="150" height="150">http://www.mvideo.ru/Pdb/11024203.jpg</image>
+        </product>
+        <product>
+            <product_id>11024203</product_id>
+            <title>ЖК-телевизор 32" LG 32 LH2000</title>
+            <description>ЖК-телевизор LG 32 LH2000 отличается простотой в эксплуатации и крайне низким энергопотреблением благодаря интеллектуальной технологии энергосбережения. Экран с диагональю экрана 81,2 см и динамической контрастностью 30 000:1 поддерживает разрешение 1366 х 768 пикс. (HD Ready)</description>
+            <rating>4.5</rating>
+            <small_price>15990</small_price>
+            <price>14390</price>
+            <image width="150" height="150">http://www.mvideo.ru/Pdb/11024203.jpg</image>
+        </product>
+    </products>
+    <pages>
+        <amount>11</amount>
+        <onpage>20</onpage>
+        <page>1</page>
+    </pages>
+</mvideo_xml>
+

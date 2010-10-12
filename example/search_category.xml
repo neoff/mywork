@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvideo_xml date="2010-06-16 01:28">
+    <search>телевизор</search>
+    <parent_category>
+        <category_id>0</category_id>
+        <category_name>Список категорий</category_name>
+    </parent_category>
+    <categories category_id="1000" category_name="Телевизоры">
+        <category>
+            <category_id>2000</category_id>
+            <amount>123</amount>
+            <category_name>LED-телевизоры</category_name>
+            <category_icon width="50" height="50">http://www.mvideo.ru/imgs/catalog/dir_1.gif</category_icon>
+        </category>
+        <category>
+            <category_id>2000</category_id>
+            <amount>123</amount>
+            <category_name>LED-телевизоры</category_name>
+            <category_icon width="50" height="50">http://www.mvideo.ru/imgs/catalog/dir_1.gif</category_icon>
+        </category>
+        <category>
+            <category_id>2000</category_id>
+            <amount>123</amount>
+            <category_name>LED-телевизоры</category_name>
+            <category_icon width="50" height="50">http://www.mvideo.ru/imgs/catalog/dir_1.gif</category_icon>
+        </category>
+    </categories>
+</mvideo_xml>

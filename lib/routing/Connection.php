@@ -7,21 +7,21 @@ class Routing extends Config{
 	
 	public function __construct()
 	{
-		$this->Set();
+		//$this->Set();
 		$this->init();
 	}
-	private function Set()
-	{
-		preg_match("/\/(?P<controller>\w+)\/(?P<action>\w+)\/?/i", $_SERVER['REQUEST_URI'], $matches);
-		
-		if(array_key_exists("controller", $matches) && array_key_exists("action", $matches)) {
-			$this->key = "/%s/%s/" % array($matches["controller"], $matches["action"]);
-			Routing::Map(  $this->key , $matches["controller"], $matches["action"] );
-		} else
-		{
-			//throw new ActiveRecord\ConfigException("no exist controller or action");
-		}
-	}
+//	private function Set()
+//	{
+//		preg_match("/\/(?P<controller>\w+)\/(?P<action>\w+)\/?/i", $_SERVER['REQUEST_URI'], $matches);
+//		
+//		if(array_key_exists("controller", $matches) && array_key_exists("action", $matches)) {
+//			$this->key = "/%s/%s/" % array($matches["controller"], $matches["action"]);
+//			Routing::Map(  $this->key , $matches["controller"], $matches["action"] );
+//		} else
+//		{
+//			//throw new ActiveRecord\ConfigException("no exist controller or action");
+//		}
+//	}
 	private static function yeld($item2, $key)
 	{
 		preg_match("@" . $key . "@i", $_SERVER['REQUEST_URI'], $matches);
@@ -33,7 +33,6 @@ class Routing extends Config{
 	}
 	private static function init() 
 	{
-		//print_r(self::$route);
 		$item = false;
 		$arrKey;
 		while (list($key, $value) = each(self::$route)) {

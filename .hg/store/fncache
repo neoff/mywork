@@ -670,3 +670,8 @@ data/lib/routing/Config.php.i
 data/lib/routing/Connection.php.i
 data/.gitignore.i
 data/.hgignore.i
+data/lib/Utils.php.i
+data/model/Category.php.i
+data/model/Products.php.i
+data/model/Shops.php.i
+data/r.tar.gz.i

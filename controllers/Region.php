@@ -17,11 +17,6 @@ class ControllerRegion extends Template{
 	public function index( $region_id = 0 )
 	{
 		$region = Models\Regions::all();
-		//$region = Models\Regions::first();
-		//print_r($region);
-		//foreach ($region as $key => $val) {
-		//	echo $val->region_id;
-		//}
 		$regions = $this->Set("regions");
 		foreach ($region as $key => $val)
 		{
@@ -29,7 +24,15 @@ class ControllerRegion extends Template{
 			
 			$region->addChild("region_id", $val->region_id );
 			$region->addChild("region_name", ToUTF($val->region_name));
-			$region->addChild("coordinates", "3");
+			$coordinates = $region->addChild("coordinates");
+			$coordinates = $shop->addChild("coordinates");
+//			if($val->map_latlng)
+//			{
+//				$coord = explode(",", $val->map_latlng);
+//				if(count($coord)==2) list($longitude, $latitude) = array($coord[0], $coord[1]);
+//			}
+			$coordinates->addChild("longitude", "");
+			$coordinates->addChild("latitude", "");
 			
 			
 			

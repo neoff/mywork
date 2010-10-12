@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT mvideo_xml (regions)>
+<!ATTLIST mvideo_xml
+  xmlns CDATA #FIXED ''
+  date CDATA #REQUIRED>
+
+<!ELEMENT regions (region)+>
+<!ATTLIST regions
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT region (region_id,region_name,coordinates)>
+<!ATTLIST region
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT region_id (#PCDATA)>
+<!ATTLIST region_id
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT region_name (#PCDATA)>
+<!ATTLIST region_name
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT coordinates (longitude,latitude)>
+<!ATTLIST coordinates
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT longitude (#PCDATA)>
+<!ATTLIST longitude
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT latitude (#PCDATA)>
+<!ATTLIST latitude
+  xmlns CDATA #FIXED ''>

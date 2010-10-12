@@ -1,0 +1,99 @@
+<?xml encoding="UTF-8"?>
+
+<!ELEMENT mvideo_xml (product)>
+<!ATTLIST mvideo_xml
+  xmlns CDATA #FIXED ''
+  date CDATA #REQUIRED>
+
+<!ELEMENT product (reviews
+                   |((rating|title|ask|category_id|description|options|price|product_id|region_id
+                      |reviews_num|small_price)+,
+                     image))>
+<!ATTLIST product
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT reviews (review)+>
+<!ATTLIST reviews
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT ask (product)+>
+<!ATTLIST ask
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT category_id (#PCDATA)>
+<!ATTLIST category_id
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT description (#PCDATA)>
+<!ATTLIST description
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT options (option)+>
+<!ATTLIST options
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT price (#PCDATA)>
+<!ATTLIST price
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT product_id (#PCDATA)>
+<!ATTLIST product_id
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT region_id (#PCDATA)>
+<!ATTLIST region_id
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT reviews_num (#PCDATA)>
+<!ATTLIST reviews_num
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT small_price (#PCDATA)>
+<!ATTLIST small_price
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT image (#PCDATA)>
+<!ATTLIST image
+  xmlns CDATA #FIXED ''
+  height CDATA #REQUIRED
+  width CDATA #REQUIRED>
+
+<!ELEMENT review (date,author,city,rating,title,text)>
+<!ATTLIST review
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT option (name,value)>
+<!ATTLIST option
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT date (#PCDATA)>
+<!ATTLIST date
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT author (#PCDATA)>
+<!ATTLIST author
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT city (#PCDATA)>
+<!ATTLIST city
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT text (#PCDATA)>
+<!ATTLIST text
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT name (#PCDATA)>
+<!ATTLIST name
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT value (#PCDATA)>
+<!ATTLIST value
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT rating (#PCDATA)>
+<!ATTLIST rating
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT title (#PCDATA)>
+<!ATTLIST title
+  xmlns CDATA #FIXED ''>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT mvideo_xml (shops)>
+<!ATTLIST mvideo_xml
+  xmlns CDATA #FIXED ''
+  date CDATA #REQUIRED>
+
+<!ELEMENT shops (shop)+>
+<!ATTLIST shops
+  xmlns CDATA #FIXED ''
+  region_id CDATA #REQUIRED>
+
+<!ELEMENT shop (shop_id,shop_name,metro,address,day_hours,holiday_hours,phone,coordinates,wayTo,
+                zoom,images)>
+<!ATTLIST shop
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT shop_id (#PCDATA)>
+<!ATTLIST shop_id
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT shop_name (#PCDATA)>
+<!ATTLIST shop_name
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT metro (#PCDATA)>
+<!ATTLIST metro
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT address (#PCDATA)>
+<!ATTLIST address
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT day_hours (#PCDATA)>
+<!ATTLIST day_hours
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT holiday_hours (#PCDATA)>
+<!ATTLIST holiday_hours
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT phone (#PCDATA)>
+<!ATTLIST phone
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT coordinates (longitude,latitude)>
+<!ATTLIST coordinates
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT wayTo (#PCDATA)>
+<!ATTLIST wayTo
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT zoom (#PCDATA)>
+<!ATTLIST zoom
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT images (image)>
+<!ATTLIST images
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT longitude (#PCDATA)>
+<!ATTLIST longitude
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT latitude (#PCDATA)>
+<!ATTLIST latitude
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT image (#PCDATA)>
+<!ATTLIST image
+  xmlns CDATA #FIXED ''
+  height CDATA #REQUIRED
+  width CDATA #REQUIRED>

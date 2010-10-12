@@ -1,0 +1,38 @@
+<?xml encoding="UTF-8"?>
+
+<!ELEMENT mvideo_xml (parent_category,categories)>
+<!ATTLIST mvideo_xml
+  xmlns CDATA #FIXED ''
+  date CDATA #REQUIRED>
+
+<!ELEMENT parent_category (category_id,category_name)>
+<!ATTLIST parent_category
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT categories (category)+>
+<!ATTLIST categories
+  xmlns CDATA #FIXED ''
+  category_id CDATA #REQUIRED
+  category_name NMTOKEN #REQUIRED>
+
+<!ELEMENT category (category_id,category_name,amount,category_icon)>
+<!ATTLIST category
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT amount (#PCDATA)>
+<!ATTLIST amount
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT category_icon (#PCDATA)>
+<!ATTLIST category_icon
+  xmlns CDATA #FIXED ''
+  height CDATA #REQUIRED
+  width CDATA #REQUIRED>
+
+<!ELEMENT category_id (#PCDATA)>
+<!ATTLIST category_id
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT category_name (#PCDATA)>
+<!ATTLIST category_name
+  xmlns CDATA #FIXED ''>
