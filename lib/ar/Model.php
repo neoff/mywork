@@ -137,7 +137,7 @@ class Model
 	 *
 	 * @var string
 	 */
-	static $table_name;
+	static $table_name; #XXX НЕ ЗАБУДЬ УБРАТЬ public!!!!!!!!!!!!!!!
 
 	/**
 	 * Set this to override the default primary key name if different from default name of "id".

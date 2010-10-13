@@ -29,7 +29,7 @@ class ControllerCategory extends Template{
 	public function index( $array )
 	{
 		
-		list($region_id, $category_id)=$array;
+		list($region_id, $category_id, $product_id)=$array;
 		
 		$options = array('parent_id' => $category_id);
 		$parents = Models\Category::find('first', array('conditions' => "category_id = $category_id"));
@@ -65,12 +65,13 @@ class ControllerCategory extends Template{
 		$parrent = $this->Set("parent_category");
 		$parrent->addChild("category_id", $c_parrent_id);
 		$parrent->addChild("category_name", $c_parrent_name);
-			
-		$categories = $this->Set("categories");
-		$categories->addAttribute("category_id", $category_id);
-		$categories->addAttribute("category_name", $c_name);
+		
 		if($categorys)
 		{
+			$categories = $this->Set("categories");
+			$categories->addAttribute("category_id", $category_id);
+			$categories->addAttribute("category_name", $c_name);
+			
 			foreach ($categorys as $key => $val)
 			{
 				$amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
@@ -83,7 +84,7 @@ class ControllerCategory extends Template{
 				$category->addChild("category_id", $val->category_id);
 				$category->addChild("category_name", ToUTF($val->name));
 				$category->addChild("amount", $amount); 
-				$icon = $category->addChild("category_icon"); #TODO откуда брать ???
+				$icon = $category->addChild("category_icon"); #TODO откуда брать иконку категории???
 				$icon->addAttribute("width", "");
 				$icon->addAttribute("height", "");
 			}
@@ -94,11 +95,41 @@ class ControllerCategory extends Template{
 	
 	private function products( $region_id, $category_id, $parents)
 	{
+		
+		/*<params>
+			<param param_name="mark_id" title="Производители" current_value="0">
+				<option value="0">Все производители</option>
+				<option value="11">Philips</option>
+			</param>
+			<param param_name="mark_id" title="Производители" current_value="0">
+				<option value="0">Все производители</option>
+				<option value="11">Philips</option>
+			</param>
+			<param param_name="mark_id" title="Производители" current_value="0">
+				<option value="0">Все производители</option>
+				<option value="11">Philips</option>
+			</param>
+		</params>
+		<products category_id="2000" category_name="LED-телевизоры">
+			<product>
+				<product_id>11024203</product_id>
+				<title>ЖК-телевизор 32" LG 32 LH2000</title>
+				<description>ЖК-телевизор LG 32 LH2000 отличается простотой в  ...</description>
+				<rating>4.5</rating>
+				<small_price>15990</small_price>
+				<price>14390</price>
+				<image width="150" height="150">http://www.mvideo.ru/Pdb/11024203.jpg</image>
+			</product>
+		<products>*/
+		
+		
 		$productes = Models\Category::warez($region_id, $parents);
+		$c_name = ToUTF($parents->name);
+		
 		
 		//add params
 		$params = $this->Set("params");
-		$param = $params->addChild("param"); #TODO узнать в какой таблице
+		$param = $params->addChild("param"); #TODO узнать в какой таблице брать список параметров
 		$param->addAttribute("param_name", "");
 		$param->addAttribute("title", "");
 		$param->addAttribute("current_value", "");
@@ -109,16 +140,16 @@ class ControllerCategory extends Template{
 		{
 			//add products
 			$products = $this->Set("products");
-			$products->addAttribute("category_id", "");
-			$products->addAttribute("category_name", "");
+			$products->addAttribute("category_id", $category_id);
+			$products->addAttribute("category_name", $c_name);
 			$product = $products->addChild("product");
-			$product->addChild("product_id");
-			$product->addChild("title");
-			$product->addChild("description");
-			$product->addChild("rating");
-			$product->addChild("small_price");
-			$product->addChild("price");
-			$image = $product->addChild("image");
+			$product->addChild("product_id", $val->warecode);
+			$product->addChild("title", ToUTF($val->ware));
+			$product->addChild("description", StripTags($val->descr));
+			$product->addChild("rating"); #TODO где брать рейтинг?
+			$product->addChild("small_price", $val->inetprice);
+			$product->addChild("price", $val->price);
+			$image = $product->addChild("image"); #TODO где взять картинка для продукта
 			$image->addAttribute("width", "");
 			$image->addAttribute("height", "");
 		}

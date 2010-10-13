@@ -15,8 +15,10 @@
 	
 class ControllerShops extends Template{
 	
-	public function index( $shop_id = 0 )
+	public function index( $shop_id = array(0, false, false ) )
 	{
+		list($region_id, $width, $height) = $shop_id;
+		
 		$options = array('region_id' => $shop_id);
 		
 		$model = Models\Shops::all($options);

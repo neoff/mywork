@@ -11,12 +11,13 @@
 
 	namespace Models;
 	use ActiveRecord;
-	
+
 class Category extends ActiveRecord\Model
 {
 	static $table_name = 'categories';
 	static $primary_key = 'category_id';
 	static $connection = CONNECTION;
+	
 	
 	public static function warez($region_id, $parrents)
 	{
@@ -24,4 +25,5 @@ class Category extends ActiveRecord\Model
 				where DirID = '.$parrents->dirid ." and ClassID = " 
 				. $parrents->classid ." and GrID = " .$parrents->grid );
 	}
+	
 }

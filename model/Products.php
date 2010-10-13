@@ -13,12 +13,6 @@
 	use ActiveRecord;
 	
 
-class Warez extends ActiveRecord\Model
-{
-	static $table_name = 'warez_1';
-	static $connection = CONNECTION;
-}
-	
 	
 class Products extends ActiveRecord\Model
 {

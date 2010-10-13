@@ -16,16 +16,16 @@ class ControllerRegion extends Template{
 	
 	public function index( $region_id = 0 )
 	{
-		$region = Models\Regions::all();
+		$region_m = Models\Regions::all();
 		$regions = $this->Set("regions");
-		foreach ($region as $key => $val)
+		
+		foreach ($region_m as $key => $val)
 		{
 			$region = $regions->addChild("region");
 			
 			$region->addChild("region_id", $val->region_id );
 			$region->addChild("region_name", ToUTF($val->region_name));
 			$coordinates = $region->addChild("coordinates");
-			$coordinates = $shop->addChild("coordinates");
 //			if($val->map_latlng)
 //			{
 //				$coord = explode(",", $val->map_latlng);
