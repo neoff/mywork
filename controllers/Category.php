@@ -84,9 +84,9 @@ class ControllerCategory extends Template{
 				$category->addChild("category_id", $val->category_id);
 				$category->addChild("category_name", ToUTF($val->name));
 				$category->addChild("amount", $amount); 
-				$icon = $category->addChild("category_icon"); #TODO откуда брать иконку категории???
-				$icon->addAttribute("width", "");
-				$icon->addAttribute("height", "");
+				$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/dir_$val->dirid.gif"); #TODO откуда брать иконку категории???
+				$icon->addAttribute("width", "50");
+				$icon->addAttribute("height", "50");
 			}
 		}
 		else
@@ -96,34 +96,9 @@ class ControllerCategory extends Template{
 	private function products( $region_id, $category_id, $parents)
 	{
 		
-		/*<params>
-			<param param_name="mark_id" title="Производители" current_value="0">
-				<option value="0">Все производители</option>
-				<option value="11">Philips</option>
-			</param>
-			<param param_name="mark_id" title="Производители" current_value="0">
-				<option value="0">Все производители</option>
-				<option value="11">Philips</option>
-			</param>
-			<param param_name="mark_id" title="Производители" current_value="0">
-				<option value="0">Все производители</option>
-				<option value="11">Philips</option>
-			</param>
-		</params>
-		<products category_id="2000" category_name="LED-телевизоры">
-			<product>
-				<product_id>11024203</product_id>
-				<title>ЖК-телевизор 32" LG 32 LH2000</title>
-				<description>ЖК-телевизор LG 32 LH2000 отличается простотой в  ...</description>
-				<rating>4.5</rating>
-				<small_price>15990</small_price>
-				<price>14390</price>
-				<image width="150" height="150">http://www.mvideo.ru/Pdb/11024203.jpg</image>
-			</product>
-		<products>*/
-		
 		
 		$productes = Models\Category::warez($region_id, $parents);
+		//print_r($productes);
 		$c_name = ToUTF($parents->name);
 		
 		
@@ -143,15 +118,20 @@ class ControllerCategory extends Template{
 			$products->addAttribute("category_id", $category_id);
 			$products->addAttribute("category_name", $c_name);
 			$product = $products->addChild("product");
-			$product->addChild("product_id", $val->warecode);
+			$product->addChild("product_id", ToUTF($val->warecode));
 			$product->addChild("title", ToUTF($val->ware));
-			$product->addChild("description", StripTags($val->descr));
-			$product->addChild("rating"); #TODO где брать рейтинг?
+			$description = Models\Description::first(array("warecode"=>$val->warecode));
+			if($description)
+				$description = $description->reviewtext;
+			//print StripTags($description)."<br/>\n";
+			$product->addChild("description", StripTags($description));
+			$rewiews = Models\Reviews::first(array('select' => 'count(grade) c, sum(grade) s', 'conditions' => array('warecode = ?', $val->warecode)));
+			$product->addChild("rating", $rewiews->c); #TODO где брать рейтинг?
 			$product->addChild("small_price", $val->inetprice);
 			$product->addChild("price", $val->price);
-			$image = $product->addChild("image"); #TODO где взять картинка для продукта
-			$image->addAttribute("width", "");
-			$image->addAttribute("height", "");
+			$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); #TODO где взять картинка для продукта
+			$image->addAttribute("width", "180");
+			$image->addAttribute("height", "180");
 		}
 	}
 }

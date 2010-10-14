@@ -14,11 +14,11 @@
 
 class Description extends ActiveRecord\Model
 {
-	static $table_name = 'descriptionlist';
+	static $table_name = 'warereviews';
 	static $connection = CONNECTION;
 }
 
-class Desclist extends ActiveRecord\Model
+class Oprionlist extends ActiveRecord\Model
 {
 	static $table_name = 'descriptionlist';
 	static $connection = CONNECTION;

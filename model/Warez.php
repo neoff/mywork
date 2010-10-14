@@ -17,8 +17,10 @@ class Warez extends ActiveRecord\Model
 	private $where;
 	static $finder=array();
 	static $table_name = 'warez_1';
-	static $primary_key = 'category_id';
 	static $connection = CONNECTION;
+	
+	
+	
 	
 	public static function sql($region_id, $where="", $array=array())
 	{
@@ -38,10 +40,21 @@ class Warez extends ActiveRecord\Model
 		}
 		return array($this->where,$this->finder);
 	}
+	
+	
 }
 
-class Warereviews extends ActiveRecord\Model
-{
-	static $table_name = 'warereviews';
+class Link extends ActiveRecord\Model{
+	static $table_name = 'linkw';
+	//static $belongs_to = array(array('warez_1'));
 	static $connection = CONNECTION;
+	
+	public static function getAccess($region_id, $code){
+		//select * from linkw inner join warez_1 on (linkw.warecodel = warez_1.warecode) where warecodem = 11032149;
+		$join = "inner join warez_$region_id on (linkw.warecodel = warez_$region_id.warecode) where warecodem = $code";
+		return self::all(array('select' => '*','joins'=> $join));
+		
+		
+	}
+	
 }

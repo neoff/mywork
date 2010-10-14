@@ -20,12 +20,11 @@
 		$action = (!array_key_exists('action', $_GET))?false:$_GET['action'];
 		$category_id = (!array_key_exists('category_id', $_GET))?-1:$_GET['category_id'];
 		#IN CATEGORIES
-		$asc = (!array_key_exists('asc', $_GET))?false:$_GET['asc'];
+		$ask = (!array_key_exists('ask', $_GET))?false:$_GET['ask'];
 		$reviews = (!array_key_exists('reviews', $_GET))?false:$_GET['reviews'];
 		
 		$width = (!array_key_exists('width', $_GET))?false:$_GET['width'];
 		$height = (!array_key_exists('height', $_GET))?false:$_GET['height'];
-		
 		if($region_id!=0) 
 		{
 			$_SERVER['REQUEST_URI'] = "/$prefix/shop/";
@@ -49,11 +48,11 @@
 		#category
 		#$cfg->Map("^$url_prefix\/\?region_id=[1-9]\d*&category_id=\d+?$", $controler="Category", $action="index", array($region_id, $category_id));
 		$cfg->Map("^$url_prefix\/category\/?$", $controler="Category", 
-		$action="index", array($region_id, $category_id));
+		$action="index", array($region_id, $category_id, $product_id));
 		#product
 		#$cfg->Map("^$url_prefix\/\?region_id=[1-9]\d*&product_id=\d+$", $controler="Product", $action="index", array($region_id, $product_id));
 		$cfg->Map("^$url_prefix\/product\/?$", $controler="Product", 
-					$action="index", array($region_id, $product_id, $asc, $reviews));
+					$action="index", array($region_id, $product_id, $ask, $reviews));
 		#action
 		#$cfg->Map("^$url_prefix\/\?region_id=[1-9]\d*&product_id=\d+&action=\d+$", $controler="Product", $action="index", array($region_id, $product_id, $action));
 		$cfg->Map("^$url_prefix\/action\/?$", $controler="Action", 

@@ -693,3 +693,9 @@ data/example/shops.xml.i
 data/public/categories.dtd.i
 data/public/region.dtd.i
 data/public/shops.dtd.i
+data/controllers/Actions.php.i
+data/controllers/Product.php.i
+data/model/Desclist.php.i
+data/model/Warez.php.i
+data/public/product.dtd.i
+data/model/Reviews.php.i
