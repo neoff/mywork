@@ -11,6 +11,7 @@
 
 	namespace Controllers;
 	use Models;
+	
 
 class ControllerProduct extends Template{
 
@@ -19,6 +20,7 @@ class ControllerProduct extends Template{
 	}
 	public function index( $array )
 	{
+		//print_r($array);
 		list($region_id, $product_id, $ask, $reviews)=$array;
 		
 		$options = array("_warecode"=>$product_id);
@@ -35,7 +37,7 @@ class ControllerProduct extends Template{
 		$product_m->addChild("title", ToUTF($productes->ware));
 		$product_m->addChild("small_price", $productes->inetprice);
 		$product_m->addChild("price", $productes->price);
-		$rewiews = Models\Reviews::first(array('select' => 'count(grade) c, sum(grade) s', 
+		$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 
 								'conditions' => array('warecode = ?', $product_id)));
 		
 		$product_m->addChild("rating", $rewiews->s);
@@ -45,7 +47,7 @@ class ControllerProduct extends Template{
 			$description = $description->reviewtext;
 		$product_m->addChild("description", StripTags($description));
 		
-		if(!$ask)
+		if(!$ask && !$reviews)
 		{
 			$options = $product_m->addChild("options");
 			$options_m=Models\Oprionlist::all(array('warecode'=>$product_id));
@@ -71,7 +73,7 @@ class ControllerProduct extends Template{
 				if($description)
 					$description = $description->reviewtext;
 				$prod->addChild("description", StripTags($description));
-				$rewiews = Models\Reviews::first(array('select' => 'count(grade) c, sum(grade) s', 'conditions' => array('warecode = ?', $val->warecode)));
+				$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 'conditions' => array('warecode = ?', $val->warecode)));
 				//print_r($rewiews);
 				$prod->addChild("rating", $rewiews->s);
 				$prod->addChild("reviews_num", $rewiews->c);
@@ -85,16 +87,16 @@ class ControllerProduct extends Template{
 		if($reviews)
 		{
 			$reviews = $product_m->addChild("reviews");
-			$reviews_m=array();
+			$reviews_m=Models\Reviews::all(array('warecode'=>$product_id));
 			foreach ($reviews_m as $key => $val)
 			{
 				$review = $reviews->addChild("review");
-				$review->addChild("date");
-				$review->addChild("author");
-				$review->addChild("city");
-				$review->addChild("rating");
-				$review->addChild("title");
-				$review->addChild("text");
+				$review->addChild("date", $val->add_date->format('Y-m-d'));
+				$review->addChild("author", ToUTF($val->name));
+				$review->addChild("city",  ToUTF($val->city));
+				$review->addChild("rating", $val->rating);
+				$review->addChild("title",  StripTags($val->title));
+				$review->addChild("text",  StripTags($val->text));
 			}
 		}
 	}

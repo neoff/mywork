@@ -125,7 +125,7 @@ class ControllerCategory extends Template{
 				$description = $description->reviewtext;
 			//print StripTags($description)."<br/>\n";
 			$product->addChild("description", StripTags($description));
-			$rewiews = Models\Reviews::first(array('select' => 'count(grade) c, sum(grade) s', 'conditions' => array('warecode = ?', $val->warecode)));
+			$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 'conditions' => array('warecode = ?', $val->warecode)));
 			$product->addChild("rating", $rewiews->c); #TODO где брать рейтинг?
 			$product->addChild("small_price", $val->inetprice);
 			$product->addChild("price", $val->price);

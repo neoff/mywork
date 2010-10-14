@@ -14,6 +14,6 @@
 
 class Reviews extends ActiveRecord\Model
 {
-	static $table_name = 'reviews';
+	static $table_name = 'reviews_new';
 	static $connection = CONNECTION;
 }
