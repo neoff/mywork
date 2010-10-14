@@ -14,5 +14,6 @@
 \#*\#
 \.\#*
 \.ropeproject
+\.buildpath
 *.lock
 *.cache

@@ -7,5 +7,6 @@
 ^.*\.pydevproject$
 ^.*\.db$
 ^.*\.ropeproject$
+^.*\.buildpath$
 ^.*\.lock$
 ^.*\.cache$
