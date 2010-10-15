@@ -34,6 +34,7 @@ class ControllerCategory extends Template{
 		$options = array('parent_id' => $category_id);
 		$parents = Models\Category::find('first', array('conditions' => "category_id = $category_id"));
 		//print_r($parents->attributes());
+		
 		if(!$category_id )
 		{
 			$options = array('conditions' => "parent_id is null");
@@ -62,14 +63,45 @@ class ControllerCategory extends Template{
 		}
 		if($action)
 		{
+			//print $action;
+			$act = Models\Actions::first(array("segment_id"=>$action, "hidden"=>0));
+			//print_r($act);
 			$actions = $this->Set("action");
-			$images = $actions->addChild("image", $c_parrent_id);
-			$images->addAttribute("width", "");
-			$images->addAttribute("height", "");
-			$actions->addChild("description", $c_parrent_id);
-			$actions->addChild("url", $c_parrent_id);
+			$images = $actions->addChild("image", "http://www.mvideo.ru/imgs/test.jpg");
+			$images->addAttribute("width", "150");
+			$images->addAttribute("height", "150");
+			$actions->addChild("description", ToUTF($act->segment_info));
+			$actions->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $act->segment_name)
+																."/?ref=left_bat_". $act->segment_name);
+			
+			
+			$segment = Models\Segments::find('all', 
+							array('select' => 'warecode', 
+								'conditions' =>"region_id=$region_id and segment_name='$act->segment_name'"));
+			
+			$array=array();
+			foreach ($segment as $val)
+			{
+				$array[] = $val->warecode;
+			}
+			
+			$warez = Models\Warez::find_by_sql('select DirID, ClassID, GrID from warez_' .$region_id . " where warecode in (".implode(",", $array).") GROUP BY DirID, ClassID, GrID");
+			
+			$dirid = array();
+			$classid = array();
+			$grid = array();
+			foreach($warez as $val)
+			{
+				$dirid[]=$val->dirid;
+				$classid[]=$val->classid;
+				$grid[]=$val->grid;
+			}
+			$options = array('conditions' => "DirID in (".implode(",", $dirid).") and ClassID  in (".implode(",", $classid).") and GrID in (".implode(",", $grid).")");
+			print_r($warez);
+			
 		}
 		$categorys = Models\Category::find('all', $options);
+		//print_r($categorys);
 		$parrent = $this->Set("parent_category");
 		$parrent->addChild("category_id", $c_parrent_id);
 		$parrent->addChild("category_name", $c_parrent_name);
@@ -113,6 +145,7 @@ class ControllerCategory extends Template{
 		//add params
 		$params = $this->Set("params");
 		$param = $params->addChild("param"); #TODO узнать в какой таблице брать список параметров
+		
 		$param->addAttribute("param_name", "");
 		$param->addAttribute("title", "");
 		$param->addAttribute("current_value", "");
@@ -146,7 +179,7 @@ class ControllerCategory extends Template{
 	{
 		list($region_id, $category_id, $action)=$array;
 		$actions = $this->Set("actions");
-		$acts = Models\Actions::all();
+		$acts = Models\Actions::all(array("hidden"=>0));
 		foreach ($acts as $key => $val) 
 		{
 			$action = $actions->addChild("action");

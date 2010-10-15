@@ -18,3 +18,10 @@ class Actions extends ActiveRecord\Model
 	static $primary_key = 'segment_id';
 	static $connection = CONNECTION;
 }
+
+class Segments extends ActiveRecord\Model
+{
+	static $table_name = 'segment_cache';
+	//static $primary_key = 'segment_id';
+	static $connection = CONNECTION;
+}
