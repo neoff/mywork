@@ -29,7 +29,7 @@ class ControllerCategory extends Template{
 	public function index( $array )
 	{
 		
-		list($region_id, $category_id, $product_id)=$array;
+		list($region_id, $category_id, $action)=$array;
 		
 		$options = array('parent_id' => $category_id);
 		$parents = Models\Category::find('first', array('conditions' => "category_id = $category_id"));
@@ -60,7 +60,15 @@ class ControllerCategory extends Template{
 			
 			
 		}
-		
+		if($action)
+		{
+			$actions = $this->Set("action");
+			$images = $actions->addChild("image", $c_parrent_id);
+			$images->addAttribute("width", "");
+			$images->addAttribute("height", "");
+			$actions->addChild("description", $c_parrent_id);
+			$actions->addChild("url", $c_parrent_id);
+		}
 		$categorys = Models\Category::find('all', $options);
 		$parrent = $this->Set("parent_category");
 		$parrent->addChild("category_id", $c_parrent_id);
@@ -133,5 +141,23 @@ class ControllerCategory extends Template{
 			$image->addAttribute("width", "180");
 			$image->addAttribute("height", "180");
 		}
+	}
+	public function actions($array)
+	{
+		list($region_id, $category_id, $action)=$array;
+		$actions = $this->Set("actions");
+		$acts = Models\Actions::all();
+		foreach ($acts as $key => $val) 
+		{
+			$action = $actions->addChild("action");
+			$action->addChild("id", $val->segment_id);
+			$images = $action->addChild("image", "http://www.mvideo.ru/imgs/test.jpg");
+			$images->addAttribute("width", "150");
+			$images->addAttribute("height", "150");
+			$action->addChild("description", ToUTF($val->segment_info));
+			$action->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $val->segment_name)."/?ref=left_bat_". $val->segment_name);
+		}
+		
+		
 	}
 }

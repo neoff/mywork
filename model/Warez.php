@@ -45,7 +45,7 @@ class Warez extends ActiveRecord\Model
 }
 
 class Link extends ActiveRecord\Model{
-	static $table_name = 'linkw';
+	static $table_name = 'warez_aks';
 	//static $belongs_to = array(array('warez_1'));
 	static $connection = CONNECTION;
 	
