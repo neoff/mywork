@@ -61,6 +61,11 @@ class ControllerCategory extends Template{
 			
 			
 		}
+		
+		
+		$categorys = Models\Category::find('all', $options);
+		
+		
 		if($action)
 		{
 			//print $action;
@@ -84,23 +89,23 @@ class ControllerCategory extends Template{
 			{
 				$array[] = $val->warecode;
 			}
+			//print $region_id. $array;
 			
-			$warez = Models\Warez::find_by_sql('select DirID, ClassID, GrID from warez_' .$region_id . " where warecode in (".implode(",", $array).") GROUP BY DirID, ClassID, GrID");
-			
-			$dirid = array();
-			$classid = array();
-			$grid = array();
-			foreach($warez as $val)
+			if(!$category_id)
 			{
-				$dirid[]=$val->dirid;
-				$classid[]=$val->classid;
-				$grid[]=$val->grid;
+				$condition = "";
+				$c_parrent_id = 0;
+				$c_parrent_name = $c_name = "Список категорий";
+				$categorys = Models\Warez::getWarezAction($region_id, $array, $condition);
 			}
-			$options = array('conditions' => "DirID in (".implode(",", $dirid).") and ClassID  in (".implode(",", $classid).") and GrID in (".implode(",", $grid).")");
-			print_r($warez);
+			else
+			{
+				$this->products($region_id, $category_id, $parents, $array);
+				$categorys = array();
+			}
 			
 		}
-		$categorys = Models\Category::find('all', $options);
+		
 		//print_r($categorys);
 		$parrent = $this->Set("parent_category");
 		$parrent->addChild("category_id", $c_parrent_id);
@@ -133,11 +138,14 @@ class ControllerCategory extends Template{
 			$this->products($region_id, $category_id, $parents);
 	}
 	
-	private function products( $region_id, $category_id, $parents)
+	private function products( $region_id, $category_id, $parents, $actions = "")
 	{
 		
-		
-		$productes = Models\Category::warez($region_id, $parents);
+		if($actions)
+		{
+			$parents->grid .= " and warecode in (".implode(",", $actions).")";
+		}
+		$productes = Models\Warez::getWarez($region_id, $parents);
 		//print_r($productes);
 		$c_name = ToUTF($parents->name);
 		

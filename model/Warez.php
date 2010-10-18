@@ -41,6 +41,22 @@ class Warez extends ActiveRecord\Model
 		return array($this->where,$this->finder);
 	}
 	
+	public static function getWarez($region_id, $parrents)
+	{
+		return self::find_by_sql('select * from `warez_' .$region_id . '` 
+				where DirID = '.$parrents->dirid ." and ClassID = " 
+				. $parrents->classid ." and GrID = " .$parrents->grid );
+	}
+	
+	public static function getWarezAction($region_id, $array, $condition = "")
+	{
+		return self::find_by_sql('select c.* from categories c left join warez_' .
+							$region_id . " w on (c.DirID=w.DirID and c.ClassID=w.ClassID and c.GrID=w.GrID ) 
+							where w.warecode in (".implode(",", $array).") 
+							$condition
+							group BY c.category_id ");
+	}
+	
 	
 }
 
