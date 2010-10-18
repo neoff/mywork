@@ -193,16 +193,32 @@ class ControllerCategory extends Template{
 			
 			//add params
 			$params = $this->Set("params");
-			$param = $params->addChild("param"); #TODO узнать в какой таблице брать список параметров
+			$grid=array();
+			$markid = array();
+			//print_r($productes);
+			//$markid = array();
 			
-			$param->addAttribute("param_name", "");
-			$param->addAttribute("title", "");
-			$param->addAttribute("current_value", "");
-			$option = $param->addChild("option", "");
-			$option->addAttribute("value", "");
+			$param_m = $params->addChild("param"); #TODO узнать в какой таблице брать список параметров
+			$param_m->addAttribute("param_name", "mark");
+			$param_m->addAttribute("title", "Производители");
+			$param_m->addAttribute("current_value", "0");
+			$option_p = $param_m->addChild("option", "Все производители");
+			$option_p->addAttribute("value", "0");
+			//2
+			$param_g = $params->addChild("param"); 
+			$param_g->addAttribute("param_name", "grid");
+			$param_g->addAttribute("title", "Группы");
+			$param_g->addAttribute("current_value", "0");
+			$option_g = $param_g->addChild("option", "Все группы");
+			$option_g->addAttribute("value", "0");
+			
 			
 			foreach ($productes as $key => $val)
 			{
+				if (!in_array($val->grid, $grid))
+					$grid[]=$val->grid;
+				if (!in_array($val->mark, $markid))
+					$markid[]=$val->mark;
 				//add products
 				$products = $this->Set("products");
 				$products->addAttribute("category_id", $category_id);
@@ -222,6 +238,24 @@ class ControllerCategory extends Template{
 				$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); #TODO где взять картинка для продукта
 				$image->addAttribute("width", "180");
 				$image->addAttribute("height", "180");
+			}
+			foreach($grid as $val)
+			{
+				$m_group = Models\Groups::find('first', array("grid"=>$val));
+				if($m_group){
+					//print ToUTF($m_marks->markname);
+					$option_g = $param_g->addChild("option", ToUTF($m_group->grname));
+					$option_g->addAttribute("value", $val);
+				}
+			}
+			foreach($markid as $val)
+			{
+				$m_marks = Models\Marks::find('first', array("markid"=>$val));
+				if($m_marks){
+					//print ToUTF($m_marks->markname);
+					$option_m = $param_m->addChild("option", ToUTF($m_marks->markname));
+					$option_m->addAttribute("value", $val);
+				}
 			}
 		}
 	}

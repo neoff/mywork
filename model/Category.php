@@ -19,3 +19,19 @@ class Category extends ActiveRecord\Model
 	static $connection = CONNECTION;
 	
 }
+
+class Marks extends ActiveRecord\Model
+{
+	static $table_name = 'marks';
+	static $primary_key = 'markid';
+	static $connection = CONNECTION;
+	
+}
+
+class Groups extends ActiveRecord\Model
+{
+	static $table_name = 'groups';
+	static $primary_key = 'grid';
+	static $connection = CONNECTION;
+	
+}
