@@ -29,17 +29,18 @@ class ControllerCategory extends Template{
 	public function index( $array )
 	{
 		
-		list($region_id, $category_id, $action)=$array;
-		
+		list($region_id, $category_id, $action, $search)=$array;
+		//print_r($array);
 		$options = array('parent_id' => $category_id);
 		$parents = Models\Category::find('first', array('conditions' => "category_id = $category_id"));
 		//print_r($parents->attributes());
 		
-		if(!$category_id )
+		if(!$category_id || $category_id<0 )
 		{
 			$options = array('conditions' => "parent_id is null");
 			$c_parrent_name = $c_name = "Список категорий";
 			$c_parrent_id = $c_id = 0;
+			$category_id = 0;
 		}
 		else
 		{
@@ -65,9 +66,41 @@ class ControllerCategory extends Template{
 		
 		$categorys = Models\Category::find('all', $options);
 		
-		
-		if($action)
+		if($search)
 		{
+			$this->Set("search", ToUTF($search));
+			$categorys = Models\Warez::findByNameCategory($region_id, $search);
+			if(count($categorys)==1 || $category_id>0)
+			{
+				//$this->products($region_id, $category_id, $parents, $array);
+				$categorys = array();
+			}
+			//print_r($categorys);
+		}
+		
+		if($action>0)
+		{
+			switch ((int)$action)
+			{
+				case 1:
+					$action = 6;
+					break;
+				case 3:
+					$action = 7;
+					break;
+				case 4:
+					$action = 24;
+					break;
+				case 5:
+					$action = 25;
+					break;
+				case 6:
+					$action = 29;
+					break;
+				case 7:
+					$action = 28;
+					break;
+			}
 			//print $action;
 			$act = Models\Actions::first(array("segment_id"=>$action, "hidden"=>0));
 			//print_r($act);
@@ -84,10 +117,10 @@ class ControllerCategory extends Template{
 							array('select' => 'warecode', 
 								'conditions' =>"region_id=$region_id and segment_name='$act->segment_name'"));
 			
-			$array=array();
+			$action=array();
 			foreach ($segment as $val)
 			{
-				$array[] = $val->warecode;
+				$action[] = $val->warecode;
 			}
 			//print $region_id. $array;
 			
@@ -96,11 +129,11 @@ class ControllerCategory extends Template{
 				$condition = "";
 				$c_parrent_id = 0;
 				$c_parrent_name = $c_name = "Список категорий";
-				$categorys = Models\Warez::getWarezAction($region_id, $array, $condition);
+				$categorys = Models\Warez::getWarezAction($region_id, $action, $condition);
 			}
 			else
 			{
-				$this->products($region_id, $category_id, $parents, $array);
+				//$this->products($region_id, $category_id, $parents, $action);
 				$categorys = array();
 			}
 			
@@ -123,7 +156,7 @@ class ControllerCategory extends Template{
 				if(!$amount) 
 				{
 					$ids = new SetId($val->dirid, $val->classid, $val->grid);
-					$amount = count(Models\Category::warez($region_id, $ids));
+					$amount = count(Models\Warez::getWarez($region_id, $ids));
 				}
 				$category = $categories->addChild("category");
 				$category->addChild("category_id", $val->category_id);
@@ -135,52 +168,61 @@ class ControllerCategory extends Template{
 			}
 		}
 		else
-			$this->products($region_id, $category_id, $parents);
+			$this->products($region_id, $category_id, $parents, $action, $search);
 	}
 	
-	private function products( $region_id, $category_id, $parents, $actions = "")
+	private function products( $region_id, $category_id, $parents, $actions = "", $search="")
 	{
 		
-		if($actions)
+		if($actions > 0)
 		{
 			$parents->grid .= " and warecode in (".implode(",", $actions).")";
 		}
-		$productes = Models\Warez::getWarez($region_id, $parents);
-		//print_r($productes);
-		$c_name = ToUTF($parents->name);
 		
-		
-		//add params
-		$params = $this->Set("params");
-		$param = $params->addChild("param"); #TODO узнать в какой таблице брать список параметров
-		
-		$param->addAttribute("param_name", "");
-		$param->addAttribute("title", "");
-		$param->addAttribute("current_value", "");
-		$option = $param->addChild("option", "");
-		$option->addAttribute("value", "");
-		
-		foreach ($productes as $key => $val)
+		if($search)
 		{
-			//add products
-			$products = $this->Set("products");
-			$products->addAttribute("category_id", $category_id);
-			$products->addAttribute("category_name", $c_name);
-			$product = $products->addChild("product");
-			$product->addChild("product_id", ToUTF($val->warecode));
-			$product->addChild("title", ToUTF($val->ware));
-			$description = Models\Description::first(array("warecode"=>$val->warecode));
-			if($description)
-				$description = $description->reviewtext;
-			//print StripTags($description)."<br/>\n";
-			$product->addChild("description", StripTags($description));
-			$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 'conditions' => array('warecode = ?', $val->warecode)));
-			$product->addChild("rating", $rewiews->c); #TODO где брать рейтинг?
-			$product->addChild("small_price", $val->inetprice);
-			$product->addChild("price", $val->price);
-			$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); #TODO где взять картинка для продукта
-			$image->addAttribute("width", "180");
-			$image->addAttribute("height", "180");
+			$parents->grid .= " and ware like \"%$search%\" or FullName like \"%$search%\" ";
+		}
+		
+		if($parents)
+		{
+			$productes = Models\Warez::getWarez($region_id, $parents);
+			//print_r($productes);
+			$c_name = ToUTF($parents->name);
+			
+			
+			//add params
+			$params = $this->Set("params");
+			$param = $params->addChild("param"); #TODO узнать в какой таблице брать список параметров
+			
+			$param->addAttribute("param_name", "");
+			$param->addAttribute("title", "");
+			$param->addAttribute("current_value", "");
+			$option = $param->addChild("option", "");
+			$option->addAttribute("value", "");
+			
+			foreach ($productes as $key => $val)
+			{
+				//add products
+				$products = $this->Set("products");
+				$products->addAttribute("category_id", $category_id);
+				$products->addAttribute("category_name", $c_name);
+				$product = $products->addChild("product");
+				$product->addChild("product_id", ToUTF($val->warecode));
+				$product->addChild("title", ToUTF($val->fullname));
+				$description = Models\Description::first(array("warecode"=>$val->warecode));
+				if($description)
+					$description = $description->reviewtext;
+				//print StripTags($description)."<br/>\n";
+				$product->addChild("description", StripTags($description));
+				$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 'conditions' => array('warecode = ?', $val->warecode)));
+				$product->addChild("rating", $rewiews->c); #TODO где брать рейтинг?
+				$product->addChild("small_price", $val->inetprice);
+				$product->addChild("price", $val->price);
+				$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); #TODO где взять картинка для продукта
+				$image->addAttribute("width", "180");
+				$image->addAttribute("height", "180");
+			}
 		}
 	}
 	public function actions($array)
