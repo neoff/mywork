@@ -14,6 +14,7 @@
 	require_once ROOT_PATH . '/lib/Utils.php';
 	require_once ROOT_PATH . '/lib/ActiveRecord.php';
 	require_once ROOT_PATH . '/lib/Routing.php';
+	require_once ROOT_PATH . '/lib/Template.php';
 	
 	require_once ROOT_PATH . '/config/config.php';
 	require_once ROOT_PATH . '/config/template.php';

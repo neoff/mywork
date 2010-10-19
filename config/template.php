@@ -18,19 +18,20 @@ class Template{
 	public function __construct()
 	{
 		$child = get_called_class();
+		
 		$dtd = preg_replace("/Controllers\\C/", "", $child);
 		$dtd = preg_replace("/Controller/", "", $dtd);
 		$dtd = strtolower($dtd);
 		
-		header('Content-type: text/xml; charset=utf-8');
-		$xmlstr = "<!DOCTYPE $dtd SYSTEM \"http://localhost/public/$dtd.dtd\">\n<mvideo_xml date=\"" 
-		. date("Y-m-d H:i:s") . "\"></mvideo_xml>";
+		$xmlstr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE mvideo_xml SYSTEM \"/public/$dtd.dtd\">\n<mvideo_xml date=\"" . date("Y-m-d H:i:s") . "\">\n</mvideo_xml>";
 		$this->xml = new \SimpleXMLElement($xmlstr);
 		
 	}
 	public function __destruct()
 	{
-		echo $this->xml->asXML();
+		header('Content-type: text/xml; charset=utf-8');
+		echo preg_replace("/></", ">\n<", $this->xml->asXML());
+		//echo $this->xml->asXML();
 	}
 	
 	public function SetType($doc)

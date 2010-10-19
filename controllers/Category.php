@@ -25,6 +25,11 @@ class SetId{
 	}
 }
 class ControllerCategory extends Template{
+	public $add="category";
+	public function name()
+	{
+		return $this->add;
+	}
 	
 	public function index( $array )
 	{
@@ -173,6 +178,7 @@ class ControllerCategory extends Template{
 	
 	private function products( $region_id, $category_id, $parents, $actions = "", $search="")
 	{
+		$this->add = "category2";
 		
 		if($actions > 0)
 		{
