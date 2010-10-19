@@ -68,10 +68,7 @@ class Warez extends ActiveRecord\Model
 			where w.ware like \"%$search%\" or w.FullName like \"%$search%\"
 			group by c.category_id ");
 	}
-	
-	
-	
-	
+
 }
 
 class Link extends ActiveRecord\Model{

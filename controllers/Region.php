@@ -11,30 +11,28 @@
 
 	namespace Controllers;
 	use Models;
+	use Template;
 	
-class ControllerRegion extends Template{
+class ControllerRegion extends Template\Template{
 	
 	public function index( $region_id = 0 )
 	{
 		$region_m = Models\Regions::all();
-		$regions = $this->Set("regions");
+		$this->regions = "";
 		
 		foreach ($region_m as $key => $val)
 		{
-			$region = $regions->addChild("region");
+			if($val->id != 8)
+			{
+			$region = $this->regions->addChild("region");
 			
-			$region->addChild("region_id", $val->region_id );
-			$region->addChild("region_name", ToUTF($val->region_name));
-			$coordinates = $region->addChild("coordinates");
-//			if($val->map_latlng)
-//			{
-//				$coord = explode(",", $val->map_latlng);
-//				if(count($coord)==2) list($longitude, $latitude) = array($coord[0], $coord[1]);
-//			}
-			$coordinates->addChild("longitude", "");
-			$coordinates->addChild("latitude", "");
-			
-			
+				$region->addChild("region_id", $val->id );
+				$region->addChild("region_name", ToUTF($val->region_name));
+				$coordinates = $region->addChild("coordinates");
+				$val->coordinates();
+				$coordinates->addChild("longitude", $val->longitude);
+				$coordinates->addChild("latitude", $val->latitude);
+			}
 			
 		}
 	}

@@ -17,7 +17,7 @@
 	require_once ROOT_PATH . '/lib/Template.php';
 	
 	require_once ROOT_PATH . '/config/config.php';
-	require_once ROOT_PATH . '/config/template.php';
+	//require_once ROOT_PATH . '/config/template.php';
 	require_once ROOT_PATH . '/config/routing.php'; # require after templates
 	
 	require_once ROOT_PATH . '/model/__init__.php';;

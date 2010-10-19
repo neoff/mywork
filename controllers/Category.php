@@ -12,11 +12,13 @@
 
 	namespace Controllers;
 	use Models;
+	use Template;
 	
 class SetId{
-	public $dirid;
-	public $classid;
-	public $grid;
+	public function __set($name, $val)
+	{
+		$this->$name = $val;
+	}
 	
 	public function __construct($dirid, $classid, $grid)
 	{
@@ -24,146 +26,51 @@ class SetId{
 		list($this->dirid, $this->classid, $this->grid) = array($dirid, $classid, $grid);
 	}
 }
-class ControllerCategory extends Template{
-	public $add="category";
-	public function name()
-	{
-		return $this->add;
-	}
+class ControllerCategory extends Template\Template{
+	
+	private $parent_name;
+	private $parent_id;
+	private $region_id;
+	private $category_id;
+	private $actions;
+	private $searches;
+	private $parents;
+	private $category;
+	private $options;
+	
 	
 	public function index( $array )
 	{
 		
-		list($region_id, $category_id, $action, $search)=$array;
-		//print_r($array);
-		$options = array('parent_id' => $category_id);
-		$parents = Models\Category::find('first', array('conditions' => "category_id = $category_id"));
-		//print_r($parents->attributes());
+		list($this->region_id, $this->category_id, $this->actions, $this->searches)=$array;
+		$this->options = array('parent_id' => $this->category_id);
+		$parents_m = Models\Category::find('first', array('conditions' => "category_id = $this->category_id"));
 		
-		if(!$category_id || $category_id<0 )
+		
+		$this->category = Models\Category::find('all', $this->options);
+		//if($this->searches)
+		//	$this->category = $this->search();
+		//if($this->actions > 0)
+		//	$this->category = $this->action();
+		if($this->category)
+			$this->parent_node();
+		
+		if($this->category)
 		{
-			$options = array('conditions' => "parent_id is null");
-			$c_parrent_name = $c_name = "Список категорий";
-			$c_parrent_id = $c_id = 0;
-			$category_id = 0;
-		}
-		else
-		{
-			if(!$parents->parent_id)
-			{
-				$c_parrent_id = 0;
-				$c_parrent_name = "Список категорий";
-			}else
-			{
-				$c_parrent_id = $parents->parent_id;
-				$p = Models\Category::first(array('category_id' => $c_parrent_id));
-				$c_parrent_name = ToUTF($p->name);
-			}
-			$options = array('parent_id' => $category_id);
-			$c_name = ToUTF($parents->name);
-			$c_id = $parents->category_id;
 			
+			$this->categories="";
+			$this->categories->addAttribute("category_id", $this->category_id);
+			$this->categories->addAttribute("category_name", "");
 			
-			
-			
-		}
-		
-		
-		$categorys = Models\Category::find('all', $options);
-		
-		if($search)
-		{
-			$this->Set("search", ToUTF($search));
-			$categorys = Models\Warez::findByNameCategory($region_id, $search);
-			if(count($categorys)==1 || $category_id>0)
-			{
-				//$this->products($region_id, $category_id, $parents, $array);
-				$categorys = array();
-			}
-			//print_r($categorys);
-		}
-		
-		if($action>0)
-		{
-			switch ((int)$action)
-			{
-				case 1:
-					$action = 6;
-					break;
-				case 3:
-					$action = 7;
-					break;
-				case 4:
-					$action = 24;
-					break;
-				case 5:
-					$action = 25;
-					break;
-				case 6:
-					$action = 29;
-					break;
-				case 7:
-					$action = 28;
-					break;
-			}
-			//print $action;
-			$act = Models\Actions::first(array("segment_id"=>$action, "hidden"=>0));
-			//print_r($act);
-			$actions = $this->Set("action");
-			$images = $actions->addChild("image", "http://www.mvideo.ru/imgs/test.jpg");
-			$images->addAttribute("width", "150");
-			$images->addAttribute("height", "150");
-			$actions->addChild("description", ToUTF($act->segment_info));
-			$actions->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $act->segment_name)
-																."/?ref=left_bat_". $act->segment_name);
-			
-			
-			$segment = Models\Segments::find('all', 
-							array('select' => 'warecode', 
-								'conditions' =>"region_id=$region_id and segment_name='$act->segment_name'"));
-			
-			$action=array();
-			foreach ($segment as $val)
-			{
-				$action[] = $val->warecode;
-			}
-			//print $region_id. $array;
-			
-			if(!$category_id)
-			{
-				$condition = "";
-				$c_parrent_id = 0;
-				$c_parrent_name = $c_name = "Список категорий";
-				$categorys = Models\Warez::getWarezAction($region_id, $action, $condition);
-			}
-			else
-			{
-				//$this->products($region_id, $category_id, $parents, $action);
-				$categorys = array();
-			}
-			
-		}
-		
-		//print_r($categorys);
-		$parrent = $this->Set("parent_category");
-		$parrent->addChild("category_id", $c_parrent_id);
-		$parrent->addChild("category_name", $c_parrent_name);
-		
-		if($categorys)
-		{
-			$categories = $this->Set("categories");
-			$categories->addAttribute("category_id", $category_id);
-			$categories->addAttribute("category_name", $c_name);
-			
-			foreach ($categorys as $key => $val)
+			foreach ($this->category as $key => $val)
 			{
 				$amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
 				if(!$amount) 
 				{
 					$ids = new SetId($val->dirid, $val->classid, $val->grid);
-					$amount = count(Models\Warez::getWarez($region_id, $ids));
+					$amount = count(Models\Warez::getWarez($this->region_id, $ids));
 				}
-				$category = $categories->addChild("category");
+				$category = $this->categories->addChild("category");
 				$category->addChild("category_id", $val->category_id);
 				$category->addChild("category_name", ToUTF($val->name));
 				$category->addChild("amount", $amount); 
@@ -172,20 +79,20 @@ class ControllerCategory extends Template{
 				$icon->addAttribute("height", "50");
 			}
 		}
-		else
-			$this->products($region_id, $category_id, $parents, $action, $search);
+		//else
+			//$this->products($region_id, $category_id, $parents, $action, $search);
 	}
 	
+
 	private function products( $region_id, $category_id, $parents, $actions = "", $search="")
 	{
-		$this->add = "category2";
 		
-		if($actions > 0)
+		if($this->actions > 0)
 		{
 			$parents->grid .= " and warecode in (".implode(",", $actions).")";
 		}
 		
-		if($search)
+		if($this->search)
 		{
 			$parents->grid .= " and ware like \"%$search%\" or FullName like \"%$search%\" ";
 		}
@@ -263,6 +170,129 @@ class ControllerCategory extends Template{
 					$option_m->addAttribute("value", $val);
 				}
 			}
+		}
+	}
+	
+	/**
+	 * устанавливаем ноду parent_category
+	 * проверяем название и предыдущую категорию 
+	 * 
+	 * @param int $category_id
+	 * @param object $parents_m
+	 * @return array $options
+	 */
+	private function parent_node()
+	{
+		/**
+		 * ставим заголовки блока parents
+		 * если parent = 0 то ставим список всех категорий
+		 */
+		if(!$this->category_id || $this->category_id<0 )
+		{
+			$this->options = array('conditions' => "parent_id is null");
+			$cat_parrent_name = $this->parent_name = "Список категорий";
+			$cat_parrent_id = $this->parent_id = 0;
+			$this->category_id = 0;
+		}
+		else
+		{
+			/**
+			 * проверяем parent текущей категории
+			 * и выставляем id и name у родительского нода
+			 */
+			if(!$parents_m->parent_id)
+			{
+				$cat_parrent_id = 0;
+				$cat_parrent_name = "Список категорий";
+			}else
+			{
+				$cat_parrent_id = $this->parents->parent_id;
+				$p = Models\Category::first(array('category_id' => $cat_parrent_id));
+				$cat_parrent_name = ToUTF($p->name);
+			}
+			$this->options = array('parent_id' => $this->category_id);
+			$this->parent_name = ToUTF($parents_m->name);
+			$this->parent_id = $parents->category_id;
+		}
+		$this->parent_category="";
+		$this->parent_category->addChild("category_id", $cat_parrent_id);
+		$this->parent_category->addChild("category_name", $cat_parrent_name);
+		
+		return $this->options;
+	}
+	
+	private function search()
+	{
+		$this->search=ToUTF($this->searches);
+		$category = Models\Warez::findByNameCategory($this->region_id, $this->searches);
+		if(count($category)==1 || $category>0)
+		{
+			//$this->products($region_id, $category_id, $parents, $array);
+			$this->category = array();
+		}
+		
+		return $category;
+	}
+	
+	private function action()
+	{
+		switch ((int)$this->actions)
+		{
+			case 1:
+				$action = 6;
+				break;
+			case 3:
+				$action = 7;
+				break;
+			case 4:
+				$action = 24;
+				break;
+			case 5:
+				$action = 25;
+				break;
+			case 6:
+				$action = 29;
+				break;
+			case 7:
+				$action = 28;
+				break;
+		}
+		//print $action;
+		$act = Models\Actions::first(array("segment_id"=>$action, "hidden"=>0));
+		//print_r($act);
+		if($act)
+		{
+			$this->action = "";
+			$images = $this->action->addChild("image", "http://www.mvideo.ru/imgs/test.jpg");
+			$images->addAttribute("width", "150");
+			$images->addAttribute("height", "150");
+			$this->action->addChild("description", ToUTF($act->segment_info));
+			$this->action->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $act->segment_name)
+																."/?ref=left_bat_". $act->segment_name);
+			
+			$segment = Models\Segments::find('all', 
+							array('select' => 'warecode', 
+								'conditions' =>"region_id=$this->region_id and segment_name='$act->segment_name'"));
+			
+			$action=array();
+			foreach ($segment as $val)
+			{
+				$action[] = $val->warecode;
+			}
+			//print $region_id. $array;
+			
+			if(!$this->category_id)
+			{
+				$condition = "";
+				//$this->parrent_id = 0;
+				//$this->parrent_name = $c_name = "Список категорий";
+				$categorys = Models\Warez::getWarezAction($this->region_id, $action, $condition);
+			}
+			else
+			{
+				$categorys = array();
+			}
+			return $categorys;
 		}
 	}
 	public function actions($array)

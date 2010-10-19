@@ -47,13 +47,14 @@
 		#category
 		#$cfg->Map("^$url_prefix\/\?region_id=[1-9]\d*&category_id=\d+?$", $controler="Category", $action="index", array($region_id, $category_id));
 		$cfg->Map("^$url_prefix\/category\/?$", $controler="Category", 
-		$action="index", array($region_id, $category_id, $act, $search));
-		#product
-		#$cfg->Map("^$url_prefix\/\?region_id=[1-9]\d*&product_id=\d+$", $controler="Product", $action="index", array($region_id, $product_id));
-		$cfg->Map("^$url_prefix\/product\/?$", $controler="Product", 
-					$action="index", array($region_id, $product_id, $ask, $reviews));
-		#action
-		#$cfg->Map("^$url_prefix\/\?region_id=[1-9]\d*&product_id=\d+&action=\d+$", $controler="Product", $action="index", array($region_id, $product_id, $action));
-		$cfg->Map("^$url_prefix\/action\/?$", $controler="Category", 
 					$action="index", array($region_id, $category_id, $act, $search));
+		
+//		#product
+//		#$cfg->Map("^$url_prefix\/\?region_id=[1-9]\d*&product_id=\d+$", $controler="Product", $action="index", array($region_id, $product_id));
+//		$cfg->Map("^$url_prefix\/product\/?$", $controler="Product", 
+//					$action="index", array($region_id, $product_id, $ask, $reviews));
+//		#action
+//		#$cfg->Map("^$url_prefix\/\?region_id=[1-9]\d*&product_id=\d+&action=\d+$", $controler="Product", $action="index", array($region_id, $product_id, $action));
+//		$cfg->Map("^$url_prefix\/action\/?$", $controler="Category", 
+//					$action="index", array($region_id, $category_id, $act, $search));
 	});
