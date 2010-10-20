@@ -19,7 +19,8 @@ class Warez extends ActiveRecord\Model
 	static $table_name = 'warez_1';
 	static $connection = CONNECTION;
 	static $alias_attribute = array(
-		'name' => 'ware'
+		'name' => 'ware', 
+		'small_price'=>'inetprice'
 		);
 	public $description;
 	public $rating = 0.0;

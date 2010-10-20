@@ -10,3 +10,4 @@
 ^.*\.buildpath$
 ^.*\.lock$
 ^.*\.cache$
+^.*config\.ini$

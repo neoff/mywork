@@ -2,8 +2,35 @@
 
 	
 	date_default_timezone_set( 'Europe/Moscow' );
-	define( "DEBUG", True );
-	define( 'CONNECTION', 'develop' );
+	define("FILE", "config.ini");
+	class config{
+		public function __set($name, $val)
+		{
+			$this->$name = $val;
+		}
+		public function __get($name)
+		{
+			$a = get_object_vars  ( $this  );
+			if(!array_key_exists  ( $name , $a  ))
+				$this->$name = "";
+			return $this->$name;
+			
+			
+		}
+		public function __construct($file)
+		{
+			if(file_exists($file))
+			{
+				$conn = parse_ini_file(FILE);
+				foreach ($conn as $key => $val) {
+					$this->$key = $val;
+				}
+			}
+		}
+	}
+	$conn = new config(FILE);
+	define( "DEBUG", ($conn->debug)?$conn->debug:True );
+	define( 'CONNECTION', ($conn->base)?$conn->base:'develop' );
 	define( "ROOT_PATH", dirname(__FILE__) );
 
 	if(DEBUG)
