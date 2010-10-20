@@ -19,16 +19,18 @@ class Regions extends ActiveRecord\Model
 	static $connection = CONNECTION;
 	
 	#поля в таблице
-	static $id = "region_id";
-	public $name = "region_name";
-	public $coord = false;
+	static $alias_attribute = array(
+		'id' => 'region_id',
+		'name' => 'region_name',
+		'virtual' => 'is_virtual'
+		);
 	public $longitude = "";#explode(",", $val->map_latlng);
 	public $latitude = "";
 	
 	public function coordinates(){
-		if($this->coord)
+		if($this->center)
 		{
-			$coord = explode(",", $val->map_latlng);
+			$coord = explode(",", $this->center);
 			if(count($coord)==2) list($this->longitude, $this->latitude) = array($coord[0], $coord[1]);
 		}
 	}

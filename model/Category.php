@@ -18,6 +18,23 @@ class Category extends ActiveRecord\Model
 	static $primary_key = 'category_id';
 	static $connection = CONNECTION;
 	
+	public static function getWarezAction($region_id, $array, $condition = "")
+	{
+		if($array)
+		{
+			$join = "left join warez_$region_id w on (c.DirID=w.DirID and c.ClassID=w.ClassID and c.GrID=w.GrID )";
+			$options = array('select'=> 'c.*', 
+							'from' => 'categories as c', 
+							'joins' => $join, 
+							'group' => 'category_id',
+							'conditions' => "w.warecode in (".implode(",", $array).") $condition");
+			return self::find('all', $options);
+			
+		}
+		else
+			return $array;
+		
+	}
 }
 
 class Marks extends ActiveRecord\Model

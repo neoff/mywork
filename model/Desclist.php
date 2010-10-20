@@ -16,9 +16,21 @@ class Description extends ActiveRecord\Model
 {
 	static $table_name = 'warereviews';
 	static $connection = CONNECTION;
+	static $alias_attribute = array(
+		'id' => 'warecode',
+		'text' => 'reviewtext'
+		);
+	public $description;
+	
+	
+	static function desctriptions()
+	{
+		if($this->reviewtext)
+			$this->description = $this->reviewtext;
+	}
 }
 
-class Oprionlist extends ActiveRecord\Model
+class Optionlist extends ActiveRecord\Model
 {
 	static $table_name = 'descriptionlist';
 	static $connection = CONNECTION;

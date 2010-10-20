@@ -33,6 +33,7 @@ class ControllerCategory extends Template\Template{
 	private $region_id;
 	private $category_id;
 	private $actions;
+	private $action_val = array();
 	private $searches;
 	private $parents;
 	private $category;
@@ -44,23 +45,24 @@ class ControllerCategory extends Template\Template{
 		
 		list($this->region_id, $this->category_id, $this->actions, $this->searches)=$array;
 		$this->options = array('parent_id' => $this->category_id);
-		$parents_m = Models\Category::find('first', array('conditions' => "category_id = $this->category_id"));
+		$this->parents = Models\Category::find('first', array('conditions' => "category_id = $this->category_id"));
 		
 		
-		$this->category = Models\Category::find('all', $this->options);
-		//if($this->searches)
-		//	$this->category = $this->search();
-		//if($this->actions > 0)
-		//	$this->category = $this->action();
-		if($this->category)
+		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
 			$this->parent_node();
+		$this->category = Models\Category::find('all', $this->options);
+		if($this->searches)
+			$this->category = $this->search();
+		if($this->actions > 0)
+			$this->category = $this->action();
+		
 		
 		if($this->category)
 		{
 			
 			$this->categories="";
 			$this->categories->addAttribute("category_id", $this->category_id);
-			$this->categories->addAttribute("category_name", "");
+			$this->categories->addAttribute("category_name", $this->parent_name);
 			
 			foreach ($this->category as $key => $val)
 			{
@@ -79,73 +81,65 @@ class ControllerCategory extends Template\Template{
 				$icon->addAttribute("height", "50");
 			}
 		}
-		//else
-			//$this->products($region_id, $category_id, $parents, $action, $search);
+		else
+			$this->productes();
 	}
 	
 
-	private function products( $region_id, $category_id, $parents, $actions = "", $search="")
+	public function productes()
 	{
-		
 		if($this->actions > 0)
-		{
-			$parents->grid .= " and warecode in (".implode(",", $actions).")";
-		}
+			$this->parents->grid .= " and warecode in (".implode(",", $this->action_val).")";
 		
-		if($this->search)
+		if($this->searches)
+			$this->parents->grid .= " and ware like \"%$this->searches%\" or FullName like \"%$this->searches%\" ";
+			
+		if($this->parents)
 		{
-			$parents->grid .= " and ware like \"%$search%\" or FullName like \"%$search%\" ";
-		}
-		
-		if($parents)
-		{
-			$productes = Models\Warez::getWarez($region_id, $parents);
+			$productes_m = Models\Warez::getWarez($this->region_id, $this->parents);
 			//print_r($productes);
-			$c_name = ToUTF($parents->name);
+			$c_name = ToUTF($this->parents->name);
 			
 			
 			//add params
-			$params = $this->Set("params");
+			$params = $this->params="";
 			$grid=array();
 			$markid = array();
 			//print_r($productes);
 			//$markid = array();
 			
-			$param_m = $params->addChild("param"); #TODO узнать в какой таблице брать список параметров
+			$param_m = $this->params->addChild("param"); 
 			$param_m->addAttribute("param_name", "mark");
 			$param_m->addAttribute("title", "Производители");
 			$param_m->addAttribute("current_value", "0");
-			$option_p = $param_m->addChild("option", "Все производители");
-			$option_p->addAttribute("value", "0");
+			$option_m = $param_m->addChild("option", "Все производители");
+			$option_m->addAttribute("value", "0");
 			//2
-			$param_g = $params->addChild("param"); 
+			$param_g = $this->params->addChild("param"); 
 			$param_g->addAttribute("param_name", "grid");
 			$param_g->addAttribute("title", "Группы");
 			$param_g->addAttribute("current_value", "0");
 			$option_g = $param_g->addChild("option", "Все группы");
 			$option_g->addAttribute("value", "0");
 			
-			
-			foreach ($productes as $key => $val)
+			$this->products="";
+			$this->products->addAttribute("category_id", $this->category_id);
+			$this->products->addAttribute("category_name", $c_name);
+			foreach ($productes_m as $key => $val)
 			{
 				if (!in_array($val->grid, $grid))
 					$grid[]=$val->grid;
 				if (!in_array($val->mark, $markid))
 					$markid[]=$val->mark;
 				//add products
-				$products = $this->Set("products");
-				$products->addAttribute("category_id", $category_id);
-				$products->addAttribute("category_name", $c_name);
-				$product = $products->addChild("product");
+
+				$product = $this->products->addChild("product");
 				$product->addChild("product_id", ToUTF($val->warecode));
 				$product->addChild("title", ToUTF($val->fullname));
-				$description = Models\Description::first(array("warecode"=>$val->warecode));
-				if($description)
-					$description = $description->reviewtext;
-				//print StripTags($description)."<br/>\n";
-				$product->addChild("description", StripTags($description));
-				$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 'conditions' => array('warecode = ?', $val->warecode)));
-				$product->addChild("rating", $rewiews->c); #TODO где брать рейтинг?
+				$val->getDesctiptions();
+				$product->addChild("description", StripTags($val->description));
+				//$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 'conditions' => array('warecode = ?', $val->warecode)));
+				$product->addChild("rating", $val->rating); #TODO где брать рейтинг?
 				$product->addChild("small_price", $val->inetprice);
 				$product->addChild("price", $val->price);
 				$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); #TODO где взять картинка для продукта
@@ -200,7 +194,7 @@ class ControllerCategory extends Template\Template{
 			 * проверяем parent текущей категории
 			 * и выставляем id и name у родительского нода
 			 */
-			if(!$parents_m->parent_id)
+			if(!$this->parents->parent_id)
 			{
 				$cat_parrent_id = 0;
 				$cat_parrent_name = "Список категорий";
@@ -211,8 +205,8 @@ class ControllerCategory extends Template\Template{
 				$cat_parrent_name = ToUTF($p->name);
 			}
 			$this->options = array('parent_id' => $this->category_id);
-			$this->parent_name = ToUTF($parents_m->name);
-			$this->parent_id = $parents->category_id;
+			$this->parent_name = ToUTF($this->parents->name);
+			$this->parent_id = $this->category_id;
 		}
 		$this->parent_category="";
 		$this->parent_category->addChild("category_id", $cat_parrent_id);
@@ -224,13 +218,22 @@ class ControllerCategory extends Template\Template{
 	private function search()
 	{
 		$this->search=ToUTF($this->searches);
-		$category = Models\Warez::findByNameCategory($this->region_id, $this->searches);
-		if(count($category)==1 || $category>0)
+		$category = Models\Warez::findByNameCategory($this->region_id, $this->searches, $this->category_id);
+		//print_r($category);
+		if(!$category)
 		{
+			
 			//$this->products($region_id, $category_id, $parents, $array);
-			$this->category = array();
+			return array();
 		}
-		
+		else
+		{
+			$this->parent_node();
+			if(count($category)==1)
+			{
+				return array();
+			}
+		}
 		return $category;
 	}
 	
@@ -274,10 +277,10 @@ class ControllerCategory extends Template\Template{
 							array('select' => 'warecode', 
 								'conditions' =>"region_id=$this->region_id and segment_name='$act->segment_name'"));
 			
-			$action=array();
+			
 			foreach ($segment as $val)
 			{
-				$action[] = $val->warecode;
+				$this->action_val[] = $val->warecode;
 			}
 			//print $region_id. $array;
 			
@@ -286,12 +289,14 @@ class ControllerCategory extends Template\Template{
 				$condition = "";
 				//$this->parrent_id = 0;
 				//$this->parrent_name = $c_name = "Список категорий";
-				$categorys = Models\Warez::getWarezAction($this->region_id, $action, $condition);
+				$categorys = Models\Category::getWarezAction($this->region_id, $this->action_val, $condition);
+				//print_r($categorys);
 			}
 			else
 			{
 				$categorys = array();
 			}
+			$this->parent_node();
 			return $categorys;
 		}
 	}

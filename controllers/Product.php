@@ -11,13 +11,11 @@
 
 	namespace Controllers;
 	use Models;
+	use Template;
 	
 
-class ControllerProduct extends Template{
-
-	private static function header(){
-		
-	}
+class ControllerProduct extends Template\Template{
+	
 	public function index( $array )
 	{
 		//print_r($array);
@@ -31,26 +29,28 @@ class ControllerProduct extends Template{
 		//$a=Models\Desclist::all(array('warecode'=>$product_id));
 		//print_r($a);
 		
-		$product_m = $this->Set("product");
-		$product_m->addChild("product_id", $product_id);
-		$product_m->addChild("region_id", $region_id);
-		$product_m->addChild("title", ToUTF($productes->ware));
-		$product_m->addChild("small_price", $productes->inetprice);
-		$product_m->addChild("price", $productes->price);
-		$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 
-								'conditions' => array('warecode = ?', $product_id)));
-		
-		$product_m->addChild("rating", $rewiews->s);
-		$product_m->addChild("reviews_num", $rewiews->c);
-		$description = Models\Description::first(array("warecode"=>$product_id));
-		if($description)
-			$description = $description->reviewtext;
-		$product_m->addChild("description", StripTags($description));
+		$this->product="";
+		$this->product->addChild("product_id", $product_id);
+		$this->product->addChild("region_id", $region_id);
+		$this->product->addChild("title", ToUTF($productes->name));
+		$this->product->addChild("small_price", $productes->small_price);
+		$this->product->addChild("price", $productes->price);
+//		$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 
+//								'conditions' => array('warecode = ?', $product_id)));
+//		
+		$productes->getRatingRev();
+		$this->product->addChild("rating", $productes->rating);
+		$this->product->addChild("reviews_num", $productes->reviews);
+//		$description = Models\Description::first(array("warecode"=>$product_id));
+//		if($description)
+//			$description = $description->reviewtext;
+		$productes->getDesctiptions();
+		$this->product->addChild("description", StripTags($productes->description));
 		
 		if(!$ask && !$reviews)
 		{
-			$options = $product_m->addChild("options");
-			$options_m=Models\Oprionlist::all(array('warecode'=>$product_id));
+			$options = $this->product->addChild("options");
+			$options_m=Models\Optionlist::all(array('warecode'=>$product_id));
 			foreach ($options_m as $key => $val)
 			{
 				$option = $options->addChild("option");
@@ -60,7 +60,7 @@ class ControllerProduct extends Template{
 		}
 		if($ask)
 		{
-			$ask = $product_m->addChild("ask");
+			$ask = $this->product->addChild("ask");
 			//$ask_m=array();
 			$ask_m=Models\Link::getAccess($region_id, $product_id);
 			//print_r($ask_m);
@@ -69,14 +69,16 @@ class ControllerProduct extends Template{
 				$prod = $ask->addChild("product");
 				$prod->addChild("product_id", $val->warecode);
 				$prod->addChild("title", ToUTF($val->ware));
-				$description = Models\Description::first(array("warecode"=>$product_id));
-				if($description)
-					$description = $description->reviewtext;
-				$prod->addChild("description", StripTags($description));
-				$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 'conditions' => array('warecode = ?', $val->warecode)));
+//				$description = Models\Description::first(array("warecode"=>$product_id));
+//				if($description)
+//					$description = $description->reviewtext;
+				$val->getDesctiptions();
+				$prod->addChild("description", StripTags($val->description));
+//				$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 'conditions' => array('warecode = ?', $val->warecode)));
 				//print_r($rewiews);
-				$prod->addChild("rating", $rewiews->s);
-				$prod->addChild("reviews_num", $rewiews->c);
+				$val->getRatingRev();
+				$prod->addChild("rating", $val->rating);
+				$prod->addChild("reviews_num", $val->reviews);
 				$prod->addChild("small_price", $val->inetprice);
 				$prod->addChild("price", $val->price);
 				$image = $prod->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg");
@@ -86,7 +88,7 @@ class ControllerProduct extends Template{
 		}
 		if($reviews)
 		{
-			$reviews = $product_m->addChild("reviews");
+			$reviews = $this->product->addChild("reviews");
 			$reviews_m=Models\Reviews::all(array('warecode'=>$product_id));
 			foreach ($reviews_m as $key => $val)
 			{
