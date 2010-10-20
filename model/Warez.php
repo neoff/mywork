@@ -18,13 +18,13 @@ class Warez extends ActiveRecord\Model
 	static $finder=array();
 	static $table_name = 'warez_1';
 	static $connection = CONNECTION;
+	public $description;
+	public $rating = 0.0;
+	public $reviews = 0;
 	static $alias_attribute = array(
 		'name' => 'ware', 
 		'small_price'=>'inetprice'
 		);
-	public $description;
-	public $rating = 0.0;
-	public $reviews = 0;
 	
 	
 	public static function sql($region_id, $where="", $array=array())
@@ -88,19 +88,7 @@ class Warez extends ActiveRecord\Model
 		
 	}
 	
-	public static function findByNameCategory($region_id, $search, $category = false)
-	{
-		if((int)$category > 0)
-		{
-			$category = " and c.category_id = $category";
-		}
-		else
-			$category = "";
-		return self::find_by_sql('select c.* from categories c left join warez_'.$region_id ." w 
-			on (c.DirID=w.DirID and c.ClassID=w.ClassID and c.GrID=w.GrID )
-			where (w.ware like \"%$search%\" or w.FullName like \"%$search%\") $category
-			group by c.category_id ");
-	}
+	
 
 }
 

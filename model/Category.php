@@ -35,6 +35,25 @@ class Category extends ActiveRecord\Model
 			return $array;
 		
 	}
+	
+	public static function findByNameCategory($region_id, $search, $category = false)
+	{
+		
+		if((int)$category > 0)
+		{
+			$category = " and c.category_id = $category";
+		}
+		else
+			$category = "";
+			
+		$join = "left join warez_$region_id w on (c.DirID=w.DirID and c.ClassID=w.ClassID and c.GrID=w.GrID )";
+		$options = array('select'=> 'c.*', 
+						'from' => 'categories as c', 
+						'joins' => $join, 
+						'group' => 'c.category_id',
+						'conditions' => "(w.ware like \"%$search%\" or w.FullName like \"%$search%\") $category");
+		return self::find('all', $options);
+	}
 }
 
 class Marks extends ActiveRecord\Model

@@ -56,7 +56,7 @@ class ControllerCategory extends Template\Template{
 		if($this->actions > 0)
 			$this->category = $this->action();
 		
-		
+		//print_r($this->category);
 		if($this->category)
 		{
 			
@@ -92,8 +92,11 @@ class ControllerCategory extends Template\Template{
 			$this->parents->grid .= " and warecode in (".implode(",", $this->action_val).")";
 		
 		if($this->searches)
+		{
+			$this->parent_node();
 			$this->parents->grid .= " and ware like \"%$this->searches%\" or FullName like \"%$this->searches%\" ";
-			
+		}
+		//var_dump($this->parents);
 		if($this->parents)
 		{
 			$productes_m = Models\Warez::getWarez($this->region_id, $this->parents);
@@ -218,7 +221,11 @@ class ControllerCategory extends Template\Template{
 	private function search()
 	{
 		$this->search=ToUTF($this->searches);
-		$category = Models\Warez::findByNameCategory($this->region_id, $this->searches, $this->category_id);
+		$catid = "";
+		if($this->parents)
+			if($this->parents->grid)
+				$catid = $this->category_id;
+		$category = Models\Category::findByNameCategory($this->region_id, $this->searches, $catid);
 		//print_r($category);
 		if(!$category)
 		{
@@ -228,7 +235,6 @@ class ControllerCategory extends Template\Template{
 		}
 		else
 		{
-			$this->parent_node();
 			if(count($category)==1)
 			{
 				return array();
