@@ -32,7 +32,18 @@ class ControllerShops extends Template\Template{
 			$shop = $this->shops->addChild("shop");
 			$shop->addChild("shop_id", $val->shop_id);
 			$shop->addChild("shop_name", ToUTF($val->name));
-			$shop->addChild("metro", ToUTF($val->metro));
+			$metro = $shop->addChild("metro");
+			if($val->metro)
+			{
+				$c = explode(",", $val->metro);
+				if(count($c)>1) 
+				{
+					foreach ($c as $v) {
+						$metro->addChild("station", ToUTF($v));
+					}
+				}
+				else $metro->addChild("station", ToUTF($val->metro));
+			}
 			$shop->addChild("address", ToUTF($val->address));
 			$shop->addChild("day_hours", ToUTF($val->day_hours));
 			$shop->addChild("holiday_hours", ToUTF($val->holyday_hours));
