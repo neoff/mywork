@@ -14,7 +14,8 @@
 <!ATTLIST mvideo_xml
 	date CDATA #REQUIRED
 >
-<!ELEMENT metro (#PCDATA)>
+<!ELEMENT metro ((station+))>
+<!ELEMENT station (#PCDATA)>
 <!ELEMENT longitude (#PCDATA)>
 <!ELEMENT latitude (#PCDATA)>
 <!ELEMENT images ((image))>

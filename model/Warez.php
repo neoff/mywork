@@ -34,13 +34,13 @@ class Warez extends ActiveRecord\Model
 
 	public function SetParam($region_id, $array)
 	{
-		$this->where = " where ";
+		$where = " where ";
 		foreach($array as $key => $value) {
 			list($mod, $key) = explode("_", $key);
-			$this->where .=" $key=? ".$mod;
+			$where .=" $key=? ".$mod;
 			$this->finder[]=$value;
 		}
-		return array($this->where,$this->finder);
+		return array($where,$this->finder);
 	}
 	
 	public static function getWarez($region_id, $parents)
@@ -103,7 +103,7 @@ class Link extends ActiveRecord\Model{
 	public static function getAccess($region_id, $code){
 		//select * from linkw inner join warez_1 on (linkw.warecodel = warez_1.warecode) where warecodem = 11032149;
 		$join = "inner join warez_$region_id w on (warecodel = w.warecode) where warecodem = $code";
-		return self::all(array('select' => '*','joins'=> $join));
+		return self::all(array('select' => '*','joins'=> $join, 'order' => 'w.grid asc'));
 		
 		
 	}

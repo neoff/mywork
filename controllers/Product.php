@@ -27,7 +27,13 @@ class ControllerProduct extends Template\Template{
 		$productes = $productes[0];
 		
 		//$a=Models\Desclist::all(array('warecode'=>$product_id));
-		//print_r($a);
+		//print_r($productes);
+		$options = array("dirid"=>$productes->dirid, "classid"=>$productes->classid, "grid"=>$productes->grid);
+		$category = Models\Category::find('fist', $options);
+		//print_r($category);
+		$this->categories="";
+		$this->categories->addChild("category_id", $category->category_id);
+		$this->categories->addChild("category_name", ToUTF($category->name));
 		
 		$this->product="";
 		$this->product->addChild("product_id", $product_id);
@@ -64,9 +70,18 @@ class ControllerProduct extends Template\Template{
 			//$ask_m=array();
 			$ask_m=Models\Link::getAccess($region_id, $product_id);
 			//print_r($ask_m);
+			$group = "";
 			foreach ($ask_m as $key => $val)
 			{
-				$prod = $ask->addChild("product");
+				if($group != $val->grid)
+				{
+					$group = $val->grid;
+					$groups_m=Models\Groups::find('fist', array("grid"=>$val->grid));
+					$gr = $ask->addChild("group");
+					$gr->addAttribute("id", $val->grid);
+					$gr->addAttribute("title", ToUTF($groups_m->grname));
+				}
+				$prod = $gr->addChild("product");
 				$prod->addChild("product_id", $val->warecode);
 				$prod->addChild("title", ToUTF($val->ware));
 //				$description = Models\Description::first(array("warecode"=>$product_id));
