@@ -43,16 +43,15 @@ class Warez extends ActiveRecord\Model
 		return array($where,$this->finder);
 	}
 	
-	public static function getWarez($region_id, $parents, $page = "0")
+	public static function getWarez($region_id, $parents, $page = False)
 	{
-		if($page===False)
-			return count(self::find_by_sql('select * from `warez_' .$region_id . '` 
-				where DirID = '.$parents->dirid ." and ClassID = " 
-				. $parents->classid ." and GrID = " .$parents->grid));
-				
+		$limit="";
+		if($page!==False)
+			$limit = " limit 20 offset $page";
+		
 		return self::find_by_sql('select * from `warez_' .$region_id . '` 
 				where DirID = '.$parents->dirid ." and ClassID = " 
-				. $parents->classid ." and GrID = " .$parents->grid. " limit 20 offset $page");
+				. $parents->classid ." and GrID = " .$parents->grid. $limit);
 	}
 	
 	public function getDesctiptions()

@@ -20,7 +20,7 @@
 		$act = (!array_key_exists('action', $_GET))?-1:$_GET['action'];
 		$category_id = (!array_key_exists('category_id', $_GET))?-1:$_GET['category_id'];
 		#IN CATEGORIES
-		$page = (!array_key_exists('page', $_GET))?1:$_GET['page'];
+		$page = (!array_key_exists('page', $_GET))?False:$_GET['page'];
 		$ask = (!array_key_exists('aks', $_GET))?false:$_GET['aks'];
 		$reviews = (!array_key_exists('reviews', $_GET))?false:$_GET['reviews'];
 		$search = (!array_key_exists('search', $_GET))?false:$_GET['search'];

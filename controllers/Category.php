@@ -110,9 +110,11 @@ class ControllerCategory extends Template\Template{
 		//var_dump($this->parents);
 		if($this->parents)
 		{
-			$page = ($this->page -1)*20;
-			$productes_count = Models\Warez::getWarez($this->region_id, $this->parents, False);
-			$productes_m = Models\Warez::getWarez($this->region_id, $this->parents, "$page");
+			$page = $this->page;
+			if($this->page)
+				$page = ($this->page -1)*20;
+			$productes_count = count(Models\Warez::getWarez($this->region_id, $this->parents, False));
+			$productes_m = Models\Warez::getWarez($this->region_id, $this->parents, $page);
 			//print_r($productes);
 			$c_name = ToUTF($this->parents->name);
 			
@@ -141,10 +143,13 @@ class ControllerCategory extends Template\Template{
 			$this->products="";
 			$this->products->addAttribute("category_id", $this->category_id);
 			$this->products->addAttribute("category_name", $c_name);
-			$this->pages="";
-			$this->pages->addChild("amount", $productes_count);
-			$this->pages->addChild("onpage", "20");
-			$this->pages->addChild("page", $this->page);
+			if($this->page)
+			{
+				$this->pages="";
+				$this->pages->addChild("amount", $productes_count);
+				$this->pages->addChild("onpage", "20");
+				$this->pages->addChild("page", $this->page);
+			}
 			foreach ($productes_m as $key => $val)
 			{
 				if (!in_array($val->grid, $grid))
