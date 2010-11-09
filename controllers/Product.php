@@ -19,7 +19,7 @@ class ControllerProduct extends Template\Template{
 	public function index( $array )
 	{
 		//print_r($array);
-		list($region_id, $product_id, $ask, $reviews)=$array;
+		list($region_id, $product_id, $ask, $reviews, $page)=$array;
 		
 		$options = array("_warecode"=>$product_id);
 		list($where, $array) = Models\Warez::SetParam($region_id, $options);
@@ -30,10 +30,11 @@ class ControllerProduct extends Template\Template{
 		//print_r($productes);
 		$options = array("dirid"=>$productes->dirid, "classid"=>$productes->classid, "grid"=>$productes->grid);
 		$category = Models\Category::find('fist', $options);
-		print_r($options);
+		//print_r($options);
+		//print_r($category);
 		$this->categories="";
-		$this->categories->addChild("category_id", $category->category_id);
-		$this->categories->addChild("category_name", ToUTF($category->name));
+		$this->categories->addChild("category_id", ($category)?$category->category_id:0);
+		$this->categories->addChild("category_name", ($category)?ToUTF($category->name):"Список категорий");
 		
 		$this->product="";
 		$this->product->addChild("product_id", $product_id);
@@ -66,7 +67,7 @@ class ControllerProduct extends Template\Template{
 		}
 		if($ask)
 		{
-			$ask = $this->product->addChild("ask");
+			$ask = $this->product->addChild("aks");
 			//$ask_m=array();
 			$ask_m=Models\Link::getAccess($region_id, $product_id);
 			//print_r($ask_m);

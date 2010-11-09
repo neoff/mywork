@@ -38,12 +38,13 @@ class ControllerCategory extends Template\Template{
 	private $parents;
 	private $category;
 	private $options;
+	private $page;
 	
 	
 	public function index( $array )
 	{
 		
-		list($this->region_id, $this->category_id, $this->actions, $this->searches)=$array;
+		list($this->region_id, $this->category_id, $this->actions, $this->searches, $this->page)=$array;
 		$this->options = array('parent_id' => $this->category_id);
 		$this->parents = Models\Category::find('first', array('conditions' => "category_id = $this->category_id"));
 		
@@ -109,7 +110,9 @@ class ControllerCategory extends Template\Template{
 		//var_dump($this->parents);
 		if($this->parents)
 		{
-			$productes_m = Models\Warez::getWarez($this->region_id, $this->parents);
+			$page = ($this->page -1)*20;
+			$productes_count = Models\Warez::getWarez($this->region_id, $this->parents, False);
+			$productes_m = Models\Warez::getWarez($this->region_id, $this->parents, "$page");
 			//print_r($productes);
 			$c_name = ToUTF($this->parents->name);
 			
@@ -138,6 +141,10 @@ class ControllerCategory extends Template\Template{
 			$this->products="";
 			$this->products->addAttribute("category_id", $this->category_id);
 			$this->products->addAttribute("category_name", $c_name);
+			$this->pages="";
+			$this->pages->addChild("amount", $productes_count);
+			$this->pages->addChild("amount", "20");
+			$this->pages->addChild("amount", $this->page);
 			foreach ($productes_m as $key => $val)
 			{
 				if (!in_array($val->grid, $grid))
