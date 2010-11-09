@@ -57,6 +57,9 @@ class ControllerCategory extends Template\Template{
 			$this->category = $this->action();
 		
 		//print_r($this->category);
+		//$condition = "";
+		//$categoryssss = Models\Category::getWarezAction($this->region_id, $this->action_val, $condition);
+		//print_r($categoryssss);
 		if($this->category)
 		{
 			
@@ -72,6 +75,13 @@ class ControllerCategory extends Template\Template{
 					$ids = new SetId($val->dirid, $val->classid, $val->grid);
 					$amount = count(Models\Warez::getWarez($this->region_id, $ids));
 				}
+				if($this->actions > 0)
+				{
+					$amount = count(Models\Warez::find_by_sql('select * from `warez_' .$this->region_id . '` 
+									where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid ." and ClassID = " 
+									. $val->classid ." and GrID = " .$val->grid ));
+				}
+					
 				$category = $this->categories->addChild("category");
 				$category->addChild("category_id", $val->category_id);
 				$category->addChild("category_name", ToUTF($val->name));
@@ -265,6 +275,9 @@ class ControllerCategory extends Template\Template{
 			case 7:
 				$action = 28;
 				break;
+			default:
+				$action = $this->actions;
+				break;
 		}
 		//print $action;
 		$act = Models\Actions::first(array("segment_id"=>$action, "hidden"=>0));
@@ -275,7 +288,7 @@ class ControllerCategory extends Template\Template{
 			$images = $this->action->addChild("image", "http://www.mvideo.ru/imgs/test.jpg");
 			$images->addAttribute("width", "150");
 			$images->addAttribute("height", "150");
-			$this->action->addChild("description", ToUTF($act->segment_info));
+			$this->action->addChild("description", $act->segment_info);
 			$this->action->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $act->segment_name)
 																."/?ref=left_bat_". $act->segment_name);
 			
@@ -306,7 +319,7 @@ class ControllerCategory extends Template\Template{
 			return $categorys;
 		}
 	}
-	public function actions($array)
+	/*public function actions($array)
 	{
 		list($region_id, $category_id, $action)=$array;
 		$actions = $this->Set("actions");
@@ -323,5 +336,5 @@ class ControllerCategory extends Template\Template{
 		}
 		
 		
-	}
+	}*/
 }

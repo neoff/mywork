@@ -30,7 +30,7 @@ class ControllerProduct extends Template\Template{
 		//print_r($productes);
 		$options = array("dirid"=>$productes->dirid, "classid"=>$productes->classid, "grid"=>$productes->grid);
 		$category = Models\Category::find('fist', $options);
-		//print_r($category);
+		print_r($options);
 		$this->categories="";
 		$this->categories->addChild("category_id", $category->category_id);
 		$this->categories->addChild("category_name", ToUTF($category->name));
