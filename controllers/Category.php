@@ -143,8 +143,8 @@ class ControllerCategory extends Template\Template{
 			$this->products->addAttribute("category_name", $c_name);
 			$this->pages="";
 			$this->pages->addChild("amount", $productes_count);
-			$this->pages->addChild("amount", "20");
-			$this->pages->addChild("amount", $this->page);
+			$this->pages->addChild("onpage", "20");
+			$this->pages->addChild("page", $this->page);
 			foreach ($productes_m as $key => $val)
 			{
 				if (!in_array($val->grid, $grid))
@@ -159,7 +159,9 @@ class ControllerCategory extends Template\Template{
 				$val->getDesctiptions();
 				$product->addChild("description", StripTags($val->description));
 				//$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 'conditions' => array('warecode = ?', $val->warecode)));
-				$product->addChild("rating", $val->rating); #TODO где брать рейтинг?
+				$val->getRatingRev();
+				$product->addChild("rating", $val->rating);
+				$product->addChild("reviews_num", $val->reviews);
 				$product->addChild("small_price", $val->inetprice);
 				$product->addChild("price", $val->price);
 				$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); #TODO где взять картинка для продукта
