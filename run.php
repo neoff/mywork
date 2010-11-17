@@ -38,6 +38,7 @@
 		ini_set('display_errors', 1);
 		error_reporting(E_ALL);
 	}
+	require_once ROOT_PATH . '/lib/Exception.php';
 	require_once ROOT_PATH . '/lib/Utils.php';
 	require_once ROOT_PATH . '/lib/ActiveRecord.php';
 	require_once ROOT_PATH . '/lib/Routing.php';
