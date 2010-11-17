@@ -302,7 +302,7 @@ class ControllerCategory extends Template\Template{
 			$images = $this->action->addChild("image", "http://www.mvideo.ru/imgs/test.jpg");
 			$images->addAttribute("width", "150");
 			$images->addAttribute("height", "150");
-			$this->action->addChild("description", $act->segment_info);
+			$this->action->addChild("description", ToUTF($act->segment_info));
 			$this->action->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $act->segment_name)
 																."/?ref=left_bat_". $act->segment_name);
 			
