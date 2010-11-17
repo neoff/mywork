@@ -11,6 +11,44 @@
 
 	namespace Template;
 	
+class MyDOMDocument {
+		private $_delegate;
+		private $_validationErrors;
+
+		public function __construct (\DOMDocument $pDocument) {
+			$this->_delegate = $pDocument;
+			$this->_validationErrors = array();
+		}
+
+		public function __call ($pMethodName, $pArgs) {
+			if ($pMethodName == "validate") {
+				$eh = set_error_handler(array($this, "onValidateError"));
+				$rv = $this->_delegate->validate();
+				if ($eh) {
+					set_error_handler($eh);
+				}
+				return $rv;
+			}
+			else {
+				return call_user_func_array(array($this->_delegate, $pMethodName), $pArgs);
+			}
+		}
+		public function __get ($pMemberName) {
+			if ($pMemberName == "errors") {
+				return $this->_validationErrors;
+			}
+			else {
+				return $this->_delegate->$pMemberName;
+			}
+		}
+		public function __set ($pMemberName, $pValue) {
+			$this->_delegate->$pMemberName = $pValue;
+		}
+		public function onValidateError ($pNo, $pString, $pFile = null, $pLine = null, $pContext = null) {
+			$this->_validationErrors[] = preg_replace("/^.+: */", "", $pString);
+		}
+	}
+
 abstract class Template {
 	public $xml;
 	
@@ -28,16 +66,35 @@ abstract class Template {
 		$dtd = preg_replace("/Controller/", "", $dtd);
 		$dtd = strtolower($dtd);
 		
-		$xmlstr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE mvideo_xml SYSTEM \"/public/$dtd.dtd\">\n<mvideo_xml date=\"" . date("Y-m-d H:i:s") . "\">\n</mvideo_xml>";
+		$xmlstr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE mvideo_xml SYSTEM \"http://127.0.0.1/public/$dtd.dtd\">\n<mvideo_xml date=\"" . date("Y-m-d H:i:s") . "\">\n</mvideo_xml>";
 		
 		$this->xml = new \SimpleXMLElement($xmlstr);
+		
 	}
 	
 	public function __destruct()
 	{
-		header('Content-type: text/xml; charset=utf-8');
-		echo preg_replace("/></", ">\n<", $this->xml->asXML());
-		//echo $this->xml->asXML();
+		$doc=$this->xml->asXML();
+		
+		
+		//print $doc;
+		try
+		{
+			$dom = new \DOMDocument;
+			$dom->loadXML($doc, LIBXML_DTDLOAD|LIBXML_DTDATTR);
+			$myDoc = new MyDOMDocument($dom);
+			$isValid = $myDoc->validate();
+			if (!$isValid) 
+			{
+				throw new \MyDomException($myDoc->errors);
+			}
+			header('Content-type: text/xml; charset=utf-8');
+			echo preg_replace("/></", ">\n<", $doc);
+		}
+		catch(\MyException $e)
+		{
+			echo $e;
+		}
 	}
 	
 

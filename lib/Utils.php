@@ -4,8 +4,8 @@
 	define ( 'UPPERCASE', 1 );
 	
 	function ToUTF($string) {
-		$encode =  detect_cyr_charset($string);
-		return iconv ( $encode, "UTF-8", $string );
+		//$encode =  detect_cyr_charset($string);
+		return iconv ( 'CP1251', "UTF-8", $string );
 	}
 	
 	function StripTags($string) {
@@ -30,7 +30,7 @@
 	
 		'UTF-8' => 0, 
 	
-		'MAC' => 0 )
+		'mac-cyrillic-2000' => 0 )
 	
 		;
 		
@@ -74,13 +74,13 @@
 			
 			//MAC
 			
-	
-			if ($char > 221 && $char < 255)
-				$charsets ['MAC'] += LOWERCASE;
-			
-			if ($char > 127 && $char < 160)
-				$charsets ['MAC'] += UPPERCASE;
-			
+//	
+//			if ($char > 221 && $char < 255)
+//				$charsets ['mac-cyrillic-2000'] += LOWERCASE;
+//			
+//			if ($char > 127 && $char < 160)
+//				$charsets ['mac-cyrillic-2000'] += UPPERCASE;
+//			
 			//ISO-8859-5
 			
 	
