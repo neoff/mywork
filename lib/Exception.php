@@ -16,7 +16,7 @@
 	#set_error_handler('err2exc', E_ALL & ~E_NOTICE & ~E_WARNING &~ E_USER_NOTICE | E_STRICT);
 	#error_reporting(E_ALL | E_STRICT);
 	
-	//set_error_handler('err2exc', E_ALL);
+	set_error_handler('err2exc', E_ALL);
 	#error_reporting(E_ALL | E_STRICT);
 
 class Singleton {
