@@ -47,7 +47,7 @@ class ControllerCategory extends Template\Template{
 	
 	public function index( $array )
 	{
-		$rfile = dirname(dirname(ROOT_PATH));
+		$rfile = dirname(dirname(dirname($_SERVER["SCRIPT_FILENAME"])));
 		require_once $rfile . '/lib/sdirs.lib.php';
 		self::$GlobalConfig = $GlobalConfig;
 		list($this->region_id, $this->category_id, $this->actions, $this->searches, $this->page)=$array;
