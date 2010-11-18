@@ -4,8 +4,8 @@
 	define ( 'UPPERCASE', 1 );
 	
 	function ToUTF($string) {
-		//$encode =  detect_cyr_charset($string);
-		return iconv ( 'CP1251', "UTF-8", $string );
+		$encode =  detect_cyr_charset($string);
+		return iconv ( $encode, "UTF-8", $string );
 	}
 	
 	function StripTags($string) {
