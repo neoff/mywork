@@ -14,6 +14,8 @@
 	use Models;
 	use Template;
 	
+	
+	
 class SetId{
 	public function __set($name, $val)
 	{
@@ -26,6 +28,7 @@ class SetId{
 		list($this->dirid, $this->classid, $this->grid) = array($dirid, $classid, $grid);
 	}
 }
+
 class ControllerCategory extends Template\Template{
 	
 	private $parent_name;
@@ -39,11 +42,14 @@ class ControllerCategory extends Template\Template{
 	private $category;
 	private $options;
 	private $page;
+	private static $GlobalConfig = array();
 	
 	
 	public function index( $array )
 	{
-		
+		$rfile = dirname(dirname(ROOT_PATH));
+		require_once $rfile . '/lib/sdirs.lib.php';
+		self::$GlobalConfig = $GlobalConfig;
 		list($this->region_id, $this->category_id, $this->actions, $this->searches, $this->page)=$array;
 		$this->options = array('parent_id' => $this->category_id);
 		$this->parents = Models\Category::find('first', array('conditions' => "category_id = $this->category_id"));
@@ -51,7 +57,14 @@ class ControllerCategory extends Template\Template{
 		
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
 			$this->parent_node();
-		$this->category = Models\Category::find('all', $this->options);
+		if($this->category_id == 0 && !$this->searches && $this->actions < 0)
+			$this->category = $this->rootCategories();
+		if($this->category_id >0 && !$this->searches && $this->actions < 0)
+		{
+			$this->category = Models\Category::find('all', $this->options);
+			//if($this->category_id < 1000)
+			//	$this->category = 0;# Models\Category::find('all', $this->options);
+		}
 		if($this->searches)
 			$this->category = $this->search();
 		if($this->actions > 0)
@@ -208,6 +221,7 @@ class ControllerCategory extends Template\Template{
 		 * ставим заголовки блока parents
 		 * если parent = 0 то ставим список всех категорий
 		 */
+		
 		if(!$this->category_id || $this->category_id<0 )
 		{
 			$this->options = array('conditions' => "parent_id is null");
@@ -215,16 +229,42 @@ class ControllerCategory extends Template\Template{
 			$cat_parrent_id = $this->parent_id = 0;
 			$this->category_id = 0;
 		}
+		elseif($this->category_id<1000)
+		{
+			$cond = array('conditions' => "parent_id is null");
+			$cat_parrent_name = $this->parent_name = "Список категорий";
+			$cat_parrent_id = $this->parent_id = 0;
+			if(array_key_exists($this->category_id, self::$GlobalConfig['smenu']))
+			{
+				$cond =array('conditions' => 
+							array('parent_id is null and dirid in (?)', 
+								self::$GlobalConfig['smenu'][$this->category_id]['dirs']
+								)
+							);
+				$this->parent_name = self::$GlobalConfig['smenu'][$this->category_id]['name'];
+			}
+			$this->options = $cond;
+		}
 		else
 		{
 			/**
 			 * проверяем parent текущей категории
 			 * и выставляем id и name у родительского нода
 			 */
+			$cat_parrent_id = 0;
+			$cat_parrent_name = "Список категорий";
 			if(!$this->parents->parent_id)
 			{
-				$cat_parrent_id = 0;
-				$cat_parrent_name = "Список категорий";
+				foreach (self::$GlobalConfig['smenu'] as $key => $value) {
+					if(in_array($this->parents->dirid, self::$GlobalConfig['smenu'][$key]['dirs']))
+					{
+						$cat_parrent_id = $key;
+						$cat_parrent_name = self::$GlobalConfig['smenu'][$key]['name'];
+						break;
+					}
+					
+				}
+				
 			}else
 			{
 				$cat_parrent_id = $this->parents->parent_id;
@@ -333,22 +373,28 @@ class ControllerCategory extends Template\Template{
 			return $categorys;
 		}
 	}
-	/*public function actions($array)
+	public function rootCategories()
 	{
-		list($region_id, $category_id, $action)=$array;
-		$actions = $this->Set("actions");
-		$acts = Models\Actions::all(array("hidden"=>0));
-		foreach ($acts as $key => $val) 
+		
+		
+		$this->categories="";
+		$this->categories->addAttribute("category_id", $this->category_id);
+		$this->categories->addAttribute("category_name", $this->parent_name);
+		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
 		{
-			$action = $actions->addChild("action");
-			$action->addChild("id", $val->segment_id);
-			$images = $action->addChild("image", "http://www.mvideo.ru/imgs/test.jpg");
-			$images->addAttribute("width", "150");
-			$images->addAttribute("height", "150");
-			$action->addChild("description", ToUTF($val->segment_info));
-			$action->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $val->segment_name)."/?ref=left_bat_". $val->segment_name);
+			$amount = count(Models\Category::find('all', array('conditions' => 
+									array('parent_id is null and dirid in (?)', $value['dirs'])
+									)));
+			$category = $this->categories->addChild("category");
+			$category->addChild("category_id", $key);
+			$category->addChild("category_name", $value['name']);
+			$category->addChild("amount", $amount); 
+			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/dir_$key.gif"); #TODO откуда брать иконку категории???
+			$icon->addAttribute("width", "50");
+			$icon->addAttribute("height", "50");
 		}
+		//exit();
+		return False;
 		
-		
-	}*/
+	}
 }

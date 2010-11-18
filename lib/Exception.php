@@ -34,9 +34,12 @@ class Singleton {
 		if (self::$instance === null) {
 			self::$instance = new self();
 			$xmlstr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors/>";
-			self::$xml = new \SimpleXMLElement($xmlstr);
-			self::$xml->addChild( "error","500" );
-			self::$stacktraces = self::$xml->addChild( "stacktraces" );
+			if (self::$xml === null) {
+				self::$xml = new \SimpleXMLElement($xmlstr);
+				self::$xml->addChild( "error","500" );
+				self::$xml->addChild( "description","Internal Server Error" );
+				self::$stacktraces = self::$xml->addChild( "stacktraces" );
+			}
 		}
 		return self::$instance;
 	}
@@ -77,9 +80,11 @@ class MyDomException extends Exception{
 		$single = Singleton::getInstance();
 		$this->xml = $single->doAction();
 		$this->stacktraces = $single->getStack();
-		
-		$this->domeError();
-		$this->__toString();
+		if(DEBUG)
+		{
+			$this->domeError();
+			$this->__toString();
+		}
 		$single->doFinal($this->xml);
 		exit();
 	}
@@ -131,8 +136,8 @@ class MyException extends Exception {
 		$single = Singleton::getInstance();
 		$this->xml = $single->doAction();
 		$this->stacktraces =  $single->getStack();
-		
-		$this->__toString();
+		if(DEBUG)
+			$this->__toString();
 		$single->doFinal($this->xml);
 		exit();
 	}
