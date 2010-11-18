@@ -241,7 +241,7 @@ class ControllerCategory extends Template\Template{
 								self::$GlobalConfig['smenu'][$this->category_id]['dirs']
 								)
 							);
-				$this->parent_name = self::$GlobalConfig['smenu'][$this->category_id]['name'];
+				$this->parent_name = ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['name']);
 			}
 			$this->options = $cond;
 		}
@@ -258,8 +258,8 @@ class ControllerCategory extends Template\Template{
 				foreach (self::$GlobalConfig['smenu'] as $key => $value) {
 					if(in_array($this->parents->dirid, self::$GlobalConfig['smenu'][$key]['dirs']))
 					{
-						$cat_parrent_id = $key;
-						$cat_parrent_name = self::$GlobalConfig['smenu'][$key]['name'];
+						$cat_parrent_id = ToUTF($key);
+						$cat_parrent_name = ToUTF(self::$GlobalConfig['smenu'][$key]['name']);
 						break;
 					}
 					
@@ -387,7 +387,7 @@ class ControllerCategory extends Template\Template{
 									)));
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $key);
-			$category->addChild("category_name", $value['name']);
+			$category->addChild("category_name", ToUTF($value['name']));
 			$category->addChild("amount", $amount); 
 			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/dir_$key.gif"); #TODO откуда брать иконку категории???
 			$icon->addAttribute("width", "50");

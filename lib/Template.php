@@ -84,10 +84,10 @@ abstract class Template {
 			$dom->loadXML($doc, LIBXML_DTDLOAD|LIBXML_DTDATTR);
 			$myDoc = new MyDOMDocument($dom);
 			$isValid = $myDoc->validate();
-			if (!$isValid) 
-			{
-				throw new \MyDomException($myDoc->errors);
-			}
+			//if (!$isValid) 
+			//{
+			//	throw new \MyDomException($myDoc->errors);
+			//}
 			header('Content-type: text/xml; charset=utf-8');
 			echo preg_replace("/></", ">\n<", $doc);
 		}
