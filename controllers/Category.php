@@ -180,7 +180,8 @@ class ControllerCategory extends Template\Template{
 				$val->getRatingRev();
 				$product->addChild("rating", $val->rating);
 				$product->addChild("reviews_num", $val->reviews);
-				$product->addChild("small_price", $val->inetprice);
+				$product->addChild("inet_price", $val->inetprice);
+				$product->addChild("old_price", $val->oldprice);
 				$product->addChild("price", $val->price);
 				$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); #TODO где взять картинка для продукта
 				$image->addAttribute("width", "180");

@@ -2,7 +2,8 @@
 
 <!ELEMENT url (#PCDATA)>
 <!ELEMENT title (#PCDATA)>
-<!ELEMENT small_price (#PCDATA)>
+<!ELEMENT inet_price (#PCDATA)>
+<!ELEMENT old_price (#PCDATA)>
 <!ELEMENT search (#PCDATA)>
 <!ELEMENT rating (#PCDATA)>
 <!ELEMENT products ((product*))>
@@ -11,7 +12,7 @@
 	category_name CDATA #REQUIRED
 >
 <!ELEMENT product_id (#PCDATA)>
-<!ELEMENT product ((product_id, title, description, rating, reviews_num, small_price, price, image))>
+<!ELEMENT product ((product_id, title, description, rating, reviews_num, inet_price, old_price, price, image))>
 <!ELEMENT reviews_num (#PCDATA)>
 <!ELEMENT price (#PCDATA)>
 <!ELEMENT parent_category ((category_id, category_name))>

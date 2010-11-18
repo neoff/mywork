@@ -80,7 +80,8 @@ class ControllerProduct extends Template\Template{
 				$prod->addChild("product_id", $val->warecode);
 				$prod->addChild("title", ToUTF($val->ware));
 				
-				$prod->addChild("small_price", $val->inetprice);
+				$prod->addChild("inet_price", $val->inetprice);
+				$prod->addChild("old_price", $val->oldprice);
 				$prod->addChild("price", $val->price);
 				
 				$val->getRatingRev();
