@@ -26,7 +26,7 @@ class ControllerProduct extends Template\Template{
 		$productes = Models\Warez::sql($region_id, $where, $array);
 		$productes = $productes[0];
 		
-
+		//print_r($productes);
 		$options = array("dirid"=>$productes->dirid, "classid"=>$productes->classid, "grid"=>$productes->grid);
 		$category = Models\Category::find('fist', $options);
 
@@ -38,7 +38,8 @@ class ControllerProduct extends Template\Template{
 		$this->product->addChild("product_id", $product_id);
 		$this->product->addChild("region_id", $region_id);
 		$this->product->addChild("title", ToUTF($productes->name));
-		$this->product->addChild("small_price", $productes->small_price);
+		$this->product->addChild("inet_price", $productes->inetprice);
+		$this->product->addChild("old_price", $productes->oldprice);
 		$this->product->addChild("price", $productes->price);
 
 		$productes->getRatingRev();
