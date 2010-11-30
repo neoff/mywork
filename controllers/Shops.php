@@ -50,8 +50,11 @@ class ControllerShops extends Template\Template{
 			$shop->addChild("phone", ToUTF($val->phone));
 			$coordinates = $shop->addChild("coordinates");
 			$val->coordinates();
-			$coordinates->addChild("longitude", $val->longitude);
-			$coordinates->addChild("latitude", $val->latitude);
+			//if($val->longitude && $val->latitude)
+			//{
+				$coordinates->addChild("longitude", $val->longitude);
+				$coordinates->addChild("latitude", $val->latitude);
+			//}
 			$shop->addChild("wayTo", StripTags($val->howto));
 			$shop->addChild("zoom", $val->map_zoom);
 			$images = $shop->addChild("images"); 

@@ -15,7 +15,6 @@
 	use Template;
 	
 	
-	
 class SetId{
 	public function __set($name, $val)
 	{
@@ -47,23 +46,28 @@ class ControllerCategory extends Template\Template{
 	
 	public function index( $array )
 	{
+		$GlobalConfig=array();
 		$rfile = dirname(dirname(dirname($_SERVER["SCRIPT_FILENAME"])));
-		require_once $rfile . '/lib/sdirs.lib.php';
-		self::$GlobalConfig = $GlobalConfig;
+		
 		list($this->region_id, $this->category_id, $this->actions, $this->searches, $this->page)=$array;
+		
+		$GlobalConfig['RegionID']=$this->region_id;
+		require_once $rfile . '/lib/federal_info.lib.php';
+		require_once $rfile . '/lib/sdirs.lib.php';
+		
+		self::$GlobalConfig = $GlobalConfig;
+		
 		$this->options = array('parent_id' => $this->category_id);
 		$this->parents = Models\Category::find('first', array('conditions' => "category_id = $this->category_id"));
 		
 		
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
-			$this->parent_node();
-		if($this->category_id == 0 && !$this->searches && $this->actions < 0)
-			$this->category = $this->rootCategories();
-		if($this->category_id >0 && !$this->searches && $this->actions < 0)
 		{
-			$this->category = Models\Category::find('all', $this->options);
-			//if($this->category_id < 1000)
-			//	$this->category = 0;# Models\Category::find('all', $this->options);
+			$this->parent_node();
+			if($this->category_id == 0)
+				$this->category = $this->rootCategories();
+			if($this->category_id >0)
+				$this->category = Models\Category::find('all', $this->options);
 		}
 		if($this->searches)
 			$this->category = $this->search();
@@ -110,9 +114,9 @@ class ControllerCategory extends Template\Template{
 	}
 	
 
-	public function productes()
+	private function productes()
 	{
-		if($this->actions > 0)
+		if($this->actions > 0 && $this->action_val)
 			$this->parents->grid .= " and warecode in (".implode(",", $this->action_val).")";
 		
 		if($this->searches)
@@ -123,9 +127,10 @@ class ControllerCategory extends Template\Template{
 		//var_dump($this->parents);
 		if($this->parents)
 		{
-			$page = $this->page;
-			if($this->page)
+			$page = $this->page *20 ;
+			if($this->page > 1)
 				$page = ($this->page -1)*20;
+			
 			$productes_count = count(Models\Warez::getWarez($this->region_id, $this->parents, False));
 			$productes_m = Models\Warez::getWarez($this->region_id, $this->parents, $page);
 			//print_r($productes);
@@ -316,7 +321,8 @@ class ControllerCategory extends Template\Template{
 				$action = 6;
 				break;
 			case 3:
-				$action = 7;
+				$action = 0;
+				return $this->localActions();
 				break;
 			case 4:
 				$action = 24;
@@ -347,34 +353,66 @@ class ControllerCategory extends Template\Template{
 			$this->action->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $act->segment_name)
 																."/?ref=left_bat_". $act->segment_name);
 			
-			$segment = Models\Segments::find('all', 
-							array('select' => 'warecode', 
-								'conditions' =>"region_id=$this->region_id and segment_name='$act->segment_name'"));
-			
-			
-			foreach ($segment as $val)
-			{
-				$this->action_val[] = $val->warecode;
-			}
-			//print $region_id. $array;
-			
-			if(!$this->category_id)
-			{
-				$condition = "";
-				//$this->parrent_id = 0;
-				//$this->parrent_name = $c_name = "Список категорий";
-				$categorys = Models\Category::getWarezAction($this->region_id, $this->action_val, $condition);
-				//print_r($categorys);
-			}
-			else
-			{
-				$categorys = array();
-			}
-			$this->parent_node();
+			$categorys = $this->putActions($act->segment_name);
 			return $categorys;
 		}
 	}
-	public function rootCategories()
+	private function putActions($name)
+	{
+		
+		$segment = Models\Segments::find('all', 
+							array('select' => 'warecode', 
+								'conditions' =>"region_id=$this->region_id and segment_name='$name'"));
+			
+		
+		foreach ($segment as $val)
+		{
+			$this->action_val[] = $val->warecode;
+		}
+		//print $region_id. $array;
+		
+		if(!$this->category_id)
+		{
+			$condition = "";
+			//$this->parrent_id = 0;
+			//$this->parrent_name = $c_name = "Список категорий";
+			$categorys = Models\Category::getWarezAction($this->region_id, $this->action_val, $condition);
+			//print_r($categorys);
+		}
+		else
+		{
+			$categorys = array();
+		}
+		$this->parent_node();
+		return $categorys;
+	}
+	private function localActions()
+	{
+		$time = time();
+		//$keys = array_keys(self::$GlobalConfig['fed_act']);
+		foreach (self::$GlobalConfig['fed_act'] as $key => $val) 
+		{
+			if($key < $time)
+			{
+				if($val['end_date']>=$time)
+				{
+					$this->action = "";
+					$images = $this->action->addChild("image", "http://www.mvideo.ru/"
+										.$val['ico']);
+					$images->addAttribute("width", "150");
+					$images->addAttribute("height", "150");
+					$this->action->addChild("description", ToUTF($val['name']));//descr
+					$url = str_replace("/", "", $val['link']);//link
+					$this->action->addChild("url", "http://www.mvideo.ru/".$url
+													."/?ref=home_promo_". $url);
+					return $this->putActions($url);
+				}
+			}
+		}
+		
+	}
+	
+	private function rootCategories()
 	{
 		
 		

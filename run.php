@@ -3,7 +3,7 @@
 	//print_r($_SERVER);
 	date_default_timezone_set( 'Europe/Moscow' );
 	define("FILE", "config.ini");
-	class config{
+class config{
 		public function __set($name, $val)
 		{
 			$this->$name = $val;
@@ -27,7 +27,7 @@
 				}
 			}
 		}
-	}
+}
 	$conn = new config(FILE);
 	define( "DEBUG", ($conn->debug)?$conn->debug:True );
 	define( 'CONNECTION', ($conn->base)?$conn->base:'develop' );

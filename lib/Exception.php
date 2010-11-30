@@ -151,8 +151,11 @@ class MyException extends Exception {
 			$args = "";
 			foreach ($val['args'] as $vals)
 			{
-				if($vals=="" or $vals===false) $vals="false";
-				$args .=" ".$vals;
+				//var_dump($vals);
+				if($vals=="" or $vals===false) 
+					$vals="false";
+				if (is_string ($vals))
+					$args .=" ".$vals;
 			}
 			$file = (array_key_exists("file", $val))?$val['file']:__FILE__;
 			$stack = $stacks->addChild("stack", $file);
