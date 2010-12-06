@@ -31,4 +31,7 @@
 <!ELEMENT inet_price (#PCDATA)>
 <!ELEMENT old_price (#PCDATA)>
 <!ELEMENT price (#PCDATA)>
+<!ELEMENT pages ((amount, onpage, page))>
+<!ELEMENT onpage (#PCDATA)>
+<!ELEMENT page (#PCDATA)>
 

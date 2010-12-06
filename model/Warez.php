@@ -45,6 +45,7 @@ class Warez extends ActiveRecord\Model
 	
 	public static function getWarez($region_id, $parents, $page = False)
 	{
+		//print $page;
 		$limit="";
 		if($page!==False)
 			$limit = " limit 20 offset $page";

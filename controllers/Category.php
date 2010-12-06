@@ -127,8 +127,8 @@ class ControllerCategory extends Template\Template{
 		//var_dump($this->parents);
 		if($this->parents)
 		{
-			$page = $this->page *20 ;
-			if($this->page > 1)
+			$page = $this->page;
+			if($this->page > 0)
 				$page = ($this->page -1)*20;
 			
 			$productes_count = count(Models\Warez::getWarez($this->region_id, $this->parents, False));
