@@ -4,7 +4,7 @@
 <!ELEMENT categories ((category_id, category_name))>
 <!ELEMENT category_id (#PCDATA)>
 <!ELEMENT category_name (#PCDATA)>
-<!ELEMENT product ((product_id, region_id*, title, inet_price, old_price, price, rating, reviews_num, description, reviews*, options*, aks*, image* ))>
+<!ELEMENT product ((product_id, region_id*, title, inet_price, old_price, price, rating, reviews_num, description, aks*, reviews*, options*, image* ))>
 <!ELEMENT product_id (#PCDATA)>
 <!ELEMENT region_id (#PCDATA)>
 <!ELEMENT title (#PCDATA)>
