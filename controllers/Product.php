@@ -49,8 +49,8 @@ class ControllerProduct extends Template\Template{
 		$productes->getDesctiptions();
 		$this->product->addChild("description", StripTags($productes->description));
 		
-		if(!$ask && !$reviews)
-		{
+		//if(!$ask && !$reviews)
+		//{
 			$options = $this->product->addChild("options");
 			$options_m=Models\Optionlist::all(array('warecode'=>$product_id));
 			foreach ($options_m as $key => $val)
@@ -59,7 +59,7 @@ class ControllerProduct extends Template\Template{
 				$option->addChild("name", ToUTF($val->prname));
 				$option->addChild("value", ToUTF($val->prval));
 			}
-		}
+		//}
 		if($ask)
 		{
 			$ask = $this->product->addChild("aks");
