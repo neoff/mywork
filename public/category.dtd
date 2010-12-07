@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT mvideo_xml ((search*, action*, parent_category*, categories*, params*, products*, pages*))>
+<!ATTLIST mvideo_xml date CDATA #REQUIRED >
+<!ELEMENT search (#PCDATA)>
+<!ELEMENT action ((image, description, url))>
+<!ELEMENT image (#PCDATA)>
+<!ATTLIST image height CDATA #REQUIRED width CDATA #REQUIRED>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT parent_category ((category_id, category_name))>
+<!ELEMENT category_id (#PCDATA)>
+<!ELEMENT category_name (#PCDATA)>
+<!ELEMENT categories ((category+))>
+<!ATTLIST categories category_id CDATA #REQUIRED category_name CDATA #REQUIRED>
+<!ELEMENT category ((category_id, category_name, amount, category_icon))>
+<!ELEMENT amount (#PCDATA)>
+<!ELEMENT category_icon (#PCDATA)>
+<!ATTLIST category_icon height CDATA #REQUIRED width CDATA #REQUIRED>
+<!ELEMENT params ((param+))>
+<!ELEMENT param ((option+))>
+<!ATTLIST param current_value CDATA #REQUIRED param_name CDATA #REQUIRED title CDATA #REQUIRED>
+<!ELEMENT option (#PCDATA)>
+<!ATTLIST option value CDATA #REQUIRED>
+<!ELEMENT products ((product*))>
+<!ATTLIST products category_id CDATA #REQUIRED category_name CDATA #REQUIRED>
+<!ELEMENT product ((product_id, title, description, rating, reviews_num, inet_price, old_price, price, image))>
+<!ELEMENT product_id (#PCDATA)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT rating (#PCDATA)>
+<!ELEMENT reviews_num (#PCDATA)>
+<!ELEMENT inet_price (#PCDATA)>
+<!ELEMENT old_price (#PCDATA)>
+<!ELEMENT price (#PCDATA)>
+<!ELEMENT pages ((amount, onpage, page))>
+<!ELEMENT onpage (#PCDATA)>
+<!ELEMENT page (#PCDATA)>
+

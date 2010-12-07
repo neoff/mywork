@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT mvideo_xml ((shops+))>
+<!ATTLIST mvideo_xml date CDATA #REQUIRED >
+<!ELEMENT shops ((shop+))>
+<!ATTLIST shops region_id CDATA #REQUIRED >
+<!ELEMENT shop ((shop_id, shop_name, metro, address, day_hours, holiday_hours, phone, coordinates, wayTo, zoom, images))>
+<!ELEMENT shop_id (#PCDATA)>
+<!ELEMENT shop_name (#PCDATA)>
+<!ELEMENT metro ((station*))>
+<!ELEMENT station (#PCDATA)>
+<!ELEMENT address (#PCDATA)>
+<!ELEMENT day_hours (#PCDATA)>
+<!ELEMENT holiday_hours (#PCDATA)>
+<!ELEMENT phone (#PCDATA)>
+<!ELEMENT coordinates ((longitude, latitude))>
+<!ELEMENT latitude (#PCDATA)>
+<!ELEMENT longitude (#PCDATA)>
+<!ELEMENT wayTo (#PCDATA)>
+<!ELEMENT zoom (#PCDATA)>
+<!ELEMENT images ((image))>
+<!ELEMENT image (#PCDATA)>
+<!ATTLIST image height CDATA  #REQUIRED width CDATA  #REQUIRED >
+
+
+
+

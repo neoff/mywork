@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT mvideo_xml ((regions)) >
+<!ATTLIST mvideo_xml date CDATA  "YYYY-MM-DD hh:mm:ss">
+<!ELEMENT regions ((region+))>
+<!ELEMENT region ((region_id, region_name, coordinates))>
+<!ELEMENT region_id (#PCDATA)>
+<!ELEMENT region_name (#PCDATA)>
+<!ELEMENT coordinates ((longitude, latitude))>
+<!ELEMENT longitude (#PCDATA)>
+<!ELEMENT latitude (#PCDATA)>

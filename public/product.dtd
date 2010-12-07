@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT mvideo_xml ((categories, product))>
+<!ATTLIST mvideo_xml date CDATA #REQUIRED>
+<!ELEMENT categories ((category_id, category_name))>
+<!ELEMENT category_id (#PCDATA)>
+<!ELEMENT category_name (#PCDATA)>
+<!ELEMENT product ((product_id, region_id*, title, inet_price, old_price, price, rating, reviews_num, description, options*, aks*, reviews*, image* ))>
+<!ELEMENT product_id (#PCDATA)>
+<!ELEMENT region_id (#PCDATA)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT inet_price (#PCDATA)>
+<!ELEMENT old_price (#PCDATA)>
+<!ELEMENT price (#PCDATA)>
+<!ELEMENT rating (#PCDATA)>
+<!ELEMENT reviews_num (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT reviews ((review*))>
+<!ELEMENT review ((date, author, city, rating, title, text))>
+<!ELEMENT date (#PCDATA)>
+<!ELEMENT author (#PCDATA)>
+<!ELEMENT city (#PCDATA)>
+<!ELEMENT text (#PCDATA)>
+<!ELEMENT options ((option+))>
+<!ELEMENT option ((name, value))>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT value (#PCDATA)>
+<!ELEMENT aks ((group*))>
+<!ELEMENT group ((product+))>
+<!ATTLIST group id CDATA #REQUIRED title CDATA #REQUIRED >
+<!ELEMENT image (#PCDATA)>
+<!ATTLIST image width CDATA #REQUIRED height CDATA #REQUIRED >
