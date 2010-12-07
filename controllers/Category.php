@@ -345,10 +345,12 @@ class ControllerCategory extends Template\Template{
 		//print_r($act);
 		if($act)
 		{
+			$url = str_replace("/", "", $act->segment_name);//link
+			$imgfile = "imgs/action/header_$url.jpg";
+			
 			$this->action = "";
-			$images = $this->action->addChild("image", "http://www.mvideo.ru/imgs/test.jpg");
-			$images->addAttribute("width", "150");
-			$images->addAttribute("height", "150");
+			$this->actionImage($imgfile);
+			
 			$this->action->addChild("description", ToUTF($act->segment_info));
 			$this->action->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $act->segment_name)
 																."/?ref=left_bat_". $act->segment_name);
@@ -386,6 +388,32 @@ class ControllerCategory extends Template\Template{
 		$this->parent_node();
 		return $categorys;
 	}
+	/**
+	 * создает ноду с картинкой для акции
+	 * @param unknown_type $img
+	 */
+	private function actionImage($img)
+	{
+		$imgdir = dirname(dirname($_SERVER["SCRIPT_FILENAME"]));
+		
+		$fimgs = "http://www.mvideo.ru/$img";
+		//print $imgdir."/".$imgfile;
+		if(file_exists($imgdir."/".$img))
+		{
+			$imgsize = getimagesize ($imgdir."/".$img);
+			//print_r($imgsize);
+		}
+		//создаем картинку
+		$images = $this->action->addChild("image", (file_exists($imgdir."/".$img))?$fimgs:"");
+		//задаем размеры
+		
+		$images->addAttribute("width", (file_exists($imgdir."/".$img))?$imgsize[0]:"");
+		$images->addAttribute("height", (file_exists($imgdir."/".$img))?$imgsize[1]:"");
+		
+	}
+	/**
+	 * текущая федеральная акция
+	 */
 	private function localActions()
 	{
 		$time = time();
@@ -396,13 +424,13 @@ class ControllerCategory extends Template\Template{
 			{
 				if($val['end_date']>=$time)
 				{
-					$this->action = "";
-					$images = $this->action->addChild("image", "http://www.mvideo.ru/"
-										.$val['ico']);
-					$images->addAttribute("width", "150");
-					$images->addAttribute("height", "150");
-					$this->action->addChild("description", ToUTF($val['name']));//descr
 					$url = str_replace("/", "", $val['link']);//link
+					$imgfile = "imgs/action/main/$url.jpg";
+					$this->action = "";
+					$this->actionImage($imgfile);
+					
+					$this->action->addChild("description", ToUTF($val['name']));//descr
+					
 					$this->action->addChild("url", "http://www.mvideo.ru/".$url
 													."/?ref=home_promo_". $url);
 					return $this->putActions($url);
