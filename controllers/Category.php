@@ -402,14 +402,14 @@ class ControllerCategory extends Template\Template{
 		{
 			$imgsize = getimagesize ($imgdir."/".$img);
 			//print_r($imgsize);
+		
+			//создаем картинку
+			$images = $this->action->addChild("image", $fimgs);
+			//задаем размеры
+			
+			$images->addAttribute("width", $imgsize[0]);
+			$images->addAttribute("height", $imgsize[1]);
 		}
-		//создаем картинку
-		$images = $this->action->addChild("image", (file_exists($imgdir."/".$img))?$fimgs:"");
-		//задаем размеры
-		
-		$images->addAttribute("width", (file_exists($imgdir."/".$img))?$imgsize[0]:"");
-		$images->addAttribute("height", (file_exists($imgdir."/".$img))?$imgsize[1]:"");
-		
 	}
 	/**
 	 * текущая федеральная акция
