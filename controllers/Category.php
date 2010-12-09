@@ -300,7 +300,7 @@ class ControllerCategory extends Template\Template{
 				$catid .= " and c.category_id = " . $this->category_id;
 		
 		$category = Models\Category::findByNameCategory($this->region_id, $this->searches, $catid);
-		//print_r($category);
+		print_r($category);
 		if(!$category)
 		{
 			
