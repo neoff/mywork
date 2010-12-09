@@ -297,7 +297,7 @@ class ControllerCategory extends Template\Template{
 		$catid = " and c.parent_id is null ";
 		if($this->parents)
 			if($this->parents->grid)
-				$catid = " and c.category_id = " . $this->category_id;
+				$catid .= " and c.category_id = " . $this->category_id;
 		//if($this->category_id>0)		return array();
 		
 		$category = Models\Category::findByNameCategory($this->region_id, $this->searches, $catid);
