@@ -80,8 +80,8 @@ class Warez extends ActiveRecord\Model
 			
 		$sql = 'select * from `warez_' .$region_id . '` 
 				where ' . $sql_impl. $limit;
-		print $sql_impl;
-		print $sql;
+		//print $sql_impl;
+		//print $sql;
 		return self::find_by_sql($sql);
 	}
 	
