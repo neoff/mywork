@@ -53,7 +53,13 @@ class Warez extends ActiveRecord\Model
 		$sql_impl="";
 		
 		if($parents->dirid)
-			$sql_impl.='DirID = '.$parents->dirid;
+		{
+			$sql_impl.='DirID = ';
+			$subject = $parents->dirid;
+			$pattern = '/^\d+/';
+			if(!preg_match($pattern, $subject))
+				$sql_impl.='0'.$parents->dirid;
+		}
 		
 		if($parents->classid)
 			$sql_impl.="  and ClassID = ". $parents->classid;
