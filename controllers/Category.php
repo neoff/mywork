@@ -396,7 +396,7 @@ class ControllerCategory extends Template\Template{
 		}
 		//print_r($options);
 		$segment = Models\Segments::find('all', $options);
-		var_dump($segment);
+		//var_dump($segment);
 		
 		foreach ($segment as $val)
 		{
