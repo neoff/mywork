@@ -24,4 +24,9 @@ class Segments extends ActiveRecord\Model
 	static $table_name = 'segment_cache';
 	//static $primary_key = 'segment_id';
 	static $connection = CONNECTION;
+	
+	public function segmentWarez($options)
+	{
+		return self::find('all', $options);
+	}
 }
