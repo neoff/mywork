@@ -375,7 +375,7 @@ class ControllerCategory extends Template\Template{
 		
 		if(!$this->category_id)
 		{
-			$condition = "";
+			$condition = " c.DirID is null ";
 			//$this->parrent_id = 0;
 			//$this->parrent_name = $c_name = "Список категорий";
 			$categorys = Models\Category::getWarezAction($this->region_id, $this->action_val, $condition);
