@@ -116,14 +116,14 @@ class ControllerCategory extends Template\Template{
 	private function productes()
 	{
 		if($this->actions > 0 && $this->action_val)
-			$this->parents->dirid .= " and warecode in (".implode(",", $this->action_val).")";
+			$this->parents->grid .= " and warecode in (".implode(",", $this->action_val).")";
 		
 		if($this->searches)
 		{
 			$this->parent_node();
 			$this->parents->grid .= " and ware like \"%$this->searches%\" or FullName like \"%$this->searches%\" ";
 		}
-		//var_dump($this->parents);
+		var_dump($this->parents);
 		if($this->parents)
 		{
 			$page = $this->page;
