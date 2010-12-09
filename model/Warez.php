@@ -49,10 +49,15 @@ class Warez extends ActiveRecord\Model
 		$limit="";
 		if($page!==False)
 			$limit = " limit 20 offset $page";
+		$sql_impl="";
 		
+		if($parents->classid)
+			$sql_impl.="  and ClassID = ". $parents->classid;
+		if($parents->grid)
+			$sql_impl.=" and GrID = " .$parents->grid;
+			
 		$sql = 'select * from `warez_' .$region_id . '` 
-				where DirID = '.$parents->dirid ." and ClassID = " 
-				. $parents->classid ." and GrID = " .$parents->grid. $limit;
+				where DirID = '.$parents->dirid . $sql_impl. $limit;
 				
 		print $sql;
 		return self::find_by_sql($sql);
