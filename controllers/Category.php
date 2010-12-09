@@ -301,10 +301,10 @@ class ControllerCategory extends Template\Template{
 		//if($this->category_id>0)		return array();
 		
 		$category = Models\Category::findByNameCategory($this->region_id, $this->searches, $catid);
-		print $catid;
-		var_dump($this->parents);
-		print_r($category);
-		exit();
+		//print $catid;
+		//var_dump($this->parents);
+		//print_r($category);
+		//exit();
 		if(!$category)
 		{
 			
