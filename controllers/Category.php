@@ -296,7 +296,7 @@ class ControllerCategory extends Template\Template{
 	
 	private function search()
 	{
-		$this->search=iconv ("UTF-8",'CP1251', $this->searches );
+		$search=iconv ("UTF-8",'CP1251', $this->searches );
 		//$catid = " and c.parent_id is null ";
 		$catid = " and c.parent_id is null ";
 		if($this->parents)
@@ -304,7 +304,7 @@ class ControllerCategory extends Template\Template{
 				$catid .= " and c.parent_id is not null and c.category_id = " . $this->category_id;
 		//if($this->category_id>0)		return array();
 		
-		$category = Models\Category::findByNameCategory($this->region_id, $this->searches, $catid);
+		$category = Models\Category::findByNameCategory($this->region_id, $search, $catid);
 		//print $catid;
 		//var_dump($this->parents);
 		//print_r($category);
