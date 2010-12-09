@@ -387,7 +387,7 @@ class ControllerCategory extends Template\Template{
 		if($this->searches)
 		{
 			$search=iconv ("UTF-8",'CP1251', $this->searches );
-			$options['join'] = "left join warez_$rhis->region_id w on (warecode=w.warecode)";
+			$options['join'] = "left join warez_$this->region_id w on (warecode=w.warecode)";
 			$options['conditions'] = $options['conditions'].
 					" and (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
 		}
