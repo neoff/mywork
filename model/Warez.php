@@ -46,7 +46,7 @@ class Warez extends ActiveRecord\Model
 	public static function getWarez($region_id, $parents, $page = False)
 	{
 		//print $page;
-		var_dump($parents);
+		//var_dump($parents);
 		$limit="";
 		if($page!==False)
 			$limit = " limit 20 offset $page";
@@ -57,6 +57,7 @@ class Warez extends ActiveRecord\Model
 			$sql_impl.='DirID = ';
 			$subject = $parents->dirid;
 			$pattern = '/^\d+/';
+			print 11111;
 			if(!preg_match($pattern, $subject))
 				$sql_impl.='0'.$parents->dirid;
 		}
