@@ -384,6 +384,7 @@ class ControllerCategory extends Template\Template{
 		
 		$options = array('select' => 'sc.warecode',
 						'from' => 'segment_cache sc',
+						'join'=>"",
 						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name'");
 		
 		if($this->searches)
