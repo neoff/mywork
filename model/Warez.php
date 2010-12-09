@@ -55,11 +55,14 @@ class Warez extends ActiveRecord\Model
 		if($parents->dirid)
 		{
 			$sql_impl.='DirID = ';
+			
 			$subject = $parents->dirid;
 			$pattern = '/^\d+/';
 			preg_match($pattern, $subject,$pp);
 			if(empty($pp))
-				$sql_impl.='0'.$parents->dirid;
+				$sql_impl.='0';
+				
+			$sql_impl .= $parents->dirid;
 		}
 		if(property_exists($parents, 'classid'))
 			if($parents->classid)
@@ -77,7 +80,7 @@ class Warez extends ActiveRecord\Model
 			
 		$sql = 'select * from `warez_' .$region_id . '` 
 				where ' . $sql_impl. $limit;
-				
+		print $sql_impl;
 		print $sql;
 		return self::find_by_sql($sql);
 	}
