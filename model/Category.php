@@ -53,7 +53,7 @@ class Category extends ActiveRecord\Model
 						'joins' => $join, 
 						'group' => 'c.category_id',
 						'conditions' => "(w.ware like \"%$search%\" or w.FullName like \"%$search%\") $category");
-		print_r($options);
+		//print_r($options);
 		return self::find('all', $options);
 	}
 }
