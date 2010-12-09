@@ -123,7 +123,7 @@ class ControllerCategory extends Template\Template{
 			$this->parent_node();
 			$this->parents->search = " ware like \"%$this->searches%\" or FullName like \"%$this->searches%\" ";
 		}
-		//var_dump($this->parents);
+		var_dump($this->parents);
 		if($this->parents)
 		{
 			$page = $this->page;
