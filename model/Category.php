@@ -37,15 +37,15 @@ class Category extends ActiveRecord\Model
 		
 	}
 	
-	public static function findByNameCategory($region_id, $search, $category = false)
+	public static function findByNameCategory($region_id, $search, $category = "")
 	{
 		
-		if((int)$category > 0)
+		/*if((int)$category > 0)
 		{
 			$category = " and c.category_id = $category";
-		}
-		else
-			$category = "";
+		}*/
+		//else
+		//	$category = "";
 			
 		$join = "left join warez_$region_id w on (c.DirID=w.DirID )";
 		$options = array('select'=> 'c.*', 
