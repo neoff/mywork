@@ -293,7 +293,7 @@ class ControllerCategory extends Template\Template{
 	private function search()
 	{
 		$this->search=ToUTF($this->searches);
-		$catid = "";
+		$catid = " and c.parent_id is null ";
 		if($this->parents)
 			if($this->parents->grid)
 				$catid = $this->category_id;
