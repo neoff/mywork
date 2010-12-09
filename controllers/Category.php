@@ -396,7 +396,7 @@ class ControllerCategory extends Template\Template{
 		if($this->searches)
 			$options['conditions'] .= " and (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
 			
-		//print_r($options);
+		print_r($options);
 		$segment = Models\Segments::find('all', $options);
 		
 		var_dump($segment);
