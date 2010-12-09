@@ -58,8 +58,7 @@ class Warez extends ActiveRecord\Model
 			$subject = $parents->dirid;
 			$pattern = '/^\d+/';
 			preg_match($pattern, $subject,$pp);
-			if(!$pp)
-			print_r($pp);
+			if(empty($pp))
 				$sql_impl.='0'.$parents->dirid;
 		}
 		
