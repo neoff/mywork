@@ -293,10 +293,11 @@ class ControllerCategory extends Template\Template{
 	private function search()
 	{
 		$this->search=ToUTF($this->searches);
+		//$catid = " and c.parent_id is null ";
 		$catid = " and c.parent_id is null ";
-		if($this->parents)
-			if($this->parents->grid)
-				$catid = $this->category_id;
+		//if($this->parents)
+		//	if($this->parents->grid)
+		//		$catid = $this->category_id;
 		$category = Models\Category::findByNameCategory($this->region_id, $this->searches, $catid);
 		//print_r($category);
 		if(!$category)
