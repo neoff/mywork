@@ -138,7 +138,9 @@ class ControllerCategory extends Template\Template{
 			$productes_count = count(Models\Warez::getWarez($this->region_id, $this->parents, False));
 			$productes_m = Models\Warez::getWarez($this->region_id, $this->parents, $page);
 			//print_r($productes);
-			$c_name = ToUTF($this->parents->name);
+			$c_name="";
+			if(property_exists($this->parents, 'name'))
+				$c_name = ToUTF($this->parents->name);
 			
 			
 			//add params
