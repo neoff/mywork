@@ -22,7 +22,7 @@ class Category extends ActiveRecord\Model
 	{
 		if($array)
 		{
-			$join = "left join warez_$region_id w on (c.DirID=w.DirID and c.ClassID=w.ClassID and c.GrID=w.GrID )";
+			$join = "left join warez_$region_id w on (c.DirID=w.DirID )";
 			$options = array('select'=> 'c.*', 
 							'from' => 'categories as c', 
 							'joins' => $join, 
