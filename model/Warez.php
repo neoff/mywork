@@ -60,11 +60,11 @@ class Warez extends ActiveRecord\Model
 		if($parents->grid)
 			$sql_impl.=" and GrID = " .$parents->grid;
 		
-		if($parents->dirid && $parents->search)
+		/*if($parents->dirid && $parents->search)
 			$sql_impl.= " and ";
 			
 		if($parents->search)
-			$sql_impl.= $parents->search;
+			$sql_impl.= $parents->search;*/
 			
 		$sql = 'select * from `warez_' .$region_id . '` 
 				where ' . $sql_impl. $limit;
