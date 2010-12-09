@@ -116,7 +116,7 @@ class ControllerCategory extends Template\Template{
 	private function productes()
 	{
 		if($this->actions > 0 && $this->action_val)
-			$this->parents->dirid .= " and warecode in (".implode(",", $this->action_val).")";
+			$this->parents->search = " and warecode in (".implode(",", $this->action_val).")";
 		
 		if($this->searches)
 		{
