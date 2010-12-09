@@ -383,9 +383,7 @@ class ControllerCategory extends Template\Template{
 	{
 		
 		$options = array('select' => 'sc.warecode',
-						'from' => 'segment_cache sc',
-						'join'=>"",
-						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name'");
+						'from' => 'segment_cache sc');
 		
 		if($this->searches)
 		{
@@ -394,8 +392,13 @@ class ControllerCategory extends Template\Template{
 			$options['conditions'] = $options['conditions'].
 					" and (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
 		}
+		$options['conditions'] = "sc.region_id=$this->region_id and sc.segment_name='$name'";
+		if($this->searches)
+			$options['conditions'] .= " and (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
+			
 		//print_r($options);
 		$segment = Models\Segments::find('all', $options);
+		
 		var_dump($segment);
 		
 		foreach ($segment as $val)
