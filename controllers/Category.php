@@ -71,13 +71,16 @@ class ControllerCategory extends Template\Template{
 			if($this->category_id >0)
 				$this->category = Models\Category::find('all', $this->options);
 		}
-		
-		if($this->actions > 0)
-			$this->category = $this->action();
-		
-		if($this->searches)
+		if($this->searches && $this->actions > 0)
 			$this->category = $this->search();
-		
+		else 
+		{
+			if($this->actions > 0)
+				$this->category = $this->action();
+			
+			if($this->searches)
+				$this->category = $this->search();
+		}
 		//print_r($this->category);
 		//$condition = "";
 		//$categoryssss = Models\Category::getWarezAction($this->region_id, $this->action_val, $condition);
