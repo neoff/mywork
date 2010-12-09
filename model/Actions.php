@@ -21,7 +21,7 @@ class Actions extends ActiveRecord\Model
 
 class Segments extends ActiveRecord\Model
 {
-	//static $table_name = 'segment_cache';
+	static $table_name = 'segment_cache';
 	//static $primary_key = 'segment_id';
 	static $connection = CONNECTION;
 	

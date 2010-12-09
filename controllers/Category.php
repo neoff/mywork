@@ -395,8 +395,8 @@ class ControllerCategory extends Template\Template{
 					" and (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
 		}
 		//print_r($options);
-		$segment = Models\Segments::segmentWarez($options);
-			
+		$segment = Models\Segments::find('all', $options);
+		var_dump($segment);
 		
 		foreach ($segment as $val)
 		{
