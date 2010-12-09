@@ -393,7 +393,7 @@ class ControllerCategory extends Template\Template{
 			$options['conditions'] = $options['conditions'].
 					" and (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
 		}
-		//print_r($options);
+		print_r($options);
 		$segment = Models\Segments::find('all', $options);
 			
 		
