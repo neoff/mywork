@@ -416,7 +416,8 @@ class ControllerCategory extends Template\Template{
 		{
 			$categorys = array();
 		}
-		//$this->parent_node();
+		if(!$this->searches)
+			$this->parent_node();
 		return $categorys;
 	}
 	/**
