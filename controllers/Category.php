@@ -126,7 +126,7 @@ class ControllerCategory extends Template\Template{
 		if($this->searches)
 		{
 			$this->parent_node();
-			$this->parents->dirid .= " and ware like \"%$this->searches%\" or FullName like \"%$this->searches%\" ";
+			$this->parents->dirid .= " and (ware like \"%$this->searches%\" or FullName like \"%$this->searches%\" )";
 		}
 		//var_dump($this->parents);
 		if($this->parents)
