@@ -71,10 +71,12 @@ class ControllerCategory extends Template\Template{
 			if($this->category_id >0)
 				$this->category = Models\Category::find('all', $this->options);
 		}
-		if($this->searches)
-			$this->category = $this->search();
+		
 		if($this->actions > 0)
 			$this->category = $this->action();
+		
+		if($this->searches)
+			$this->category = $this->search();
 		
 		//print_r($this->category);
 		//$condition = "";
