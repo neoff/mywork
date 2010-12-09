@@ -71,16 +71,13 @@ class ControllerCategory extends Template\Template{
 			if($this->category_id >0)
 				$this->category = Models\Category::find('all', $this->options);
 		}
-		if($this->searches && $this->actions > 0)
+		if($this->searches)
 			$this->category = $this->search();
-		else 
-		{
-			if($this->actions > 0)
-				$this->category = $this->action();
 			
-			if($this->searches)
-				$this->category = $this->search();
-		}
+		if($this->actions > 0)
+			$this->category = $this->action();
+			
+			
 		//print_r($this->category);
 		//$condition = "";
 		//$categoryssss = Models\Category::getWarezAction($this->region_id, $this->action_val, $condition);
@@ -376,12 +373,26 @@ class ControllerCategory extends Template\Template{
 			return $categorys;
 		}
 	}
+	
+	/**
+	 * собирает товары участвующие в акции
+	 * в массив $this->action_val
+	 * @param unknown_type $name
+	 */
 	private function putActions($name)
 	{
+		$options = array('select' => 'warecode',
+						'conditions' =>"region_id=$this->region_id and segment_name='$name'");
 		
-		$segment = Models\Segments::find('all', 
-							array('select' => 'warecode', 
-								'conditions' =>"region_id=$this->region_id and segment_name='$name'"));
+		if($this->searches)
+		{
+			$search=iconv ("UTF-8",'CP1251', $this->searches );
+			$options['join'] = "left join warez_$rhis->region_id w on (warecode=w.warecode)";
+			$options['conditions'] = $options['conditions'].
+					" and (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
+		}
+		
+		$segment = Models\Segments::find('all', $options);
 			
 		
 		foreach ($segment as $val)
