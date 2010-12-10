@@ -306,6 +306,7 @@ class ControllerCategory extends Template\Template{
 	{
 		$this->search = $this->searches;
 		$search = $this->searches;
+		print $_GET['search'][0];exit();
 		if($search[0]!="%")
 		{
 			//print $search;exit();
