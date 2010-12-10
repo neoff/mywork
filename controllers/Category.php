@@ -131,7 +131,7 @@ class ControllerCategory extends Template\Template{
 			{
 				$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
 				$search = html_entity_decode($search,null,'UTF-8');
-				$search = iconv ("UTF-8",'CP1251', $this->searches );
+				//$search = iconv ("UTF-8",'CP1251', $this->searches );
 			}
 			$this->parents->dirid .= " and (ware like \"%$search%\" or FullName like \"%$search%\" )";
 		}
@@ -309,7 +309,7 @@ class ControllerCategory extends Template\Template{
 		{
 			$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
 			$search = html_entity_decode($search,null,'UTF-8');
-			$search=iconv ("UTF-8",'CP1251', $this->searches );
+			//$search=iconv ("UTF-8",'CP1251', $this->searches );
 		}
 			
 		//$catid = " and c.parent_id is null ";
@@ -407,7 +407,7 @@ class ControllerCategory extends Template\Template{
 			{
 				$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
 				$search = html_entity_decode($search,null,'UTF-8');
-				$search=iconv ("UTF-8",'CP1251', $this->searches );
+				//$search=iconv ("UTF-8",'CP1251', $this->searches );
 			}
 			$options['joins'] = "left join warez_$this->region_id w on (sc.warecode=w.warecode)";
 			$options['conditions'] = $options['conditions'].
