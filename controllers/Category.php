@@ -128,7 +128,11 @@ class ControllerCategory extends Template\Template{
 			$this->parent_node();
 			$search = $this->searches;
 			if($search[0]!="%")
+			{
+				$search = ereg_replace('%([[:alnum:]]{2})', '&#x\1;',$search);
+				$search = html_entity_decode($search,null,'UTF-8');
 				$search = iconv ("UTF-8",'CP1251', $this->searches );
+			}
 			$this->parents->dirid .= " and (ware like \"%$search%\" or FullName like \"%$search%\" )";
 		}
 		//var_dump($this->parents);
@@ -302,7 +306,12 @@ class ControllerCategory extends Template\Template{
 		$this->search = $this->searches;
 		$search = $this->searches;
 		if($search[0]!="%")
+		{
+			$search = ereg_replace('%([[:alnum:]]{2})', '&#x\1;',$search);
+			$search = html_entity_decode($search,null,'UTF-8');
 			$search=iconv ("UTF-8",'CP1251', $this->searches );
+		}
+			
 		//$catid = " and c.parent_id is null ";
 		$catid = " and c.parent_id is null ";
 		if($this->parents)
@@ -395,7 +404,11 @@ class ControllerCategory extends Template\Template{
 		{
 			$search = $this->searches;
 			if($search[0]!="%")
+			{
+				$search = ereg_replace('%([[:alnum:]]{2})', '&#x\1;',$search);
+				$search = html_entity_decode($search,null,'UTF-8');
 				$search=iconv ("UTF-8",'CP1251', $this->searches );
+			}
 			$options['joins'] = "left join warez_$this->region_id w on (sc.warecode=w.warecode)";
 			$options['conditions'] = $options['conditions'].
 					" and (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
