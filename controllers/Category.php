@@ -129,8 +129,9 @@ class ControllerCategory extends Template\Template{
 			$search = $this->searches;
 			if($search[0]!="%")
 			{
-				$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
-				$search = html_entity_decode($search,null,'UTF-8');
+				$entities = array('%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%2B', '%24', '%2C', '%2F', '%3F', '%25', '%23', '%5B', '%5D');
+				$replacements = array('!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "/", "?", "%", "#", "[", "]");
+				$search = str_replace($entities, $replacements, urlencode($search));
 				//$search = iconv ("UTF-8",'CP1251', $this->searches );
 			}
 			$this->parents->dirid .= " and (ware like \"%$search%\" or FullName like \"%$search%\" )";
@@ -307,8 +308,9 @@ class ControllerCategory extends Template\Template{
 		$search = $this->searches;
 		if($search[0]!="%")
 		{
-			$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
-			$search = html_entity_decode($search,null,'UTF-8');
+			$entities = array('%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%2B', '%24', '%2C', '%2F', '%3F', '%25', '%23', '%5B', '%5D');
+			$replacements = array('!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "/", "?", "%", "#", "[", "]");
+			$search = str_replace($entities, $replacements, urlencode($search));
 			//$search=iconv ("UTF-8",'CP1251', $this->searches );
 		}
 			
@@ -405,8 +407,9 @@ class ControllerCategory extends Template\Template{
 			$search = $this->searches;
 			if($search[0]!="%")
 			{
-				$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
-				$search = html_entity_decode($search,null,'UTF-8');
+				$entities = array('%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%2B', '%24', '%2C', '%2F', '%3F', '%25', '%23', '%5B', '%5D');
+				$replacements = array('!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "/", "?", "%", "#", "[", "]");
+				$search = str_replace($entities, $replacements, urlencode($search));
 				//$search=iconv ("UTF-8",'CP1251', $this->searches );
 			}
 			$options['joins'] = "left join warez_$this->region_id w on (sc.warecode=w.warecode)";
