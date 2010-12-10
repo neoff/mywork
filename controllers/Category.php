@@ -311,7 +311,7 @@ class ControllerCategory extends Template\Template{
 			//print $search;exit();
 			//$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
 			//$search = html_entity_decode($search,null,'UTF-8');
-			$search=iconv ("UTF-8",'CP1251', $search );
+			//$search=iconv ("UTF-8",'CP1251', $search );
 		}
 			
 		//$catid = " and c.parent_id is null ";
