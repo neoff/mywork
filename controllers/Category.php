@@ -129,7 +129,7 @@ class ControllerCategory extends Template\Template{
 			$search = $this->searches;
 			if($search[0]!="%")
 			{
-				$search = ereg_replace('%([[:alnum:]]{2})', '&#x\1;',$search);
+				$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
 				$search = html_entity_decode($search,null,'UTF-8');
 				$search = iconv ("UTF-8",'CP1251', $this->searches );
 			}
@@ -307,7 +307,7 @@ class ControllerCategory extends Template\Template{
 		$search = $this->searches;
 		if($search[0]!="%")
 		{
-			$search = ereg_replace('%([[:alnum:]]{2})', '&#x\1;',$search);
+			$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
 			$search = html_entity_decode($search,null,'UTF-8');
 			$search=iconv ("UTF-8",'CP1251', $this->searches );
 		}
@@ -405,7 +405,7 @@ class ControllerCategory extends Template\Template{
 			$search = $this->searches;
 			if($search[0]!="%")
 			{
-				$search = ereg_replace('%([[:alnum:]]{2})', '&#x\1;',$search);
+				$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
 				$search = html_entity_decode($search,null,'UTF-8');
 				$search=iconv ("UTF-8",'CP1251', $this->searches );
 			}
