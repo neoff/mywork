@@ -127,13 +127,13 @@ class ControllerCategory extends Template\Template{
 		{
 			$this->parent_node();
 			$search = $this->searches;
-			if($search[0]!="%")
-			{
+			//if($search[0]!="%")
+			//{
 				//print $search;exit();
 				//$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
 				//$search = html_entity_decode($search,null,'UTF-8');
-				//$search = iconv ("UTF-8",'CP1251', $search );
-			}
+				$search = iconv ("UTF-8",'CP1251', $search );
+			//}
 			$this->parents->dirid .= " and (ware like \"%$search%\" or FullName like \"%$search%\" )";
 		}
 		//var_dump($this->parents);
@@ -306,20 +306,14 @@ class ControllerCategory extends Template\Template{
 	{
 		$this->search = $this->searches;
 		$search = $this->searches;
-		try 
-		{
-			$search=iconv ("UTF-8",'CP1251', $search );
-		} 
-		catch (Exception $e) 
-		{
-		}
-		if($search[0]!="%")
-		{
+		
+		//if($search[0]!="%")
+		//{
 			//print $search;exit();
 			//$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
 			//$search = html_entity_decode($search,null,'UTF-8');
-			//$search=iconv ("UTF-8",'CP1251', $search );
-		}
+			$search=iconv ("UTF-8",'CP1251', $search );
+		//}
 			
 		//$catid = " and c.parent_id is null ";
 		$catid = " and c.parent_id is null ";
@@ -412,13 +406,13 @@ class ControllerCategory extends Template\Template{
 		if($this->searches)
 		{
 			$search = $this->searches;
-			if($search[0]!="%")
-			{
+			//if($search[0]!="%")
+			//{
 				
 				//$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
 				//$search = html_entity_decode($search,null,'UTF-8');
-				//$search=iconv ("UTF-8",'CP1251', $search );
-			}
+				$search=iconv ("UTF-8",'CP1251', $search );
+			//}
 			$options['joins'] = "left join warez_$this->region_id w on (sc.warecode=w.warecode)";
 			$options['conditions'] = $options['conditions'].
 					" and (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
