@@ -306,7 +306,13 @@ class ControllerCategory extends Template\Template{
 	{
 		$this->search = $this->searches;
 		$search = $this->searches;
-		print $_GET['search'][0];exit();
+		try 
+		{
+			$search=iconv ("UTF-8",'CP1251', $search );
+		} 
+		catch (Exception $e) 
+		{
+		}
 		if($search[0]!="%")
 		{
 			//print $search;exit();
