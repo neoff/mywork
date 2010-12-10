@@ -129,9 +129,9 @@ class ControllerCategory extends Template\Template{
 			$search = $this->searches;
 			if($search[0]!="%")
 			{
-				print $search;exit();
-				$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
-				$search = html_entity_decode($search,null,'UTF-8');
+				//print $search;exit();
+				//$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
+				//$search = html_entity_decode($search,null,'UTF-8');
 				$search = iconv ("UTF-8",'CP1251', $search );
 			}
 			$this->parents->dirid .= " and (ware like \"%$search%\" or FullName like \"%$search%\" )";
@@ -308,9 +308,9 @@ class ControllerCategory extends Template\Template{
 		$search = $this->searches;
 		if($search[0]!="%")
 		{
-			print $search;exit();
-			$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
-			$search = html_entity_decode($search,null,'UTF-8');
+			//print $search;exit();
+			//$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
+			//$search = html_entity_decode($search,null,'UTF-8');
 			$search=iconv ("UTF-8",'CP1251', $search );
 		}
 			
@@ -408,8 +408,8 @@ class ControllerCategory extends Template\Template{
 			if($search[0]!="%")
 			{
 				
-				$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
-				$search = html_entity_decode($search,null,'UTF-8');
+				//$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
+				//$search = html_entity_decode($search,null,'UTF-8');
 				$search=iconv ("UTF-8",'CP1251', $search );
 			}
 			$options['joins'] = "left join warez_$this->region_id w on (sc.warecode=w.warecode)";
