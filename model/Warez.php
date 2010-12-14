@@ -47,7 +47,7 @@ class Warez extends ActiveRecord\Model
 	{
 		//print $page;
 		//var_dump($parents);
-		$x = new ReflectionClass($parents);
+		$x = new \ReflectionClass($parents);
 		print_r($x->getProperties());
 		$limit="";
 		if($page!==False)
