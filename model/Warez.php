@@ -47,7 +47,7 @@ class Warez extends ActiveRecord\Model
 	{
 		//print $page;
 		//var_dump($parents);
-		print_r(get_object_vars( $parents ));
+		print_r(get_class_vars( $parents ));
 		$limit="";
 		if($page!==False)
 			$limit = " limit 20 offset $page";
