@@ -39,7 +39,7 @@ class ControllerCategory extends Template\Template{
 	private $actions;
 	private $action_val = array();
 	private $searches;
-	protected $parents;
+	private $parents;
 	private $category;
 	private $options;
 	private $page;
