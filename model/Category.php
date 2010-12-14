@@ -18,12 +18,12 @@ class Category extends ActiveRecord\Model
 	static $primary_key = 'category_id';
 	static $connection = CONNECTION;
 	
-	public static function getWarezAction($region_id, $array, $condition = "", $join="")
+	public static function getWarezAction($region_id, $array, $condition = "")
 	{
 		if($array)
 		{
 			//print implode(",", $array);
-			$join = "left join warez_$region_id w on (c.DirID=w.DirID $join)";
+			$join = "left join warez_$region_id w on (c.DirID=w.DirID )";
 			$options = array('select'=> 'c.*', 
 							'from' => 'categories as c', 
 							'joins' => $join, 
@@ -37,7 +37,7 @@ class Category extends ActiveRecord\Model
 		
 	}
 	
-	public static function findByNameCategory($region_id, $search, $category = "", $join="")
+	public static function findByNameCategory($region_id, $search, $category = "")
 	{
 		
 		/*if((int)$category > 0)
@@ -47,7 +47,7 @@ class Category extends ActiveRecord\Model
 		//else
 		//	$category = "";
 			
-		$join = "left join warez_$region_id w on (c.DirID=w.DirID $join)";
+		$join = "left join warez_$region_id w on (c.DirID=w.DirID )";
 		$options = array('select'=> 'c.*', 
 						'from' => 'categories as c', 
 						'joins' => $join, 
