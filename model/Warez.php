@@ -46,14 +46,14 @@ class Warez extends ActiveRecord\Model
 	public static function getWarez($region_id, $parents, $page = False)
 	{
 		//print $page;
-		var_dump($parents);
-		var_dump(isset($parents->asdasdasdasd));
+		//var_dump($parents);
+		//var_dump(isset($parents->asdasdasdasd));
 		$limit="";
 		if($page!==False)
 			$limit = " limit 20 offset $page";
 		$sql_impl="";
 		
-		if($parents->dirid)
+		if(isset($parents->dirid))
 		{
 			$sql_impl.='DirID = ';
 			
@@ -65,13 +65,11 @@ class Warez extends ActiveRecord\Model
 				
 			$sql_impl .= $parents->dirid;
 		}
-		if(property_exists($parents, 'classid'))
-			if($parents->classid)
-				$sql_impl.="  and ClassID = ". $parents->classid;
+		if(isset($parents->classid))
+			$sql_impl.="  and ClassID = ". $parents->classid;
 			
-		if(property_exists($parents, 'grid'))
-			if($parents->grid)
-				$sql_impl.=" and GrID = " .$parents->grid;
+		if(isset($parents->grid))
+			$sql_impl.=" and GrID = " .$parents->grid;
 		
 		/*if($parents->dirid && $parents->search)
 			$sql_impl.= " and ";
