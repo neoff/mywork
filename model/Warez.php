@@ -47,6 +47,7 @@ class Warez extends ActiveRecord\Model
 	{
 		//print $page;
 		var_dump($parents);
+		unset($parents->classid);
 		var_dump(isset($parents->classid));
 		$limit="";
 		if($page!==False)
