@@ -46,7 +46,7 @@ class Warez extends ActiveRecord\Model
 	public static function getWarez($region_id, $parents, $page = False)
 	{
 		//print $page;
-		//var_dump($parents);
+		var_dump($parents);
 		//var_dump(isset($parents->asdasdasdasd));
 		$limit="";
 		if($page!==False)
