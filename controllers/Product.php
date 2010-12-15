@@ -39,7 +39,7 @@ class ControllerProduct extends Template\Template{
 		$this->product->addChild("region_id", $region_id);
 		$this->product->addChild("title", ToUTF($productes->name));
 		$imgs = $this->product->addChild("images");
-		$img = $imgs->addChild("img", "/Pdb/$product_id.jpg");
+		$img = $imgs->addChild("img", "http://www.mvideo.ru/Pdb/$product_id.jpg");
 		$img->addAttribute("width", "180");
 		$img->addAttribute("height", "180");
 		$this->product->addChild("inet_price", $productes->inetprice);
