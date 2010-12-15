@@ -66,10 +66,12 @@ class Warez extends ActiveRecord\Model
 			$sql_impl .= $parents->dirid;
 		}
 		if(isset($parents->classid))
-			$sql_impl.="  and ClassID = ". $parents->classid;
+			if($parents->classid)
+				$sql_impl.="  and ClassID = ". $parents->classid;
 			
 		if(isset($parents->grid))
-			$sql_impl.=" and GrID = " .$parents->grid;
+			if($parents->grid)
+				$sql_impl.=" and GrID = " .$parents->grid;
 		
 		/*if($parents->dirid && $parents->search)
 			$sql_impl.= " and ";
