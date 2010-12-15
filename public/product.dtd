@@ -25,7 +25,7 @@
 <!ELEMENT author (#PCDATA)>
 <!ELEMENT city (#PCDATA)>
 <!ELEMENT text (#PCDATA)>
-<!ELEMENT options ((option+))>
+<!ELEMENT options ((option*))>
 <!ELEMENT option ((name, value))>
 <!ELEMENT name (#PCDATA)>
 <!ELEMENT value (#PCDATA)>
