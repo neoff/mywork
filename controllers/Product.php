@@ -40,6 +40,8 @@ class ControllerProduct extends Template\Template{
 		$this->product->addChild("title", ToUTF($productes->name));
 		$imgs = $this->product->addChild("images");
 		$img = $imgs->addChild("img", "/Pdb/$product_id.jpg");
+		$img->addAttribute("width", "180");
+		$img->addAttribute("height", "180");
 		$this->product->addChild("inet_price", $productes->inetprice);
 		$this->product->addChild("old_price", $productes->oldprice);
 		$this->product->addChild("price", $productes->price);
