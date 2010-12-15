@@ -37,7 +37,7 @@ class Shops extends ActiveRecord\Model
 		if($this->map_latlng)
 		{
 			$coord = explode(",", $this->map_latlng);
-			if(count($coord)==2) list($this->longitude, $this->latitude) = array($coord[0], $coord[1]);
+			if(count($coord)==2) list($this->latitude,$this->longitude ) = array($coord[0], $coord[1]);
 		}
 	}
 }
