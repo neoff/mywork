@@ -4,10 +4,15 @@
 <!ELEMENT categories ((category_id, category_name))>
 <!ELEMENT category_id (#PCDATA)>
 <!ELEMENT category_name (#PCDATA)>
-<!ELEMENT product ((product_id, region_id*, title, inet_price, old_price, price, rating, reviews_num, description, options*, aks*, reviews*, image* ))>
+<!ELEMENT product ((product_id, region_id*, title, images*, movies*, inet_price, old_price, price, rating, reviews_num, description, options*, aks*, reviews*, image* ))>
 <!ELEMENT product_id (#PCDATA)>
 <!ELEMENT region_id (#PCDATA)>
 <!ELEMENT title (#PCDATA)>
+<!ELEMENT images ((img*))>
+<!ELEMENT img (#PCDATA)>
+<!ATTLIST img width CDATA #REQUIRED height CDATA #REQUIRED >
+<!ELEMENT movies ((video*))>
+<!ELEMENT video (#PCDATA)>
 <!ELEMENT inet_price (#PCDATA)>
 <!ELEMENT old_price (#PCDATA)>
 <!ELEMENT price (#PCDATA)>
