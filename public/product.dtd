@@ -10,7 +10,7 @@
 <!ELEMENT title (#PCDATA)>
 <!ELEMENT images ((img*))>
 <!ELEMENT img (#PCDATA)>
-<!ATTLIST img width CDATA #REQUIRED height CDATA #REQUIRED >
+<!ATTLIST img width CDATA #REQUIRED height CDATA #REQUIRED main CDATA "" >
 <!ELEMENT movies ((video*))>
 <!ELEMENT video (#PCDATA)>
 <!ELEMENT inet_price (#PCDATA)>

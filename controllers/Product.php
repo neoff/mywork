@@ -43,6 +43,7 @@ class ControllerProduct extends Template\Template{
 		$img = $imgs->addChild("img", "http://www.mvideo.ru/Pdb/$product_id.jpg");
 		$img->addAttribute("width", "180");
 		$img->addAttribute("height", "180");
+		$img->addAttribute("main", "1");
 		
 		$mov = $this->product->addChild("movies");
 		//$mov->addChild("video", "http://www.mvideo.ru/Pdb/$product_id.jpg");
