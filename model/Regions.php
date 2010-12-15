@@ -31,7 +31,7 @@ class Regions extends ActiveRecord\Model
 		if($this->center)
 		{
 			$coord = explode(",", $this->center);
-			if(count($coord)==2) list($this->longitude, $this->latitude) = array($coord[0], $coord[1]);
+			if(count($coord)==2) list($this->latitude, $this->longitude) = array($coord[0], $coord[1]);
 		}
 	}
 }
