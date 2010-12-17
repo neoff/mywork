@@ -49,7 +49,11 @@ class ControllerProduct extends Template\Template{
 		//$mov->addChild("video", "http://www.mvideo.ru/Pdb/$product_id.jpg");
 		
 		$this->product->addChild("inet_price", $productes->inetprice);
-		$this->product->addChild("old_price", $productes->oldprice);
+		if($productes->oldprice)
+			$old_price = $productes->oldprice;
+		else
+			$old_price = $productes->price;
+		$this->product->addChild("old_price", $old_price);
 		$this->product->addChild("price", $productes->price);
 
 		$productes->getRatingRev();
