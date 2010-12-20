@@ -39,7 +39,7 @@ class ControllerShops extends Template\Template{
 				if(count($c)>1) 
 				{
 					foreach ($c as $v) {
-						$metro->addChild("station", ToUTF($v));
+						$metro->addChild("station", preg_replace("/^\s+?/i", "", ToUTF($v)));
 					}
 				}
 				else $metro->addChild("station", ToUTF($val->metro));
