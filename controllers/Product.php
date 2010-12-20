@@ -18,7 +18,7 @@ class ControllerProduct extends Template\Template{
 	
 	public function index( $array )
 	{
-		//print_r($array);
+		print_r($array);
 		list($region_id, $product_id, $ask, $reviews, $page)=$array;
 		
 		$options = array("_warecode"=>$product_id);
