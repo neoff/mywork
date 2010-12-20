@@ -91,11 +91,11 @@ class ControllerProduct extends Template\Template{
 						$groups_m=Models\Groups::find('fist', array("grid"=>$val->grid));
 						$gr = $ask->addChild("group");
 						$gr->addAttribute("id", $val->grid);
-						$gr->addAttribute("title", ToUTF($groups_m->grname));
+						$gr->addAttribute("title", StripTags($groups_m->grname));
 					}
 					$prod = $gr->addChild("product");
 					$prod->addChild("product_id", $val->warecode);
-					$prod->addChild("title", ToUTF($val->ware));
+					$prod->addChild("title", StripTags($val->ware));
 					
 					$prod->addChild("inet_price", $val->inetprice);
 					$prod->addChild("old_price", $val->oldprice);
