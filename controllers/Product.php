@@ -72,8 +72,8 @@ class ControllerProduct extends Template\Template{
 				foreach ($options_m as $key => $val)
 				{
 					$option = $options->addChild("option");
-					$option->addChild("name", ToUTF($val->prname));
-					$option->addChild("value", ToUTF($val->prval));
+					$option->addChild("name", StripTags($val->prname));
+					$option->addChild("value", StripTags($val->prval));
 				}
 			//}
 			if($ask)
