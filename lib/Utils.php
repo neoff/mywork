@@ -9,8 +9,8 @@
 	}
 	
 	function StripTags($string) {
-		$patterns = array ("/<br\s*?\/?>/", "/&nbsp;/", "/(&laquo;|&raquo;)/", "/&/", "/(<|>)/" );
-		$replacements = array ("\n", " ", '"', " and ", "" );
+		$patterns = array ("/<br\s*?\/?>/", "/\\\"/", "/&nbsp;/", "/(&laquo;|&raquo;)/", "/&/", "/(<|>)/" );
+		$replacements = array ("\n", '"', " ", '"', " and ", "" );
 		$string = preg_replace ( $patterns, $replacements, $string );
 		$string = html_entity_decode ( $string );
 		$string = strip_tags ( $string );
