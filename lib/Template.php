@@ -77,7 +77,7 @@ abstract class Template {
 		$doc=$this->xml->asXML();
 		
 		
-		//print preg_replace("/></", ">\n<", $doc);
+		print preg_replace("/></", ">\n<", $doc);
 		try
 		{
 			$dom = new \DOMDocument;
