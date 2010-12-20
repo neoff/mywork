@@ -24,9 +24,9 @@ class ControllerProduct extends Template\Template{
 		$options = array("_warecode"=>$product_id);
 		list($where, $array) = Models\Warez::SetParam($region_id, $options);
 		$productes = Models\Warez::sql($region_id, $where, $array);
-		$productes = $productes[0];
+		//$productes = $productes[0];
 		
-		//print_r($productes);
+		print_r($productes);
 		$options = array("dirid"=>$productes->dirid, "classid"=>$productes->classid, "grid"=>$productes->grid);
 		$category = Models\Category::find('fist', $options);
 
