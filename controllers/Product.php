@@ -79,7 +79,7 @@ class ControllerProduct extends Template\Template{
 			$ask = $this->product->addChild("aks");
 			//$ask_m=array();
 			$ask_m=Models\Link::getAccess($region_id, $product_id);
-			print_r($ask_m);
+			//print_r($ask_m);
 			$group = "";
 			foreach ($ask_m as $key => $val)
 			{
