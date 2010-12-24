@@ -140,7 +140,7 @@ class Link extends ActiveRecord\Model{
 		//select * from linkw inner join warez_1 on (linkw.warecodel = warez_1.warecode) where warecodem = 11032149;
 		$join = "inner join warez_$region_id w on (warecodel = w.warecode) where warecodem = $code";
 		$sel = array('select' => '*','joins'=> $join, 'order' => 'w.grid asc');
-		if($limit)
+		if($limit===true)
 			$sel['group']='w.grid';
 		return self::all($sel);
 		
