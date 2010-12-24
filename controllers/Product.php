@@ -81,9 +81,10 @@ class ControllerProduct extends Template\Template{
 				$ask = $this->product->addChild("aks");
 				//$ask_m=array();
 				$limit = true;
-				if($ask>1)
+				if($ask==2)
 					$limit = false;
-				//var_dump($limit);
+				var_dump($ask);
+				var_dump($limit);
 				$ask_m=Models\Link::getAccess($region_id, $product_id, $limit);
 				//print_r($ask_m);
 				$group = "";
