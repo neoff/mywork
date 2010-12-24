@@ -142,7 +142,7 @@ class Link extends ActiveRecord\Model{
 		$sel = array('select' => '*','joins'=> $join, 'order' => 'w.grid asc');
 		if($limit===true)
 			$sel['group']='w.grid';
-		//var_dump($sel);
+		var_dump($sel);
 		return self::all($sel);
 		
 		

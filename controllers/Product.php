@@ -83,7 +83,7 @@ class ControllerProduct extends Template\Template{
 				$limit = true;
 				if($ask>1)
 					$limit = false;
-				//var_dump($limit);
+				var_dump($limit);
 				$ask_m=Models\Link::getAccess($region_id, $product_id, $limit);
 				//print_r($ask_m);
 				$group = "";
