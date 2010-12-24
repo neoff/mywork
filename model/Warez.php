@@ -136,10 +136,13 @@ class Link extends ActiveRecord\Model{
 	public $rating = 0.0;
 	public $reviews = 0;
 	
-	public static function getAccess($region_id, $code){
+	public static function getAccess($region_id, $code, $limit=true){
 		//select * from linkw inner join warez_1 on (linkw.warecodel = warez_1.warecode) where warecodem = 11032149;
 		$join = "inner join warez_$region_id w on (warecodel = w.warecode) where warecodem = $code";
-		return self::all(array('select' => '*','joins'=> $join, 'order' => 'w.grid asc'));
+		$sel = array('select' => '*','joins'=> $join, 'order' => 'w.grid asc');
+		if($limit)
+			$sel['group']='w.grid';
+		return self::all($sel);
 		
 		
 	}
