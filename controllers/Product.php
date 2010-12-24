@@ -98,7 +98,13 @@ class ControllerProduct extends Template\Template{
 					$prod->addChild("title", StripTags($val->ware));
 					
 					$prod->addChild("inet_price", $val->inetprice);
-					$prod->addChild("old_price", $val->oldprice);
+					
+					if($val->oldprice)
+						$old_price = $val->oldprice;
+					else
+						$old_price = $val->price;
+					$prod->addChild("old_price", $old_price);
+					
 					$prod->addChild("price", $val->price);
 					
 					$val->getRatingRev();
