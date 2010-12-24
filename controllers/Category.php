@@ -96,25 +96,25 @@ class ControllerCategory extends Template\Template{
 				{
 					$ids = new SetId($val->dirid, $val->classid, $val->grid);
 					$amount = count(Models\Warez::getWarez($this->region_id, $ids));
-				
-					if($this->actions > 0)
-					{
-						$amount = count(Models\Warez::find_by_sql('select * from `warez_' .$this->region_id . '` 
-										where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid  ));
-					}
-						
-					$category = $this->categories->addChild("category");
-					$category->addChild("category_id", $val->category_id);
-					$category->addChild("category_name", ToUTF($val->name));
-					$category->addChild("amount", $amount); 
-					///imgs/catalog/ico/back/11_254
-					if($this->category_id < 100)
-						$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/dir_$val->dirid.gif"); #TODO откуда брать иконку категории???
-					else 
-						$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/ico/back/".$val->dirid."_".$val->classid.".jpg");
-					$icon->addAttribute("width", "50");
-					$icon->addAttribute("height", "50");
 				}
+				if($this->actions > 0)
+				{
+					$amount = count(Models\Warez::find_by_sql('select * from `warez_' .$this->region_id . '` 
+									where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid  ));
+				}
+					
+				$category = $this->categories->addChild("category");
+				$category->addChild("category_id", $val->category_id);
+				$category->addChild("category_name", ToUTF($val->name));
+				$category->addChild("amount", $amount); 
+				///imgs/catalog/ico/back/11_254
+				if($this->category_id < 100)
+					$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/dir_$val->dirid.gif"); #TODO откуда брать иконку категории???
+				else 
+					$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/ico/back/".$val->dirid."_".$val->classid.".jpg");
+				$icon->addAttribute("width", "50");
+				$icon->addAttribute("height", "50");
+				
 			}
 		}
 		else
