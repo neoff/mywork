@@ -110,10 +110,10 @@ class ControllerCategory extends Template\Template{
 				///imgs/catalog/ico/back/11_254
 				if($this->category_id < 100)
 					//$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/dir_$val->dirid.gif"); #TODO откуда брать иконку категории???
-					$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/img/".$val->dirid.".jpg");
+					$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$val->dirid.".jpg");
 				else 
 					//$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/ico/back/".$val->dirid."_".$val->classid.".jpg");
-					$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
+					$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
 				
 				$icon->addAttribute("width", "180");
 				$icon->addAttribute("height", "180");
@@ -526,7 +526,7 @@ class ControllerCategory extends Template\Template{
 			$category->addChild("category_id", $key);
 			$category->addChild("category_name", ToUTF($value['name']));
 			$category->addChild("amount", $amount); 
-			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/img/s$key.jpg"); #TODO откуда брать иконку категории???
+			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/s$key.jpg"); #TODO откуда брать иконку категории???
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");
 		}
