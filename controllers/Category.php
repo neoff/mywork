@@ -363,11 +363,16 @@ class ControllerCategory extends Template\Template{
 				foreach (self::$GlobalConfig['smenu'] as $key => $value) {
 					if(in_array($this->parents->dirid, self::$GlobalConfig['smenu'][$key]['dirs']))
 					{
-						$cat_parrent_id = ToUTF($key);
-						print_r(count($value['dirs']));
-						print $cat_parrent_id;
-						$cat_parrent_name = ToUTF(self::$GlobalConfig['smenu'][$key]['name']);
-						break;
+						if(count($value['dirs'])!=1)
+						{
+							$cat_parrent_id = ToUTF($key);
+							$cat_parrent_name = ToUTF(self::$GlobalConfig['smenu'][$key]['name']);
+							break;
+						}
+						else 
+						{
+							break;
+						}
 					}
 					
 				}
