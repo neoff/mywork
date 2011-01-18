@@ -135,6 +135,7 @@ class ControllerCategory extends Template\Template{
 				$cc = 0;
 				foreach($vCount as $vk=>$vc)
 				{
+					print $vc."<br>";
 					$cnt = $this->amount($vc);
 					if($cnt == 1 )
 					{
