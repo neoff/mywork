@@ -592,6 +592,7 @@ class ControllerCategory extends Template\Template{
 									array('parent_id is null and dirid in (?)', $value['dirs'])
 									));
 			$amount = count($am);
+			$id = $key;
 			if($amount == 1 )
 			{
 				#$val = Models\Category::find('first',array('parent_id' => $value['dirs']));
@@ -609,7 +610,7 @@ class ControllerCategory extends Template\Template{
 			$category->addChild("category_id", $key);
 			$category->addChild("category_name", ToUTF($value['name']));
 			$category->addChild("amount", $amount); 
-			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/s$key.jpg"); #TODO откуда брать иконку категории???
+			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/s$id.jpg"); #TODO откуда брать иконку категории???
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");
 		}
