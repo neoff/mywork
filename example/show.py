@@ -143,7 +143,9 @@ class HtmlWindow(wx.html.HtmlWindow):
 	Url = "http://www-test.corp.mvideo.ru/mobile/?%s"
 	xp = xmlParser()
 	
-	
+		
+
+		
 	def OnLinkClicked(self, link):
 		links = link.GetHref()
 		if self.params['region_id'] == 0:
@@ -169,12 +171,46 @@ class HtmlWindow(wx.html.HtmlWindow):
 		print self.Url % link
 		return f.read()
 
+class Form1(wx.Panel):
+	def __init__(self, parent):
+		#self.log = log
+		wx.Panel.__init__(self, parent, -1)
+
+		# Set up some basic element. Placement is a bit crude as this
+		# is really an event handling demo! It would also be a good idea
+		# to define constants for the IDs!
+
+		
+
 
 class MyFrame(wx.Frame):
 	""" We simply derive a new class of Frame. """
 	def __init__(self, parent, title):
-		wx.Frame.__init__(self, parent, title=title, size=(320,480))
+		self.parent = parent
+		self.frame = wx.Frame.__init__(self, parent, title=title, size=(320,480))
+		
+		#self.CreateStatusBar()
+		#self.st = self.SetStatusText
+		#self.st("This is the statusbar")
+		
 		self.control = HtmlWindow(self)
+		
+		
+		menu = wx.Menu()
+		menu.Append(wx.ID_ABOUT, "&About",
+					"More information about this program")
+		menu.AppendSeparator()
+		menu.Append(wx.ID_EXIT, "E&xit", "Terminate the program")
+		menuBar = wx.MenuBar()
+		menuBar.Append(menu, "&File");
+		self.SetMenuBar(menuBar)
+
+		wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
+		wx.EVT_MENU(self, wx.ID_EXIT,  self.TimeToQuit)
+		
+		
+		
+		
 		#grid = wx.HTMLWindow(self)
 		self.toPage = ""
 		
@@ -183,7 +219,19 @@ class MyFrame(wx.Frame):
 		#proxies = {'http': 'http://isa-wan:8080/'}
 		#self.opener = urllib.FancyURLopener(proxies)
 		self.getUrl()
-		
+
+	def OnAbout(self, event):
+		#dlg = wx.MessageDialog(self, "This sample program shows off\n"
+		#					  "frames, menus, statusbars, and this\n"
+		#					  "message dialog.",
+		#					  "About Me", wx.OK | wx.ICON_INFORMATION)
+		#dlg.ShowModal()
+		#dlg.Destroy()
+		Form1(self.frame)
+
+
+	def TimeToQuit(self, event):
+		self.Close(True)
 
 	
 	def getUrl(self, data = ""):
