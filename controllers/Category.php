@@ -594,6 +594,7 @@ class ControllerCategory extends Template\Template{
 			if($amount == 1 )
 			{
 				$val = Models\Category::find('first',array('parent_id' => $key));
+				print_r($val);
 				$amount = $this->amount($val);
 				$key = $val->category_id;
 				$value['name'] = $val->name;
