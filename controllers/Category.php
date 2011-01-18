@@ -119,9 +119,13 @@ class ControllerCategory extends Template\Template{
 	private function recurseAmount($val)
 	{
 		$amount = $this->amount($val);
+		if($amount == 1 )
+		{
+			$val = Models\Category::find('first',array('parent_id' => $val->category_id));
+			$amount = $this->amount($val);
+		}
 		
-		
-		if($amount > 0 )
+		if($amount > 1 )
 		{
 			#print $val->category_id . " - id----cat - ".$val->name." ".$amount." \n";
 			$vCount = Models\Category::find('all',array('parent_id' => $val->category_id));
@@ -166,10 +170,10 @@ class ControllerCategory extends Template\Template{
 		foreach ($this->category as $key => $val)
 		{
 			$amount = $this->recurseAmount($val);
-			print $amount;
 			if($amount == 1 )
+			{
 				$val = Models\Category::find('first',array('parent_id' => $val->category_id));
-			var_dump($val);
+			}
 			#print "\n\n\n ================================================" . $val->name. " ". $amount."\n\n\n";
 			if($amount == 0 )
 				continue;
