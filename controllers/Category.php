@@ -92,25 +92,28 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function amount($val)
 	{
-		var_dump($val);
-		print $val->category_id;
-		$amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
-		/*if($amount == 1)
+		if($val)
 		{
-			$amount++;
-			Models\Category::find('all', $this->options);
-		}*/
-		if(!$amount) 
-		{
-			$ids = new SetId($val->dirid, $val->classid, $val->grid);
-			$amount = count(Models\Warez::getWarez($this->region_id, $ids));
+			var_dump($val);
+			print $val->category_id;
+			$amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
+			/*if($amount == 1)
+			{
+				$amount++;
+				Models\Category::find('all', $this->options);
+			}*/
+			if(!$amount) 
+			{
+				$ids = new SetId($val->dirid, $val->classid, $val->grid);
+				$amount = count(Models\Warez::getWarez($this->region_id, $ids));
+			}
+			if($this->actions > 0)
+			{
+				$amount = count(Models\Warez::find_by_sql('select * from `warez_' .$this->region_id . '` 
+								where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid  ));
+			}
+			return $amount;
 		}
-		if($this->actions > 0)
-		{
-			$amount = count(Models\Warez::find_by_sql('select * from `warez_' .$this->region_id . '` 
-							where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid  ));
-		}
-		return $amount;
 	}
 	/**
 	 * функция рисует на странице информацию о категориях 
