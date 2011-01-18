@@ -355,7 +355,7 @@ class ControllerCategory extends Template\Template{
 			 * проверяем parent текущей категории
 			 * и выставляем id и name у родительского нода
 			 */
-			print "ssssssssssssssss";
+			print "ssssssssssssssss".$this->parents->parent_id;
 			$cat_parrent_id = 0;
 			$cat_parrent_name = "Список категорий";
 			if(!$this->parents->parent_id)
