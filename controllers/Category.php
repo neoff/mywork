@@ -108,6 +108,7 @@ class ControllerCategory extends Template\Template{
 			$amount = count(Models\Warez::find_by_sql('select * from `warez_' .$this->region_id . '` 
 							where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid  ));
 		}
+		return $amount;
 	}
 	/**
 	 * функция рисует на странице информацию о категориях 
