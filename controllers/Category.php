@@ -122,7 +122,7 @@ class ControllerCategory extends Template\Template{
 		if($amount == 1 )
 		{
 			$val = Models\Category::find('first',array('parent_id' => $val->category_id));
-			$amount = $this->amount($val);
+			$amount = $this->recurseAmount($val);
 		}
 		
 		if($amount > 1 )
@@ -173,7 +173,7 @@ class ControllerCategory extends Template\Template{
 			if($amount == 1 )
 			{
 				$val = Models\Category::find('first',array('parent_id' => $val->category_id));
-				print $val->category_id;
+				$amount = $this->recurseAmount($val);
 			}
 			#print "\n\n\n ================================================" . $val->name. " ". $amount."\n\n\n";
 			if($amount == 0 )
