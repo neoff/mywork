@@ -135,7 +135,7 @@ class ControllerCategory extends Template\Template{
 				$cc = 0;
 				foreach($vCount as $vk=>$vc)
 				{
-					print $vc."<br>";
+					print $vc->category_id."<br>";
 					$cnt = $this->amount($vc);
 					if($cnt == 1 )
 					{
