@@ -364,7 +364,7 @@ class ControllerCategory extends Template\Template{
 					if(in_array($this->parents->dirid, self::$GlobalConfig['smenu'][$key]['dirs']))
 					{
 						$cat_parrent_id = ToUTF($key);
-						print_r(array_count_values($value['dirs']));
+						print_r(count($value['dirs']));
 						print $cat_parrent_id;
 						$cat_parrent_name = ToUTF(self::$GlobalConfig['smenu'][$key]['name']);
 						break;
