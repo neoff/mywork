@@ -150,10 +150,10 @@ class ControllerCategory extends Template\Template{
 							$vcc = Models\Category::find('first',array('parent_id' => $vc->category_id));
 							$cnt = $this->amount($vc);
 						}
-						
-						if($cnt != 0 )
-							$cc=$cnt;
-						#print $vc->category_id." - ".$cnt."\n";
+						#print $cnt;
+						if($cnt == 0 )
+							continue;
+						print $val->category_id." - ".$vc->category_id." - ".$cnt."\n";
 						#print $cc;
 					}
 					$amount = $cc."-a";
