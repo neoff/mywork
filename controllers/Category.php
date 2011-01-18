@@ -102,22 +102,23 @@ class ControllerCategory extends Template\Template{
 					$amount = count(Models\Warez::find_by_sql('select * from `warez_' .$this->region_id . '` 
 									where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid  ));
 				}
+				if($amount != 0 )
+				{
+					$category = $this->categories->addChild("category");
+					$category->addChild("category_id", $val->category_id);
+					$category->addChild("category_name", ToUTF($val->name));
+					$category->addChild("amount", $amount); 
+					///imgs/catalog/ico/back/11_254
+					if($this->category_id < 100)
+						//$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/dir_$val->dirid.gif"); #TODO откуда брать иконку категории???
+						$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$val->dirid.".jpg");
+					else 
+						//$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/ico/back/".$val->dirid."_".$val->classid.".jpg");
+						$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
 					
-				$category = $this->categories->addChild("category");
-				$category->addChild("category_id", $val->category_id);
-				$category->addChild("category_name", ToUTF($val->name));
-				$category->addChild("amount", $amount); 
-				///imgs/catalog/ico/back/11_254
-				if($this->category_id < 100)
-					//$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/dir_$val->dirid.gif"); #TODO откуда брать иконку категории???
-					$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$val->dirid.".jpg");
-				else 
-					//$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/ico/back/".$val->dirid."_".$val->classid.".jpg");
-					$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
-				
-				$icon->addAttribute("width", "180");
-				$icon->addAttribute("height", "180");
-				
+					$icon->addAttribute("width", "180");
+					$icon->addAttribute("height", "180");
+				}
 			}
 		}
 		else
