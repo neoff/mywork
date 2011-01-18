@@ -123,15 +123,36 @@ class ControllerCategory extends Template\Template{
 		{
 			$amount = $this->amount($val);
 			
-			if($amount == 0 )
-				continue;
-			elseif($amount == 1 )
+			if($amount == 1 )
 			{
 				$val = Models\Category::find('first',array('parent_id' => $val->category_id));
 				$amount = $this->amount($val);
-				if($amount == 0 )
-					continue;
 			}
+			
+			if($amount == 0 )
+				continue;
+			else 
+			{
+				$vCount = Models\Category::find('all',array('parent_id' => $val->category_id));
+				$cc = 0;
+				foreach($vCount as $vk=>$vc)
+				{
+					$cnt = $this->amount($vc);
+					if($cnt == 1 )
+					{
+						$vcc = Models\Category::find('first',array('parent_id' => $vc->category_id));
+						$ac = $this->amount($vc);
+					}
+					
+					if($cnt == 0 )
+						continue;
+						
+					$cc++;
+				}
+				$amount = $cc;
+			}
+			if($amount == 0 )
+				continue;
 				
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $val->category_id);
