@@ -145,7 +145,7 @@ class ControllerCategory extends Template\Template{
 					}
 					if($amount > 1 )
 					{
-						$this->recurseAmount($vc);
+						$cnt = $this->recurseAmount($vc);
 					}
 					if($cnt == 0 )
 						continue;
@@ -153,7 +153,7 @@ class ControllerCategory extends Template\Template{
 					print $val->category_id." - ".$vc->category_id." - ".$vc->name." - ".$cnt." - ".$cc." count after check\n";
 					print $cc." --- final amount --- \n";
 				}
-				$amount = $cc."-a";
+				$amount = $cc;
 			}
 		}
 		return $amount;
