@@ -127,7 +127,6 @@ class ControllerCategory extends Template\Template{
 		foreach ($this->category as $key => $val)
 		{
 			$amount = $this->amount($val);
-			print $amount."\n";
 			if($amount == 1 )
 			{
 				$val = Models\Category::find('first',array('parent_id' => $val->category_id));
@@ -150,13 +149,14 @@ class ControllerCategory extends Template\Template{
 						{
 							$vcc = Models\Category::find('first',array('parent_id' => $vc->category_id));
 							$cnt = $this->amount($vc);
+							print $cnt." count if one ----------------------\n";
 						}
-						print $cnt." count if one\n";
+						
 						if($cnt == 0 )
 							continue;
 						$cc++;
-						print $val->category_id." - ".$vc->category_id." - ".$cnt." - ".$cnt." count after check\n";
-						#print $cc;
+						print $val->category_id." - ".$vc->category_id." - ".$cnt." - ".$cc." count after check\n";
+						print $cc." --- final amount --- \n";
 					}
 					$amount = $cc."-a";
 				}
