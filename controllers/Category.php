@@ -94,8 +94,8 @@ class ControllerCategory extends Template\Template{
 	{
 		if($val)
 		{
-			var_dump($val);
-			print $val->category_id;
+			#var_dump($val);
+			#print $val->category_id;
 			$amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
 			/*if($amount == 1)
 			{
