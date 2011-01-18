@@ -355,9 +355,9 @@ class ControllerCategory extends Template\Template{
 			 * проверяем parent текущей категории
 			 * и выставляем id и name у родительского нода
 			 */
+			print "ssssssssssssssss"
 			$cat_parrent_id = 0;
 			$cat_parrent_name = "Список категорий";
-			print $this->parents->parent_id;
 			if(!$this->parents->parent_id)
 			{
 				foreach (self::$GlobalConfig['smenu'] as $key => $value) {
