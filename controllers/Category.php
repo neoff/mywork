@@ -170,10 +170,10 @@ class ControllerCategory extends Template\Template{
 		foreach ($this->category as $key => $val)
 		{
 			$amount = $this->recurseAmount($val);
-			print "\n\n\n ================================================" . $val->name. " ". $amount."\n\n\n";
+			#print "\n\n\n ================================================" . $val->name. " ". $amount."\n\n\n";
 			if($amount == 0 )
 				continue;
-			print "\n\n\n ================================================" . $val->name. " ". $amount."\n\n\n";
+			#print "\n\n\n ================================================" . $val->name. " ". $amount."\n\n\n";
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $val->category_id);
 			$category->addChild("category_name", ToUTF($val->name));
