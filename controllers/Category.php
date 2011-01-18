@@ -129,7 +129,7 @@ class ControllerCategory extends Template\Template{
 				$amount = $this->amount($val);
 			}
 			
-			/*if($amount > 1 )
+			if($amount > 1 )
 			{
 				$vCount = Models\Category::find('all',array('parent_id' => $val->category_id));
 				$cc = 0;
@@ -149,7 +149,7 @@ class ControllerCategory extends Template\Template{
 					print $cc;
 				}
 				$amount = $cc;
-			}*/
+			}
 			if($amount == 0 )
 				continue;
 				
