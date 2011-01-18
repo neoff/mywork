@@ -597,6 +597,7 @@ class ControllerCategory extends Template\Template{
 				$val = Models\Category::find('first',array('parent_id' => $value['dirs']));
 				print "-------------------------------------- \n";
 				print_r($val);
+				print "++++++++++++ \n";
 				print_r($am);
 				print "-------------------------------------- \n";
 				#$amount = $amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
