@@ -52,7 +52,11 @@ class xmlParser():
 	def getContent(self, dat):
 		d = xml.dom.minidom.parseString(dat)
 		elems = d.getElementsByTagName("parent_category")
-		categories = d.getElementsByTagName("categories")[0]
+		categories = d.getElementsByTagName("categories")
+		if categories:
+			categories = d.getElementsByTagName("products")[0]
+		else:
+			categories = categories[0]
 		for elem in elems:
 			
 			parent = elem.getElementsByTagName("category_id")[0]
