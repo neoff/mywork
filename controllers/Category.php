@@ -92,6 +92,10 @@ class ControllerCategory extends Template\Template{
 			foreach ($this->category as $key => $val)
 			{
 				$amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
+				if($amount == 1)
+				{
+					$amount++;
+				}
 				if(!$amount) 
 				{
 					$ids = new SetId($val->dirid, $val->classid, $val->grid);

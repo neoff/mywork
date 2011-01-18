@@ -17,11 +17,12 @@ from PIL import Image
 import sys,os
 
 
-
-proxy_handler = urllib2.ProxyHandler({'http': 'http://10.95.1.79:3128/'})
-proxy_handler = urllib2.ProxyHandler({'http': 'http://isa-wan:8080/'})
 proxies = {'http': 'http://isa-wan:8080/'}
+proxy_handler = urllib2.ProxyHandler({'http': 'http://10.95.1.79:3128/'})
+proxy_handler = urllib2.ProxyHandler(proxies)
+
 opener = urllib2.build_opener(proxy_handler)
+urllib2.install_opener(opener)
 
 class xmlParser():
 	toPage = ""
@@ -138,7 +139,8 @@ class xmlParser():
 
 class HtmlWindow(wx.html.HtmlWindow):
 	params = {'region_id': 0}
-	Url = "http://www.mvideo.ru/mobile/?%s"
+	#Url = "http://www.mvideo.ru/mobile/?%s"
+	Url = "http://www-test.corp.mvideo.ru/mobile/?%s"
 	xp = xmlParser()
 	
 	
