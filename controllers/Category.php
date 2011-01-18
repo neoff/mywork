@@ -138,7 +138,7 @@ class ControllerCategory extends Template\Template{
 					$cc = 0;
 					foreach($vCount as $vk=>$vc)
 					{
-						print ToUTF($vc->name)." - ".$vc->category_id."\n";
+						#print ToUTF($vc->name)." - ".$vc->category_id."\n";
 						$cnt = $this->amount($vc);
 						if($cnt == 1 )
 						{
