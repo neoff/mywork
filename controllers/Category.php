@@ -389,7 +389,7 @@ class ControllerCategory extends Template\Template{
 				$cat_parrent_name = ToUTF($p->name);
 			}
 			$this->options = array('parent_id' => $this->category_id);
-			$this->parent_name = ToUTF($this->name);
+			$this->parent_name = ToUTF($this->category_name);
 			$this->parent_id = $this->category_id;
 		}
 		$this->parent_category="";
