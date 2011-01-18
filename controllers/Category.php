@@ -85,51 +85,69 @@ class ControllerCategory extends Template\Template{
 		if($this->category)
 		{
 			
-			$this->categories="";
-			$this->categories->addAttribute("category_id", $this->category_id);
-			$this->categories->addAttribute("category_name", $this->parent_name);
 			
-			foreach ($this->category as $key => $val)
-			{
-				$amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
-				if($amount == 1)
-				{
-					$amount++;
-				}
-				if(!$amount) 
-				{
-					$ids = new SetId($val->dirid, $val->classid, $val->grid);
-					$amount = count(Models\Warez::getWarez($this->region_id, $ids));
-				}
-				if($this->actions > 0)
-				{
-					$amount = count(Models\Warez::find_by_sql('select * from `warez_' .$this->region_id . '` 
-									where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid  ));
-				}
-				if($amount != 0 )
-				{
-					$category = $this->categories->addChild("category");
-					$category->addChild("category_id", $val->category_id);
-					$category->addChild("category_name", ToUTF($val->name));
-					$category->addChild("amount", $amount); 
-					///imgs/catalog/ico/back/11_254
-					if($this->category_id < 100)
-						//$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/dir_$val->dirid.gif"); #TODO откуда брать иконку категории???
-						$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$val->dirid.".jpg");
-					else 
-						//$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/ico/back/".$val->dirid."_".$val->classid.".jpg");
-						$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
-					
-					$icon->addAttribute("width", "180");
-					$icon->addAttribute("height", "180");
-				}
-			}
 		}
 		else
 			$this->productes();
 	}
-	
-
+	/**
+	 * ф-я вычисляет колличество подкатегорий в категории
+	 */
+	private function amaunt(&$val)
+	{
+		$amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
+		if($amount == 1)
+		{
+			$amount++;
+			Models\Category::find('all', $this->options);
+		}
+		if(!$amount) 
+		{
+			$ids = new SetId($val->dirid, $val->classid, $val->grid);
+			$amount = count(Models\Warez::getWarez($this->region_id, $ids));
+		}
+		if($this->actions > 0)
+		{
+			$amount = count(Models\Warez::find_by_sql('select * from `warez_' .$this->region_id . '` 
+							where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid  ));
+		}
+	}
+	/**
+	 * функция рисует на странице информацию о категориях 
+	 */
+	private function categories()
+	{
+		$this->categories="";
+		$this->categories->addAttribute("category_id", $this->category_id);
+		$this->categories->addAttribute("category_name", $this->parent_name);
+		
+		foreach ($this->category as $key => $val)
+		{
+			$amount = $this->amaunt($val);
+			
+			if($amount != 0 )
+				continue;
+				
+			$category = $this->categories->addChild("category");
+			$category->addChild("category_id", $val->category_id);
+			$category->addChild("category_name", ToUTF($val->name));
+			$category->addChild("amount", $amount); 
+			///imgs/catalog/ico/back/11_254
+			if($this->category_id < 100)
+				//$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/dir_$val->dirid.gif"); #TODO откуда брать иконку категории???
+				$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$val->dirid.".jpg");
+			else 
+				//$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/ico/back/".$val->dirid."_".$val->classid.".jpg");
+				$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
+			
+			$icon->addAttribute("width", "180");
+			$icon->addAttribute("height", "180");
+			
+		}
+	}
+	/**
+	 * функция рисует на странице информацию о продуктах в категории 
+	 */
 	private function productes()
 	{
 		
