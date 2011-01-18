@@ -93,11 +93,11 @@ class ControllerCategory extends Template\Template{
 	private function amount(&$val)
 	{
 		$amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
-		if($amount == 1)
+		/*if($amount == 1)
 		{
 			$amount++;
 			Models\Category::find('all', $this->options);
-		}
+		}*/
 		if(!$amount) 
 		{
 			$ids = new SetId($val->dirid, $val->classid, $val->grid);
@@ -123,7 +123,7 @@ class ControllerCategory extends Template\Template{
 		{
 			$amount = $this->amount($val);
 			
-			if($amount != 0 )
+			if($amount == 0 )
 				continue;
 				
 			$category = $this->categories->addChild("category");
