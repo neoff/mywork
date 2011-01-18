@@ -127,7 +127,7 @@ class ControllerCategory extends Template\Template{
 		
 		if($amount > 1 )
 		{
-			print $val->category_id . " - id----cat - ".$val->name." ".$amount." \n";
+			#print $val->category_id . " - id----cat - ".$val->name." ".$amount." \n";
 			$vCount = Models\Category::find('all',array('parent_id' => $val->category_id));
 			if($vCount)
 			{
@@ -136,12 +136,12 @@ class ControllerCategory extends Template\Template{
 				{
 					#print ToUTF($vc->name)." - ".$vc->category_id." pod_category\n";
 					$cnt = $this->amount($vc);
-					print $val->category_id." + ".$vc->category_id." + ".$vc->name." + ".$cnt." count + ".$cc." -pod_category\n";
+					#print $val->category_id." + ".$vc->category_id." + ".$vc->name." + ".$cnt." count + ".$cc." -pod_category\n";
 					if($cnt == 1 )
 					{
 						$vcc = Models\Category::find('first',array('parent_id' => $vc->category_id));
 						$cnt = $this->amount($vc);
-						print $cnt." count if one ----------------------\n";
+						#print $cnt." count if one ----------------------\n";
 					}
 					if($amount > 1 )
 					{
@@ -150,8 +150,8 @@ class ControllerCategory extends Template\Template{
 					if($cnt == 0 )
 						continue;
 					$cc++;
-					print $val->category_id." - ".$vc->category_id." - ".$vc->name." - ".$cnt." - ".$cc." count after check\n";
-					print $cc." --- final amount --- \n";
+					#print $val->category_id." - ".$vc->category_id." - ".$vc->name." - ".$cnt." - ".$cc." count after check\n";
+					#print $cc." --- final amount --- \n";
 				}
 				$amount = $cc;
 			}
