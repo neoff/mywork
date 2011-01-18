@@ -602,7 +602,7 @@ class ControllerCategory extends Template\Template{
 				#print_r($am);
 				#print "-------------------------------------- \n";
 				$val = $am[0];
-				$amount = $amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
+				$amount =  $this->recurseAmount($val);
 				$key = $val->category_id;
 				$value['name'] = $val->name;
 			}
