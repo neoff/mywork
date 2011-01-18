@@ -588,16 +588,18 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_name", $this->parent_name);
 		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
 		{
-			$amount = count(Models\Category::find('all', array('conditions' => 
+			$am = Models\Category::find('all', array('conditions' => 
 									array('parent_id is null and dirid in (?)', $value['dirs'])
-									)));
+									));
+			$amount = count($am);
 			if($amount == 1 )
 			{
-				$val = Models\Category::find('first',array('parent_id' => $key));
+				$val = Models\Category::find('first',array('parent_id' => $value['dirs']));
 				print_r($val);
-				$amount = $amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
-				$key = $val->category_id;
-				$value['name'] = $val->name;
+				print_r($am);
+				#$amount = $amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
+				#$key = $val->category_id;
+				#$value['name'] = $val->name;
 			}
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $key);
