@@ -157,7 +157,7 @@ class ControllerCategory extends Template\Template{
 						$cc++;
 						#print $cc;
 					}
-					$amount = $cc;
+					$amount = $cc."-a";
 				}
 			}
 			if($amount == 0 )
