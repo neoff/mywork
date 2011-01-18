@@ -151,11 +151,8 @@ class ControllerCategory extends Template\Template{
 							$cnt = $this->amount($vc);
 						}
 						
-						if($cnt == 0 )
-						{
-							continue;
-						}
-						$cc++;
+						if($cnt != 0 )
+							$cc++;
 						#print $cc;
 					}
 					$amount = $cc."-a";
