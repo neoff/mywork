@@ -151,7 +151,7 @@ class ControllerCategory extends Template\Template{
 							$vcc = Models\Category::find('first',array('parent_id' => $vc->category_id));
 							$cnt = $this->amount($vc);
 						}
-						print $cnt." count if one";
+						print $cnt." count if one\n";
 						if($cnt == 0 )
 							continue;
 						$cc++;
