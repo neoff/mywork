@@ -127,7 +127,7 @@ class ControllerCategory extends Template\Template{
 		foreach ($this->category as $key => $val)
 		{
 			$amount = $this->amount($val);
-			
+			print $amount."\n";
 			if($amount == 1 )
 			{
 				$val = Models\Category::find('first',array('parent_id' => $val->category_id));
