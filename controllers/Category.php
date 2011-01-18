@@ -148,13 +148,15 @@ class ControllerCategory extends Template\Template{
 						if($cnt == 1 )
 						{
 							$vcc = Models\Category::find('first',array('parent_id' => $vc->category_id));
-							$ac = $this->amount($vc);
+							$cnt = $this->amount($vc);
 						}
 						
 						if($cnt == 0 )
+						{
+							$cc.="-p";
 							continue;
-							
-						$cc++;
+						}
+						$cc.="-s";
 						#print $cc;
 					}
 					$amount = $cc."-a";
