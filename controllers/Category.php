@@ -152,8 +152,8 @@ class ControllerCategory extends Template\Template{
 						}
 						
 						if($cnt != 0 )
-							$cc++;
-						print $vc->category_id." - ".$cnt."\n";
+							$cc=1;
+						#print $vc->category_id." - ".$cnt."\n";
 						#print $cc;
 					}
 					$amount = $cc."-a";
