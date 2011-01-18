@@ -127,9 +127,8 @@ class ControllerCategory extends Template\Template{
 				continue;
 			elseif($amount == 1 )
 			{
-				$aa = Models\Category::find('first',array('parent_id' => $val->category_id));
-				print_r($aa);
-				print $aa->category_id;
+				$val = Models\Category::find('first',array('parent_id' => $val->category_id));
+				$amount = $this->amount($val);
 			}
 				
 			$category = $this->categories->addChild("category");
