@@ -90,7 +90,7 @@ class ControllerCategory extends Template\Template{
 	/**
 	 * ф-я вычисляет колличество подкатегорий в категории
 	 */
-	private function amaunt(&$val)
+	private function amount(&$val)
 	{
 		$amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
 		if($amount == 1)
@@ -121,7 +121,7 @@ class ControllerCategory extends Template\Template{
 		
 		foreach ($this->category as $key => $val)
 		{
-			$amount = $this->amaunt($val);
+			$amount = $this->amount($val);
 			
 			if($amount != 0 )
 				continue;
