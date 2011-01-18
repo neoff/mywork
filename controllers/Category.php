@@ -594,15 +594,16 @@ class ControllerCategory extends Template\Template{
 			$amount = count($am);
 			if($amount == 1 )
 			{
-				$val = Models\Category::find('first',array('parent_id' => $value['dirs']));
-				print "-------------------------------------- \n";
-				print_r($val);
-				print "++++++++++++ \n";
-				print_r($am);
-				print "-------------------------------------- \n";
-				#$amount = $amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
-				#$key = $val->category_id;
-				#$value['name'] = $val->name;
+				#$val = Models\Category::find('first',array('parent_id' => $value['dirs']));
+				#print "-------------------------------------- \n";
+				#print_r($val);
+				#print "++++++++++++ \n";
+				#print_r($am);
+				#print "-------------------------------------- \n";
+				$val = $am[0];
+				$amount = $amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
+				$key = $val->category_id;
+				$value['name'] = $val->name;
 			}
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $key);
