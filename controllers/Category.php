@@ -131,26 +131,29 @@ class ControllerCategory extends Template\Template{
 			
 			if($amount > 1 )
 			{
-				print $val->category_id . "cat----id\n";
+				#print $val->category_id . " - id----cat - ".$val->name;
 				$vCount = Models\Category::find('all',array('parent_id' => $val->category_id));
-				$cc = 0;
-				foreach($vCount as $vk=>$vc)
+				if($vCount)
 				{
-					print ToUTF($vc->name).$vc->category_id."\n";
-					$cnt = $this->amount($vc);
-					if($cnt == 1 )
+					$cc = 0;
+					foreach($vCount as $vk=>$vc)
 					{
-						$vcc = Models\Category::find('first',array('parent_id' => $vc->category_id));
-						$ac = $this->amount($vc);
-					}
-					
-					if($cnt == 0 )
-						continue;
+						print ToUTF($vc->name)." - ".$vc->category_id."\n";
+						$cnt = $this->amount($vc);
+						if($cnt == 1 )
+						{
+							$vcc = Models\Category::find('first',array('parent_id' => $vc->category_id));
+							$ac = $this->amount($vc);
+						}
 						
-					$cc++;
-					#print $cc;
+						if($cnt == 0 )
+							continue;
+							
+						$cc++;
+						#print $cc;
+					}
+					$amount = $cc;
 				}
-				$amount = $cc;
 			}
 			if($amount == 0 )
 				continue;
