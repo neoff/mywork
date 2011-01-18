@@ -152,7 +152,7 @@ class ControllerCategory extends Template\Template{
 						}
 						
 						if($cnt != 0 )
-							$cc=1;
+							$cc=$cnt;
 						#print $vc->category_id." - ".$cnt."\n";
 						#print $cc;
 					}
