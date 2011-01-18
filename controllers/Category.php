@@ -145,7 +145,7 @@ class ControllerCategory extends Template\Template{
 					{
 						#print ToUTF($vc->name)." - ".$vc->category_id."\n";
 						$cnt = $this->amount($vc);
-						print $val->category_id." + ".$vc->category_id." + ".$cnt." + ".$cc."\n";
+						#print $val->category_id." + ".$vc->category_id." + ".$cnt." + ".$cc."\n";
 						if($cnt == 1 )
 						{
 							$vcc = Models\Category::find('first',array('parent_id' => $vc->category_id));
@@ -155,7 +155,7 @@ class ControllerCategory extends Template\Template{
 						if($cnt == 0 )
 							continue;
 						$cc++;
-						print $val->category_id." - ".$vc->category_id." - ".$cnt." - ".$cnt."\n";
+						#print $val->category_id." - ".$vc->category_id." - ".$cnt." - ".$cnt."\n";
 						#print $cc;
 					}
 					$amount = $cc."-a";
