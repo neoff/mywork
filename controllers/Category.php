@@ -136,7 +136,7 @@ class ControllerCategory extends Template\Template{
 			
 			if($amount > 1 )
 			{
-				#print $val->category_id . " - id----cat - ".$val->name;
+				print $val->category_id . " - id----cat - ".$val->name." ".$amount;
 				$vCount = Models\Category::find('all',array('parent_id' => $val->category_id));
 				if($vCount)
 				{
