@@ -156,7 +156,7 @@ class ControllerCategory extends Template\Template{
 				$amount = $cc."-a";
 			}
 		}
-		
+		return $amount;
 	}
 	/**
 	 * функция рисует на странице информацию о категориях 
