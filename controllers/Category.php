@@ -173,6 +173,7 @@ class ControllerCategory extends Template\Template{
 			if($amount == 1 )
 			{
 				$val = Models\Category::find('first',array('parent_id' => $val->category_id));
+				print $val->category_id;
 			}
 			#print "\n\n\n ================================================" . $val->name. " ". $amount."\n\n\n";
 			if($amount == 0 )
