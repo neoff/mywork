@@ -591,6 +591,13 @@ class ControllerCategory extends Template\Template{
 			$amount = count(Models\Category::find('all', array('conditions' => 
 									array('parent_id is null and dirid in (?)', $value['dirs'])
 									)));
+			if($amount == 1 )
+			{
+				$val = Models\Category::find('first',array('parent_id' => $key));
+				$amount = $this->amount($val);
+				$key = $val->category_id;
+				$value['name'] = $val->name;
+			}
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $key);
 			$category->addChild("category_name", ToUTF($value['name']));
