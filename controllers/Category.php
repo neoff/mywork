@@ -90,9 +90,9 @@ class ControllerCategory extends Template\Template{
 	/**
 	 * ф-я вычисляет колличество подкатегорий в категории
 	 */
-	private function amount(&$val)
+	private function amount($val)
 	{
-		print_r(get_class_vars ($val));
+		 var_dump(get_object_vars($val));
 		$amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
 		/*if($amount == 1)
 		{
