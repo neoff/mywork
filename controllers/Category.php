@@ -146,7 +146,7 @@ class ControllerCategory extends Template\Template{
 						continue;
 						
 					$cc++;
-					print $cc;
+					#print $cc;
 				}
 				$amount = $cc;
 			}
