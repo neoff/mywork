@@ -83,10 +83,7 @@ class ControllerCategory extends Template\Template{
 		//$categoryssss = Models\Category::getWarezAction($this->region_id, $this->action_val, $condition);
 		//print_r($categoryssss);
 		if($this->category)
-		{
-			
-			
-		}
+			$this->categories();
 		else
 			$this->productes();
 	}
