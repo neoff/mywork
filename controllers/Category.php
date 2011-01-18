@@ -119,45 +119,44 @@ class ControllerCategory extends Template\Template{
 	private function recurseAmount($val)
 	{
 		$amount = $this->amount($val);
-			if($amount == 1 )
+		if($amount == 1 )
+		{
+			$val = Models\Category::find('first',array('parent_id' => $val->category_id));
+			$amount = $this->amount($val);
+		}
+		
+		if($amount > 1 )
+		{
+			print $val->category_id . " - id----cat - ".$val->name." ".$amount." \n";
+			$vCount = Models\Category::find('all',array('parent_id' => $val->category_id));
+			if($vCount)
 			{
-				$val = Models\Category::find('first',array('parent_id' => $val->category_id));
-				$amount = $this->amount($val);
-			}
-			
-			if($amount > 1 )
-			{
-				print $val->category_id . " - id----cat - ".$val->name." ".$amount." \n";
-				$vCount = Models\Category::find('all',array('parent_id' => $val->category_id));
-				if($vCount)
+				$cc = 0;
+				foreach($vCount as $vk=>$vc)
 				{
-					$cc = 0;
-					foreach($vCount as $vk=>$vc)
+					#print ToUTF($vc->name)." - ".$vc->category_id." pod_category\n";
+					$cnt = $this->amount($vc);
+					print $val->category_id." + ".$vc->category_id." + ".$vc->name." + ".$cnt." count + ".$cc." -pod_category\n";
+					if($cnt == 1 )
 					{
-						#print ToUTF($vc->name)." - ".$vc->category_id." pod_category\n";
+						$vcc = Models\Category::find('first',array('parent_id' => $vc->category_id));
 						$cnt = $this->amount($vc);
-						print $val->category_id." + ".$vc->category_id." + ".$vc->name." + ".$cnt." count + ".$cc." -pod_category\n";
-						if($cnt == 1 )
-						{
-							$vcc = Models\Category::find('first',array('parent_id' => $vc->category_id));
-							$cnt = $this->amount($vc);
-							print $cnt." count if one ----------------------\n";
-						}
-						if($amount > 1 )
-						{
-							$this->recurseAmount($vc);
-						}
-						if($cnt == 0 )
-							continue;
-						$cc++;
-						print $val->category_id." - ".$vc->category_id." - ".$vc->name." - ".$cnt." - ".$cc." count after check\n";
-						print $cc." --- final amount --- \n";
+						print $cnt." count if one ----------------------\n";
 					}
-					$amount = $cc."-a";
+					if($amount > 1 )
+					{
+						$this->recurseAmount($vc);
+					}
+					if($cnt == 0 )
+						continue;
+					$cc++;
+					print $val->category_id." - ".$vc->category_id." - ".$vc->name." - ".$cnt." - ".$cc." count after check\n";
+					print $cc." --- final amount --- \n";
 				}
+				$amount = $cc."-a";
 			}
-			if($amount == 0 )
-				continue;
+		}
+		
 	}
 	/**
 	 * функция рисует на странице информацию о категориях 
@@ -171,7 +170,9 @@ class ControllerCategory extends Template\Template{
 		foreach ($this->category as $key => $val)
 		{
 			$amount = $this->recurseAmount($val);
-				
+			if($amount == 0 )
+				continue;
+			
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $val->category_id);
 			$category->addChild("category_name", ToUTF($val->name));
