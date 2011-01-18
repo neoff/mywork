@@ -388,9 +388,8 @@ class ControllerCategory extends Template\Template{
 				$p = Models\Category::first(array('category_id' => $cat_parrent_id));
 				$cat_parrent_name = ToUTF($p->name);
 			}
-			var_dump($this);
 			$this->options = array('parent_id' => $this->category_id);
-			$this->parent_name = ToUTF($this->category_name);
+			$this->parent_name = ToUTF($this->parents->name);
 			$this->parent_id = $this->category_id;
 		}
 		$this->parent_category="";
