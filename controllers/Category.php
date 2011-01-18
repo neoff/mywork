@@ -136,26 +136,26 @@ class ControllerCategory extends Template\Template{
 			
 			if($amount > 1 )
 			{
-				print $val->category_id . " - id----cat - ".$val->name." ".$amount;
+				print $val->category_id . " - id----cat - ".$val->name." ".$amount." \n";
 				$vCount = Models\Category::find('all',array('parent_id' => $val->category_id));
 				if($vCount)
 				{
 					$cc = 0;
 					foreach($vCount as $vk=>$vc)
 					{
-						#print ToUTF($vc->name)." - ".$vc->category_id."\n";
+						#print ToUTF($vc->name)." - ".$vc->category_id." pod_category\n";
 						$cnt = $this->amount($vc);
-						#print $val->category_id." + ".$vc->category_id." + ".$cnt." + ".$cc."\n";
+						print $val->category_id." + ".$vc->category_id." + ".$cnt." count + ".$cc." -pod_category\n";
 						if($cnt == 1 )
 						{
 							$vcc = Models\Category::find('first',array('parent_id' => $vc->category_id));
 							$cnt = $this->amount($vc);
 						}
-						#print $cnt;
+						print $cnt." count if one";
 						if($cnt == 0 )
 							continue;
 						$cc++;
-						#print $val->category_id." - ".$vc->category_id." - ".$cnt." - ".$cnt."\n";
+						print $val->category_id." - ".$vc->category_id." - ".$cnt." - ".$cnt." count after check\n";
 						#print $cc;
 					}
 					$amount = $cc."-a";
