@@ -52,14 +52,19 @@ class xmlParser():
 	def getContent(self, dat):
 		d = xml.dom.minidom.parseString(dat)
 		elems = d.getElementsByTagName("parent_category")
+		categories = d.getElementsByTagName("categories")[0]
 		for elem in elems:
 			
 			parent = elem.getElementsByTagName("category_id")[0]
 			parent_name = elem.getElementsByTagName("category_name")[0]
+			
 			print self.getText(parent_name.childNodes)
-			self.toPageBack = " -- <a href=%s>  %s</a> \n<br /><br />\n" % (
+			self.toPageBack = " &larr;<a href=%s>  %s</a> \n" % (
 										self.getText(parent.childNodes),
 										self.getText(parent_name.childNodes))
+		self.toPageBack += "&nbsp&nbsp&nbsp;&rarr;<a href=%s>%s</a>&larr;<br /><br />\n" % (
+								categories.attributes["category_id"].value,
+								categories.attributes["category_name"].value)
 		
 		slides = d.getElementsByTagName("category")
 		if len(slides) > 0:
