@@ -115,18 +115,10 @@ class ControllerCategory extends Template\Template{
 			return $amount;
 		}
 	}
-	/**
-	 * функция рисует на странице информацию о категориях 
-	 */
-	private function categories()
+	
+	private function recurseAmount($val)
 	{
-		$this->categories="";
-		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", $this->parent_name);
-		
-		foreach ($this->category as $key => $val)
-		{
-			$amount = $this->amount($val);
+		$amount = $this->amount($val);
 			if($amount == 1 )
 			{
 				$val = Models\Category::find('first',array('parent_id' => $val->category_id));
@@ -151,7 +143,10 @@ class ControllerCategory extends Template\Template{
 							$cnt = $this->amount($vc);
 							print $cnt." count if one ----------------------\n";
 						}
-						
+						if($amount > 1 )
+						{
+							$this->recurseAmount($vc);
+						}
 						if($cnt == 0 )
 							continue;
 						$cc++;
@@ -163,6 +158,19 @@ class ControllerCategory extends Template\Template{
 			}
 			if($amount == 0 )
 				continue;
+	}
+	/**
+	 * функция рисует на странице информацию о категориях 
+	 */
+	private function categories()
+	{
+		$this->categories="";
+		$this->categories->addAttribute("category_id", $this->category_id);
+		$this->categories->addAttribute("category_name", $this->parent_name);
+		
+		foreach ($this->category as $key => $val)
+		{
+			$amount = $this->recurseAmount($val);
 				
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $val->category_id);
