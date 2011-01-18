@@ -153,10 +153,10 @@ class ControllerCategory extends Template\Template{
 						
 						if($cnt != 0 )
 							$cc++;
-						print $cnt."\n";
+						print $vc->category_id." - ".$cnt."\n";
 						#print $cc;
 					}
-					$amount = $vc->category_id." - ".$cc."-a";
+					$amount = $cc."-a";
 				}
 			}
 			if($amount == 0 )
