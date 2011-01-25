@@ -495,12 +495,12 @@ class ControllerCategory extends Template\Template{
 	private function putActions($name)
 	{
 		
-		$options = array('select' => 'sc.warecode',
+		$options = array('select' => 'w.warecode',
 						'from' => 'segment_cache sc',
-						'joins'=>"",
+						'joins'=>" join warez_$this->region_id w on (sc.warecode=w.warecode)",
 						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name'");
 		
-		if($this->searches)
+		/*if($this->searches)
 		{
 			$search = $this->searches;
 			//if($search[0]!="%")
@@ -513,7 +513,7 @@ class ControllerCategory extends Template\Template{
 			$options['joins'] = "left join warez_$this->region_id w on (sc.warecode=w.warecode)";
 			$options['conditions'] = $options['conditions'].
 					" and (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
-		}
+		}*/
 		//print_r($options);
 		$segment = Models\Segments::find('all', $options);
 		#$segment = Models\Segments::segmentDirs($this->region_id, $name);
