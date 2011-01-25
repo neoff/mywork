@@ -20,7 +20,7 @@ class ControllerShops extends Template\Template{
 	{
 		list($shop_id, $width, $height) = $shop_id;
 		
-		$options = array('region_id' => $shop_id);
+		$options = array('region_id' => $shop_id, "publication" => 1);
 		$shop_m = Models\Shops::all($options);
 		//print_r($shops);
 		$this->shops="";
