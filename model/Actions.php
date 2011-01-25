@@ -47,6 +47,7 @@ class Segments extends ActiveRecord\Model
 			) AS t ON t.DirID=dirs.DirID
 			ORDER BY t.num DESC
 		";
+		print $sql;
 		return self::find_by_sql($sql);
 	}
 }
