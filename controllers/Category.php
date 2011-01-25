@@ -110,7 +110,7 @@ class ControllerCategory extends Template\Template{
 			if($this->actions > 0)
 			{
 				$amount = Models\Warez::find_by_sql('select * from `warez_' .$this->region_id . '` 
-								where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid  );
+								where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid.' group by DirID'  );
 				print_r($amount);
 			}
 			return $amount;
