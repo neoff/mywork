@@ -109,8 +109,9 @@ class ControllerCategory extends Template\Template{
 			}
 			if($this->actions > 0)
 			{
-				$amount = count(Models\Warez::find_by_sql('select * from `warez_' .$this->region_id . '` 
-								where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid  ));
+				$amount = Models\Warez::find_by_sql('select * from `warez_' .$this->region_id . '` 
+								where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid  );
+				print_r($amount);
 			}
 			return $amount;
 		}
@@ -500,7 +501,7 @@ class ControllerCategory extends Template\Template{
 						'joins'=>" join warez_$this->region_id w on (sc.warecode=w.warecode)",
 						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name'");
 		
-		/*if($this->searches)
+		if($this->searches)
 		{
 			$search = $this->searches;
 			//if($search[0]!="%")
@@ -510,10 +511,10 @@ class ControllerCategory extends Template\Template{
 				//$search = html_entity_decode($search,null,'UTF-8');
 				$search=iconv ("UTF-8",'CP1251', $search );
 			//}
-			$options['joins'] = "left join warez_$this->region_id w on (sc.warecode=w.warecode)";
+			// $options['joins'] = "";
 			$options['conditions'] = $options['conditions'].
 					" and (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
-		}*/
+		}
 		//print_r($options);
 		$segment = Models\Segments::find('all', $options);
 		#$segment = Models\Segments::segmentDirs($this->region_id, $name);
