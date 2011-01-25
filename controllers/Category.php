@@ -113,13 +113,9 @@ class ControllerCategory extends Template\Template{
 								where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid.' group by DirID'  );
 				//print_r($amount);
 				$count = 0;
-				if($amount)
+				foreach($amount as $v)
 				{
-					if($amount[0])
-					{
-						if($amount[0]['amount'])
-							$count = $amount[0]['amount'];
-					}
+					$count = $v->amount;
 				}
 				$amount = $count;
 				
