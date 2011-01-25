@@ -109,9 +109,10 @@ class ControllerCategory extends Template\Template{
 			}
 			if($this->actions > 0)
 			{
-				$amount = Models\Warez::find_by_sql('select count(1) as amount from `warez_' .$this->region_id . '` 
+				$amount = Models\Warez::find_by_sql('select count(1) as amount, ware, DirID from `warez_' .$this->region_id . '` 
 								where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid.' group by DirID'  );
-				//print_r($amount);
+				
+				print_r($amount);
 				$count = 0;
 				foreach($amount as $v)
 				{
