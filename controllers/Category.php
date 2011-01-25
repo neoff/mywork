@@ -229,7 +229,7 @@ class ControllerCategory extends Template\Template{
 			//}
 			$this->parents->dirid .= " and (ware like \"%$search%\" or FullName like \"%$search%\" )";
 		}
-		var_dump($this->parents);
+		//var_dump($this->parents);
 		if($this->parents)
 		{
 			$page = $this->page;
@@ -253,7 +253,7 @@ class ControllerCategory extends Template\Template{
 			
 			$param_m = $this->params->addChild("param"); 
 			$param_m->addAttribute("param_name", "mark");
-			$param_m->addAttribute("title", "Производители");
+			$param_m->addAttribute("titles", "Производители");
 			$param_m->addAttribute("current_value", "0");
 			$option_m = $param_m->addChild("option", "Все производители");
 			$option_m->addAttribute("value", "0");
