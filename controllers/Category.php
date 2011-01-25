@@ -111,7 +111,18 @@ class ControllerCategory extends Template\Template{
 			{
 				$amount = Models\Warez::find_by_sql('select count(1) as amount from `warez_' .$this->region_id . '` 
 								where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid.' group by DirID'  );
-				print_r($amount);
+				//print_r($amount);
+				$count = 0;
+				if($amount)
+				{
+					if($amount[0])
+					{
+						if($amount[0]['amount'])
+							$count = $amount[0]['amount'];
+					}
+				}
+				$amount = $count;
+				
 			}
 			return $amount;
 		}
