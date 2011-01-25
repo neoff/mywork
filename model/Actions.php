@@ -29,4 +29,24 @@ class Segments extends ActiveRecord\Model
 	{
 		return self::find('all', $options);
 	}
+	
+	public function segmentDirs($region, $name)
+	{
+		$sql = "
+			SELECT t.*,DirName
+			FROM dirs
+			JOIN (
+				SELECT
+					w.DirID,
+					COUNT(1) AS num
+				FROM segment_cache
+				JOIN warez_".$region." AS w ON w.warecode = segment_cache.warecode
+				WHERE segment_cache.segment_name = '".$name."'
+				AND segment_cache.region_id = ".$region."
+	            GROUP BY w.DirID
+			) AS t ON t.DirID=dirs.DirID
+			ORDER BY t.num DESC
+		";
+		return self::find_by_sql($sql);
+	}
 }

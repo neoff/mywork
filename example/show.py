@@ -15,6 +15,7 @@ import  cStringIO
 import base64
 from PIL import Image
 import sys,os
+import urlparse
 
 
 proxies = {'http': 'http://isa-wan:8080/'}
@@ -34,18 +35,20 @@ class xmlParser():
 		for slide in slides:
 			link = slide.getElementsByTagName("region_id")[0]
 			title = slide.getElementsByTagName("region_name")[0]
-			self.toPage += "<a href=%s>%s</a>\n<br />"%(self.getText(link.childNodes), 
-																self.getText(title.childNodes))
+			self.toPage += "<a href=%s>%s</a> <a href=\"%s&category_id=0\">Category</a>\n<br />"%(
+																self.getText(link.childNodes), 
+																self.getText(title.childNodes), 
+																self.getText(link.childNodes))
 		return self.toPage
 	
 	def parseShop(self, dat):
-		d = xml.dom.minidom.parseString(dat)
-		slides = d.getElementsByTagName("shop")
+		#d = xml.dom.minidom.parseString(dat)
+		slides = dat#d.getElementsByTagName("shop")
 		self.toPage = ""
 		for slide in slides:
 			link = slide.getElementsByTagName("shop_id")[0]
 			title = slide.getElementsByTagName("shop_name")[0]
-			self.toPage += "<a href=%s>%s</a>\n<br />"%(self.getText(link.childNodes), 
+			self.toPage += "<a href=%s&category_id=0>%s</a>\n<br />"%(self.getText(link.childNodes), 
 																self.getText(title.childNodes))
 		return self.toPage
 
@@ -53,10 +56,13 @@ class xmlParser():
 		d = xml.dom.minidom.parseString(dat)
 		elems = d.getElementsByTagName("parent_category")
 		categories = d.getElementsByTagName("categories")
-		if categories:
-			categories = categories[0]
-		else:
-			categories = d.getElementsByTagName("products")[0]
+		slides = d.getElementsByTagName("category")
+		shops = d.getElementsByTagName("shop")
+		if not shops:
+			if categories:
+				categories = categories[0]
+			else:
+				categories = d.getElementsByTagName("products")[0]
 			
 		for elem in elems:
 			
@@ -67,15 +73,18 @@ class xmlParser():
 			self.toPageBack = " &larr;<a href=%s>  %s</a> \n" % (
 										self.getText(parent.childNodes),
 										self.getText(parent_name.childNodes))
-		self.toPageBack += "&nbsp&nbsp&nbsp;&rarr;<a href=%s>%s</a>&larr;<br /><br />\n" % (
-								categories.attributes["category_id"].value,
-								categories.attributes["category_name"].value)
+		if not shops:
+			self.toPageBack += "&nbsp&nbsp&nbsp;&rarr;<a href=%s>%s</a>&larr;<br /><br />\n" % (
+									categories.attributes["category_id"].value,
+									categories.attributes["category_name"].value)
 		
-		slides = d.getElementsByTagName("category")
-		if len(slides) > 0:
-			return self.parseCategory(slides)
+		if len(shops) > 0:
+			return self.parseShop(shops)
 		else:
-			return self.parseProduct(dat)
+			if len(slides) > 0:
+				return self.parseCategory(slides)
+			else:
+				return self.parseProduct(dat)
 		
 	def getImage(self, url, i):
 		tmp = "%s.jpg" % i
@@ -157,12 +166,21 @@ class HtmlWindow(wx.html.HtmlWindow):
 
 		
 	def OnLinkClicked(self, link):
-		links = link.GetHref()
-		if self.params['region_id'] == 0:
-			self.params['region_id'] = links
-			self.params['category_id'] = 0
-		else:
-			self.params['category_id'] = links
+		links = '?region_id='+link.GetHref()
+		cat = urlparse.urlparse(links)[4].split("&")
+		print link.GetHref()
+		print cat
+		print "*" *10
+		for i in cat:
+			qwe, param = i.split("=")
+			self.params[qwe] = param
+		
+		#if self.params['region_id'] == 0:
+		#	self.params['region_id'] = links
+		#else:
+		#	self.params['category_id'] = links
+		#print self.params
+		#print links
 		self.getUrl()
 	
 	def getUrl(self):
