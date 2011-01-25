@@ -22,7 +22,7 @@ class Warez extends ActiveRecord\Model
 	public $rating = 0.0;
 	public $reviews = 0;
 	static $alias_attribute = array(
-		'name' => 'FullName', 
+		'name' => 'fullname', 
 		'inetprice'=>'inetprice'
 		);
 	
