@@ -253,7 +253,7 @@ class ControllerCategory extends Template\Template{
 			
 			$param_m = $this->params->addChild("param"); 
 			$param_m->addAttribute("param_name", "mark");
-			$param_m->addAttribute("titles", "Производители");
+			$param_m->addAttribute("title", "Производители");
 			$param_m->addAttribute("current_value", "0");
 			$option_m = $param_m->addChild("option", "Все производители");
 			$option_m->addAttribute("value", "0");
@@ -285,7 +285,7 @@ class ControllerCategory extends Template\Template{
 
 				$product = $this->products->addChild("product");
 				$product->addChild("product_id", ToUTF($val->warecode));
-				$product->addChild("title", StripTags($val->name));
+				$product->addChild("title", "- ".StripTags($val->name));
 				$val->getDesctiptions();
 				$product->addChild("description", StripTags($val->description));
 				//$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 'conditions' => array('warecode = ?', $val->warecode)));
