@@ -128,6 +128,8 @@ class ControllerCategory extends Template\Template{
 	private function recurseAmount($val)
 	{
 		$amount = $this->amount($val);
+		if($this->actions > 0)
+			return $amount;
 		if($amount == 1 )
 		{
 			$val = Models\Category::find('first',array('parent_id' => $val->category_id));
