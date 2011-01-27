@@ -48,7 +48,7 @@ class ControllerShops extends Template\Template{
 			$pattern = array("/^МО,\s*?г.\s*?/","/^МО,\s*?/","/^ул.\s*?/",
 							"/^г.\s*?Москва,\s*?ул.\s*?/",
 							"/^г.\s*?Москва,\s*?/", "/^Москва,\s*?ул.\s*?/", 
-							"/^Москва,\s*?/","/^г.\s*?/","/^Коммунальная зона\s*?/");
+							"/^Москва,\s*?/","/^г.\s*?/","/^Коммунальная зона\s*?/", "/^\s+?/");
 			
 			$shop->addChild("address", preg_replace($pattern, '', $adresss));
 			$shop->addChild("day_hours", ToUTF($val->day_hours));
