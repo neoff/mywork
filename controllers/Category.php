@@ -403,7 +403,7 @@ class ControllerCategory extends Template\Template{
 					$cat_parrent_name = ToUTF($p->name);
 				}
 			else 
-				$this->parents->name = $cat_parrent_name;
+				$this->parents->name = "";
 			$this->options = array('parent_id' => $this->category_id);
 			$this->parent_name = ToUTF($this->parents->name);
 			$this->parent_id = $this->category_id;
