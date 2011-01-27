@@ -45,7 +45,10 @@ class ControllerShops extends Template\Template{
 				else $metro->addChild("station", ToUTF($val->metro));
 			}
 			$adresss = ToUTF($val->address);
-			$pattern = array("/^МО, /","/^ул. /","/^г. Москва, ул. /","/^г. Москва, /", "/^Москва, ул. /", "/^Москва, /","/^г. /","/^Коммунальная зона /");
+			$pattern = array("/^МО,\s*?г.\s*?/","/^МО,\s*?/","/^ул.\s*?/",
+							"/^г.\s*?Москва,\s*?ул.\s*?/",
+							"/^г.\s*?Москва,\s*?/", "/^Москва,\s*?ул.\s*?/", 
+							"/^Москва,\s*?/","/^г.\s*?/","/^Коммунальная зона\s*?/");
 			
 			$shop->addChild("address", preg_replace($pattern, '', $adresss));
 			$shop->addChild("day_hours", ToUTF($val->day_hours));
