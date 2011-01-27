@@ -275,37 +275,38 @@ class ControllerCategory extends Template\Template{
 				$this->pages->addChild("onpage", "20");
 				$this->pages->addChild("page", $this->page);
 			}
-			foreach ($productes_m as $key => $val)
-			{
-				if (!in_array($val->grid, $grid))
-					$grid[]=$val->grid;
-				if (!in_array($val->mark, $markid))
-					$markid[]=$val->mark;
-				//add products
-
-				$product = $this->products->addChild("product");
-				$product->addChild("product_id", ToUTF($val->warecode));
-				$product->addChild("title", StripTags($val->name));
-				$val->getDesctiptions();
-				$product->addChild("description", StripTags($val->description));
-				//$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 'conditions' => array('warecode = ?', $val->warecode)));
-				$val->getRatingRev();
-				$product->addChild("rating", $val->rating);
-				$product->addChild("reviews_num", $val->reviews);
-				$product->addChild("inet_price", $val->inetprice);
-				
-				if($val->oldprice)
-					$old_price = $val->oldprice;
-				else
-					$old_price = $val->price;
+			if($productes_m)
+				foreach ($productes_m as $key => $val)
+				{
+					if (!in_array($val->grid, $grid))
+						$grid[]=$val->grid;
+					if (!in_array($val->mark, $markid))
+						$markid[]=$val->mark;
+					//add products
+	
+					$product = $this->products->addChild("product");
+					$product->addChild("product_id", ToUTF($val->warecode));
+					$product->addChild("title", StripTags($val->name));
+					$val->getDesctiptions();
+					$product->addChild("description", StripTags($val->description));
+					//$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 'conditions' => array('warecode = ?', $val->warecode)));
+					$val->getRatingRev();
+					$product->addChild("rating", $val->rating);
+					$product->addChild("reviews_num", $val->reviews);
+					$product->addChild("inet_price", $val->inetprice);
 					
-				$product->addChild("old_price", $old_price);
-				
-				$product->addChild("price", $val->price);
-				$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); #TODO где взять картинка для продукта
-				$image->addAttribute("width", "180");
-				$image->addAttribute("height", "180");
-			}
+					if($val->oldprice)
+						$old_price = $val->oldprice;
+					else
+						$old_price = $val->price;
+						
+					$product->addChild("old_price", $old_price);
+					
+					$product->addChild("price", $val->price);
+					$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); #TODO где взять картинка для продукта
+					$image->addAttribute("width", "180");
+					$image->addAttribute("height", "180");
+				}
 			foreach($grid as $val)
 			{
 				$m_group = Models\Groups::find('first', array("grid"=>$val));
