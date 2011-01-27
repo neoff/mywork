@@ -50,7 +50,7 @@ class ControllerShops extends Template\Template{
 							"/^г.\s*?Москва,\s*?/", "/^Москва,\s*?ул.\s*?/", 
 							"/^Москва,\s*?/","/^г.\s*?/","/^Коммунальная зона\s*?/");
 			
-			$shop->addChild("address", preg_replace($pattern, '', $adresss));
+			$shop->addChild("address", $adresss);#preg_replace($pattern, '', $adresss));
 			$shop->addChild("day_hours", ToUTF($val->day_hours));
 			$shop->addChild("holiday_hours", ToUTF($val->holyday_hours));
 			$shop->addChild("phone", ToUTF($val->phone));
