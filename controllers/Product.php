@@ -129,7 +129,8 @@ class ControllerProduct extends Template\Template{
 				foreach ($reviews_m as $key => $val)
 				{
 					$review = $reviews->addChild("review");
-					$review->addChild("date", "aaa");
+					if($val->add_date)
+					$review->addChild("date", $val->add_date->format());
 					$review->addChild("author", ToUTF($val->name));
 					$review->addChild("city",  ToUTF($val->city));
 					$review->addChild("rating", $val->rating);
