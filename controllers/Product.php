@@ -130,7 +130,7 @@ class ControllerProduct extends Template\Template{
 				{
 					$review = $reviews->addChild("review");
 					if($val->add_date)
-					$review->addChild("date", $val->add_date->format());
+					$review->addChild("date", $val->add_date->format("d.m.y"));
 					$review->addChild("author", ToUTF($val->name));
 					$review->addChild("city",  ToUTF($val->city));
 					$review->addChild("rating", $val->rating);
