@@ -31,7 +31,16 @@ class ControllerProduct extends Template\Template{
 			//print_r($productes);
 			$options = array("dirid"=>$productes->dirid, "classid"=>$productes->classid, "grid"=>$productes->grid);
 			$category = Models\Category::find('fist', $options);
-	
+			if(!$category)
+			{
+				unset($options["grid"]);
+				$category = Models\Category::find('fist', $options);
+			}	
+			if(!$category)
+			{
+				unset($options["classid"]);
+				$category = Models\Category::find('fist', $options);
+			}
 			$this->categories="";
 			$this->categories->addChild("category_id", ($category)?$category->category_id:0);
 			$this->categories->addChild("category_name", ($category)?ToUTF($category->name):"Список категорий");
