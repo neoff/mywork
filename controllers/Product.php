@@ -125,7 +125,7 @@ class ControllerProduct extends Template\Template{
 			if($reviews)
 			{
 				$reviews = $this->product->addChild("reviews");
-				$reviews_m=Models\Reviews::all(array('warecode'=>$product_id));
+				$reviews_m=Models\Reviews::all(array('warecode'=>$product_id, "approved"=>1));
 				foreach ($reviews_m as $key => $val)
 				{
 					$review = $reviews->addChild("review");
