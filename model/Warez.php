@@ -162,7 +162,7 @@ class Link extends ActiveRecord\Model{
 	public function getRatingRev()
 	{
 		$options = array('select' => 'count(rating) c, sum(rating) s', 
-						'conditions' => array('warecode = ?', $this->warecode));
+						'conditions' => array('approved=1 and warecode = ?', $this->warecode));
 		$rewiews = Reviews::first($options);
 		if($options)
 		{
