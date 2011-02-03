@@ -50,6 +50,9 @@ class ControllerCategory extends Template\Template{
 	private static $Classes = array();
 	private static $Groups = array();
 	private static $Mult = 100000;
+	private $dir_id;
+	private $class_id;
+	private $group_id;
 	
 	private function all_dirs(&$a)
 	{
@@ -94,8 +97,7 @@ class ControllerCategory extends Template\Template{
 					$this->Dirs();
 				else
 				{
-					$dir = round($this->category_id / self::$Mult);
-					$class = $this->category_id % self::$Mult;
+					$this->ToClass();
 					$this->Classes();
 				}
 			}
@@ -168,6 +170,11 @@ class ControllerCategory extends Template\Template{
 	{
 		return $d*self::$Mult+$c;
 	}
+	private function ToClass()
+	{
+		$this->dir_id = round($this->category_id / self::$Mult);
+		$this->class_id = $this->category_id % self::$Mult;
+	}
 	/**
 	 * ф-я выводит диры в рутовой категории
 	 * Enter description here ...
@@ -209,12 +216,22 @@ class ControllerCategory extends Template\Template{
 		
 		$wwwarez =  Models\Warez::find_by_sql('SELECT distinct ClassID as result 
 												FROM warez_'.$this->region_id."
-												WHERE DirID = ".$this->category_id);
+												WHERE DirID = ".$this->dir_id);
 		$this->all_dirs($wwwarez);
 		
-		foreach (array_keys(self::$Groups[$this->category_id]) as $value) 
+		foreach (array_keys(self::$Groups[$this->dir_id]) as $value) 
 		{
-			
+			if(!in_array($value, $wwwarez))
+				continue;
+			$category = $this->categories->addChild("category");
+			$category->addChild("category_id", $this->ToDir($this->dir_id, $value));
+			$category->addChild("category_name", ToUTF(self::$Class[$this->dir_id][$value]));
+			$category->addChild("amount", "0"); 
+			$icon = $category->addChild("category_icon", 
+				"http://www.mvideo.ru/mobile/public/img/".$this->dir_id."_".$value."_.jpg"); 
+		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
+			$icon->addAttribute("width", "180");
+			$icon->addAttribute("height", "180");
 		}
 	}
 	/**
