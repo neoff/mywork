@@ -514,12 +514,13 @@ class ControllerCategory extends Template\Template{
 			}
 			else 
 			{
+				print "aaa";
 				foreach (self::$GlobalConfig['smenu'] as $key => $value) 
 				{
-					if(in_array($this->parents->dirid, self::$GlobalConfig['smenu'][$key]['dirs']))
+					if(in_array($this->parents->dirid, $value['dirs']))
 						{
 							$this->parents->parent_id = ToUTF($key);
-							$this->parents->parent_name = ToUTF(self::$GlobalConfig['smenu'][$key]['name']);
+							$this->parents->parent_name = ToUTF($value['name']);
 							break;
 						}
 				}
