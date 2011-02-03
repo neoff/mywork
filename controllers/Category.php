@@ -201,7 +201,20 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function Classes()
 	{
+		print $this->category_id;
+		$this->categories="";
+		$this->categories->addAttribute("category_id", $this->category_id);
+		$this->categories->addAttribute("category_name", $this->parent_name);
 		
+		$wwwarez =  Models\Warez::find_by_sql('SELECT distinct ClassID as result 
+												FROM warez_'.$this->region_id."
+												WHERE DirID = ".$this->category_id);
+		$this->all_dirs($wwwarez);
+		
+		foreach (array_keys(self::$Groups[$this->category_id]) as $value) 
+		{
+			
+		}
 	}
 	/**
 	 * функция рисует на странице информацию о категориях 
