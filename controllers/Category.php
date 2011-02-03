@@ -49,7 +49,7 @@ class ControllerCategory extends Template\Template{
 	private static $Dirs = array();
 	private static $Classes = array();
 	private static $Groups = array();
-	private static $Mult = 100000;
+	private static $Mult = 10000000;
 	private $dir_id;
 	private $class_id;
 	private $group_id;
@@ -103,21 +103,21 @@ class ControllerCategory extends Template\Template{
 				}
 			}
 		}
-		if($this->searches)
+		/*if($this->searches)
 			$this->category = $this->search();
 			
 		if($this->actions > 0)
 			$this->category = $this->action();
-			
+			*/
 			
 		//print_r($this->category);
 		//$condition = "";
 		//$categoryssss = Models\Category::getWarezAction($this->region_id, $this->action_val, $condition);
 		//print_r($categoryssss);
-		if($this->category)
-			$this->categories();
-		else
+		if($this->group_id)
 			$this->productes();
+		else
+			$this->categories();
 	}
 	
 	private function rootCategories()
