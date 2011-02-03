@@ -50,6 +50,7 @@ class ControllerCategory extends Template\Template{
 	private static $Classes = array();
 	private static $Groups = array();
 	private static $Mult = 10000000;
+	private static $MultC = 10000;
 	private $dir_id;
 	private $class_id;
 	private $group_id;
@@ -170,9 +171,9 @@ class ControllerCategory extends Template\Template{
 		return False;
 		
 	}
-	private function ToDir($d, $c=0)
+	private function ToDir($d, $c = 0, $g = 0)
 	{
-		return $d*self::$Mult+$c;
+		return $d*self::$Mult+self::$c*self::$MultC+$g;
 	}
 	private function ToClass()
 	{
