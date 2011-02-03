@@ -267,7 +267,7 @@ class ControllerCategory extends Template\Template{
 												WHERE DirID = ".$this->dir_id."
 												AND ClassID = ".$this->class_id);
 		$this->all_dirs($wwwarez);
-		print $this->group_id;
+		#print $this->group_id;
 		//print_r(array_keys(self::$Groups[$this->dir_id]));
 		foreach (array_keys(self::$Groups[$this->dir_id][$this->class_id]) as $value) 
 		{
