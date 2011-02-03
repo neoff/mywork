@@ -50,8 +50,8 @@ class ControllerCategory extends Template\Template{
 	private static $Dirs = array();
 	private static $Classes = array();
 	private static $Groups = array();
-	private static $Mult = 10000000;
-	private static $MultC = 10000;
+	private static $Mult = 1000000000;
+	private static $MultC = 1000000;
 	private static $MultG = 1;
 	
 	private $dir_id;
