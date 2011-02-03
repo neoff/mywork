@@ -43,6 +43,7 @@ class ControllerCategory extends Template\Template{
 	private $category;
 	private $options;
 	private $page;
+	
 	private static $TmpDir = array();
 	private static $GlobalConfig = array();
 	private static $Brands = array();
@@ -51,6 +52,8 @@ class ControllerCategory extends Template\Template{
 	private static $Groups = array();
 	private static $Mult = 10000000;
 	private static $MultC = 10000;
+	private static $MultG = 1;
+	
 	private $dir_id;
 	private $class_id;
 	private $group_id;
@@ -174,13 +177,16 @@ class ControllerCategory extends Template\Template{
 	}
 	private function ToDir($d, $c = 0, $g = 0)
 	{
-		return $d*self::$Mult+$c*self::$MultC+$g;
+		$d = $d*self::$Mult;
+		$c = $c*self::$MultC;
+		$g = $g*self::$MultG;
+		return $d+$c+$g;
 	}
 	private function ToClass()
 	{
 		$this->dir_id = floor($this->category_id / self::$Mult);
-		$this->class_id = floor(($this->category_id % self::$Mult) / self::$MultC);
-		$this->group_id = ($this->category_id % self::$Mult) % self::$MultC;
+		$this->class_id = floor(($this->category_id - $this->dir_id) / self::$MultC);
+		$this->group_id = floor(($this->category_id - $this->dir_id - $this->class_id) / self::$MultG);
 	}
 	/**
 	 * ф-я выводит диры в рутовой категории
