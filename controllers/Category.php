@@ -98,7 +98,8 @@ class ControllerCategory extends Template\Template{
 				else
 				{
 					$this->ToClass();
-					$this->Classes();
+					if(!$this->class_id)
+						$this->Classes();
 				}
 			}
 		}
