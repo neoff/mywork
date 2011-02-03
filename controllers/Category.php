@@ -173,7 +173,7 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function Dirs()
 	{
-		
+		exit();
 		$this->categories="";
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", $this->parent_name);
