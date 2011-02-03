@@ -101,6 +101,7 @@ class ControllerCategory extends Template\Template{
 				else
 				{
 					$this->ToClass();
+					print $this->class_id;
 					if(!$this->class_id)
 						$this->category = $this->Classes();
 				}
