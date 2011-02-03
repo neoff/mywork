@@ -79,7 +79,7 @@ class ControllerCategory extends Template\Template{
 		self::$Dirs = $Dirs;
 		self::$Classes = $Classes;
 		self::$Groups = $Groups;
-		print_r($Dirs);
+		var_dump(3123342323);
 		exit();
 		
 		$this->options = array('parent_id' => $this->category_id);
