@@ -226,7 +226,7 @@ class ControllerCategory extends Template\Template{
 				continue;
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $this->ToDir($this->dir_id, $value));
-			$category->addChild("category_name", ToUTF(self::$Class[$this->dir_id][$value]));
+			$category->addChild("category_name", ToUTF(self::$Classes[$this->dir_id][$value]));
 			$category->addChild("amount", "0"); 
 			$icon = $category->addChild("category_icon", 
 				"http://www.mvideo.ru/mobile/public/img/".$this->dir_id."_".$value."_.jpg"); 
