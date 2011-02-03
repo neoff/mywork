@@ -121,10 +121,10 @@ class ControllerCategory extends Template\Template{
 		//$condition = "";
 		//$categoryssss = Models\Category::getWarezAction($this->region_id, $this->action_val, $condition);
 		//print_r($categoryssss);
-		if($this->group_id)
-			$this->productes();
-		else
-			if($this->category)
+		if($this->class_id)
+			if($this->group_id)
+				$this->productes();
+			else
 				$this->categories();
 	}
 	
