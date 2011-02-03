@@ -11,6 +11,26 @@
 
 	namespace Models;
 	use ActiveRecord;
+class Dirs extends ActiveRecord\Model
+{
+	static $table_name = 'dirs';
+	static $primary_key = 'dirid';
+	static $connection = CONNECTION;
+}
+
+class Classes extends ActiveRecord\Model
+{
+	static $table_name = 'classes';
+	static $primary_key = 'classid';
+	static $connection = CONNECTION;
+}
+
+class Groups extends ActiveRecord\Model
+{
+	static $table_name = 'groups';
+	static $primary_key = 'grid';
+	static $connection = CONNECTION;
+}
 
 class Category extends ActiveRecord\Model
 {

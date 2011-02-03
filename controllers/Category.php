@@ -43,9 +43,22 @@ class ControllerCategory extends Template\Template{
 	private $category;
 	private $options;
 	private $page;
+	private static $TmpDir = array();
 	private static $GlobalConfig = array();
+	private static $Brands = array();
+	private static $Dirs = array();
+	private static $Classes = array();
+	private static $Groups = array();
+	private static $Mult = 100000;
 	
-	
+	private function all_dirs(&$a)
+	{
+		//SELECT distinct DirID, ClassID, GrID from warez_1;
+		foreach ($a as $value) {
+			self::$TmpDir[] = $value->result;
+		}
+		$a=self::$TmpDir;
+	}
 	public function index( $array )
 	{
 		$GlobalConfig=array();
@@ -56,8 +69,13 @@ class ControllerCategory extends Template\Template{
 		$GlobalConfig['RegionID']=$this->region_id;
 		require_once $rfile . '/lib/federal_info.lib.php';
 		require_once $rfile . '/lib/sdirs.lib.php';
+		require_once $rfile . '/www/classifier_'.$this->region_id.'.inc.php';
 		
 		self::$GlobalConfig = $GlobalConfig;
+		self::$Brands = $Brands;
+		self::$Dirs = $Dirs;
+		self::$Classes = $Classes;
+		self::$Groups = $Groups;
 		
 		$this->options = array('parent_id' => $this->category_id);
 		$this->parents = Models\Category::find('first', array('conditions' => "category_id = $this->category_id"));
@@ -68,8 +86,18 @@ class ControllerCategory extends Template\Template{
 			$this->parent_node();
 			if($this->category_id == 0)
 				$this->category = $this->rootCategories();
-			if($this->category_id >0)
-				$this->category = Models\Category::find('all', $this->options);
+			//if($this->category_id >0)
+			//	$this->category = Models\Category::find('all', $this->options);
+			else 
+			{
+				if($this->category_id < self::$Mult)
+					$this->Dirs();
+				else
+				{
+					$dir = round($this->category_id / self::$Mult);
+					$class = $this->category_id % self::$Mult;
+				}
+			}
 		}
 		if($this->searches)
 			$this->category = $this->search();
@@ -87,87 +115,93 @@ class ControllerCategory extends Template\Template{
 		else
 			$this->productes();
 	}
-	/**
-	 * ф-я вычисляет колличество подкатегорий в категории
-	 */
-	private function amount($val)
+	
+	private function rootCategories()
 	{
-		if($val)
+		
+		
+		$this->categories="";
+		$this->categories->addAttribute("category_id", $this->category_id);
+		$this->categories->addAttribute("category_name", $this->parent_name);
+		
+		$wwwarez =  Models\Warez::find_by_sql('SELECT distinct DirID as result from warez_'.$this->region_id);
+		$this->all_dirs($wwwarez);
+		
+		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
 		{
-			#var_dump($val);
-			#print $val->category_id;
-			$amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
-			/*if($amount == 1)
+			//$am = Models\Category::find('all', array('conditions' => 
+			//						array('parent_id is null and dirid in (?)', $value['dirs'])
+			//						));
+			$amount = 0;
+			
+			foreach ($value['dirs'] as $v) 
 			{
+				if(!in_array($v, $wwwarez))
+					continue 2;
 				$amount++;
-				Models\Category::find('all', $this->options);
-			}*/
-			if(!$amount) 
-			{
-				$ids = new SetId($val->dirid, $val->classid, $val->grid);
-				$amount = count(Models\Warez::getWarez($this->region_id, $ids));
-			}
-			if($this->actions > 0)
-			{
-				$amount = Models\Warez::find_by_sql('select count(1) as amount, ware, DirID from `warez_' .$this->region_id . '` 
-								where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid.' group by DirID'  );
-				
-				//print_r($amount);
-				$count = 0;
-				foreach($amount as $v)
-				{
-					$count = $v->amount;
-				}
-				$amount = $count;
+				$one_key = $v;
 				
 			}
-			return $amount;
+			//$amount = count(self::$Groups[$v]);
+			$id = $key;
+			if($amount == 1 )
+			{
+				//$val = $am[0];
+				//$amount =  $this->recurseAmount($val);
+				$key = $one_key;
+				//$value['name'] = $val->name;
+			}
+			$category = $this->categories->addChild("category");
+			$category->addChild("category_id", $key);
+			$category->addChild("category_name", ToUTF($value['name']));
+			$category->addChild("amount", $amount); 
+			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/s$id.jpg"); #TODO откуда брать иконку категории???
+			$icon->addAttribute("width", "180");
+			$icon->addAttribute("height", "180");
+		}
+		//exit();
+		return False;
+		
+	}
+	private function ToDir($d, $c=0)
+	{
+		return $d*self::$Mult+c;
+	}
+	/**
+	 * ф-я выводит диры в рутовой категории
+	 * Enter description here ...
+	 */
+	private function Dirs()
+	{
+		
+		$this->categories="";
+		$this->categories->addAttribute("category_id", $this->category_id);
+		$this->categories->addAttribute("category_name", $this->parent_name);
+		
+		$wwwarez =  Models\Warez::find_by_sql('SELECT distinct DirID as result 
+												FROM warez_'.$this->region_id);
+		$this->all_dirs($wwwarez);
+		
+		foreach (self::$GlobalConfig['smenu'][$this->category_id]['dirs'] as $value) 
+		{
+			if(!in_array($value, $wwwarez))
+				continue;
+			$category = $this->categories->addChild("category");
+			$category->addChild("category_id", $value);
+			$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
+			$category->addChild("amount", "0"); 
+			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$value.".jpg"); #TODO откуда брать иконку категории???
+			$icon->addAttribute("width", "180");
+			$icon->addAttribute("height", "180");
 		}
 	}
-	
-	private function recurseAmount($val)
+	/**
+	 * ф-я выводит классы в дирах
+	 * Enter description here ...
+	 */
+	private function Classes()
 	{
-		$amount = $this->amount($val);
-		if($this->actions > 0)
-			return $amount;
-		if($amount == 1 )
-		{
-			$val = Models\Category::find('first',array('parent_id' => $val->category_id));
-			$amount = $this->recurseAmount($val);
-		}
 		
-		if($amount > 1 )
-		{
-			#print $val->category_id . " - id----cat - ".$val->name." ".$amount." \n";
-			$vCount = Models\Category::find('all',array('parent_id' => $val->category_id));
-			if($vCount)
-			{
-				$cc = 0;
-				foreach($vCount as $vk=>$vc)
-				{
-					#print ToUTF($vc->name)." - ".$vc->category_id." pod_category\n";
-					$cnt = $this->amount($vc);
-					#print $val->category_id." + ".$vc->category_id." + ".$vc->name." + ".$cnt." count + ".$cc." -pod_category\n";
-					if($cnt == 1 )
-					{
-						$vcc = Models\Category::find('first',array('parent_id' => $vc->category_id));
-						$cnt = $this->amount($vc);
-						#print $cnt." count if one ----------------------\n";
-					}
-					if($amount > 1 )
-					{
-						$cnt = $this->recurseAmount($vc);
-					}
-					if($cnt == 0 )
-						continue;
-					$cc++;
-					#print $val->category_id." - ".$vc->category_id." - ".$vc->name." - ".$cnt." - ".$cc." count after check\n";
-					#print $cc." --- final amount --- \n";
-				}
-				$amount = $cc;
-			}
-		}
-		return $amount;
 	}
 	/**
 	 * функция рисует на странице информацию о категориях 
@@ -177,6 +211,11 @@ class ControllerCategory extends Template\Template{
 		$this->categories="";
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", $this->parent_name);
+		
+		$wwwarez =  Models\Warez::find_by_sql('SELECT DISTINCT ClassID as result 
+											FROM warez_'.$this->region_id."
+											WHERE DirID=".$this->category_id);
+		$this->all_dirs($wwwarez);
 		
 		foreach ($this->category as $key => $val)
 		{
@@ -609,37 +648,84 @@ class ControllerCategory extends Template\Template{
 		
 	}
 	
-	private function rootCategories()
+	
+	/**
+	 * ф-я вычисляет колличество подкатегорий в категории
+	 */
+	/*private function amount($val)
 	{
-		
-		
-		$this->categories="";
-		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", $this->parent_name);
-		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
+		if($val)
 		{
-			$am = Models\Category::find('all', array('conditions' => 
-									array('parent_id is null and dirid in (?)', $value['dirs'])
-									));
-			$amount = count($am);
-			$id = $key;
-			if($amount == 1 )
+			#var_dump($val);
+			#print $val->category_id;
+			$amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
+			
+			if(!$amount) 
 			{
-				$val = $am[0];
-				$amount =  $this->recurseAmount($val);
-				$key = $val->category_id;
-				$value['name'] = $val->name;
+				$ids = new SetId($val->dirid, $val->classid, $val->grid);
+				$amount = count(Models\Warez::getWarez($this->region_id, $ids));
 			}
-			$category = $this->categories->addChild("category");
-			$category->addChild("category_id", $key);
-			$category->addChild("category_name", ToUTF($value['name']));
-			$category->addChild("amount", $amount); 
-			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/s$id.jpg"); #TODO откуда брать иконку категории???
-			$icon->addAttribute("width", "180");
-			$icon->addAttribute("height", "180");
+			if($this->actions > 0)
+			{
+				$amount = Models\Warez::find_by_sql('select count(1) as amount, ware, DirID from `warez_' .$this->region_id . '` 
+								where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid.' group by DirID'  );
+				
+				//print_r($amount);
+				$count = 0;
+				foreach($amount as $v)
+				{
+					$count = $v->amount;
+				}
+				$amount = $count;
+				
+			}
+			return $amount;
 		}
-		//exit();
-		return False;
-		
 	}
+	
+	private function recurseAmount($val)
+	{
+		$amount = $this->amount($val);
+		if($this->actions > 0)
+			return $amount;
+		if($amount == 1 )
+		{
+			$val = Models\Category::find('first',array('parent_id' => $val->category_id));
+			$amount = $this->recurseAmount($val);
+		}
+		
+		if($amount > 1 )
+		{
+			#print $val->category_id . " - id----cat - ".$val->name." ".$amount." \n";
+			$vCount = Models\Category::find('all',array('parent_id' => $val->category_id));
+			if($vCount)
+			{
+				$cc = 0;
+				foreach($vCount as $vk=>$vc)
+				{
+					#print ToUTF($vc->name)." - ".$vc->category_id." pod_category\n";
+					$cnt = $this->amount($vc);
+					#print $val->category_id." + ".$vc->category_id." + ".$vc->name." + ".$cnt." count + ".$cc." -pod_category\n";
+					if($cnt == 1 )
+					{
+						$vcc = Models\Category::find('first',array('parent_id' => $vc->category_id));
+						$cnt = $this->amount($vc);
+						#print $cnt." count if one ----------------------\n";
+					}
+					if($amount > 1 )
+					{
+						$cnt = $this->recurseAmount($vc);
+					}
+					if($cnt == 0 )
+						continue;
+					$cc++;
+					#print $val->category_id." - ".$vc->category_id." - ".$vc->name." - ".$cnt." - ".$cc." count after check\n";
+					#print $cc." --- final amount --- \n";
+				}
+				$amount = $cc;
+			}
+		}
+		return $amount;
+	}
+	*/
 }
