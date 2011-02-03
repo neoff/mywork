@@ -173,7 +173,7 @@ class ControllerCategory extends Template\Template{
 	}
 	private function ToDir($d, $c = 0, $g = 0)
 	{
-		return $d*self::$Mult+self::$c*self::$MultC+$g;
+		return $d*self::$Mult+$c*self::$MultC+$g;
 	}
 	private function ToClass()
 	{
