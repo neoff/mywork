@@ -104,7 +104,7 @@ class ControllerCategory extends Template\Template{
 				else
 				{
 					$this->ToClass();
-					//print $this->class_id;
+					print $this->group_id;
 					if(!$this->class_id)
 						$this->category = $this->Classes();
 				}
@@ -255,7 +255,7 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function categories()
 	{
-		print $this->category_id;
+		
 		$this->categories="";
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", $this->parent_name);
