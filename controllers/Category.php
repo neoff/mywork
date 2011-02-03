@@ -461,7 +461,8 @@ class ControllerCategory extends Template\Template{
 		 * ставим заголовки блока parents
 		 * если parent = 0 то ставим список всех категорий
 		 */
-		
+		$cat_parrent_name = $this->parents->parent_name = "Список категорий";
+		$cat_parrent_id = $this->parents->parent_id = 0;
 		if(!$this->category_id || $this->category_id<0 )
 		{
 			//$this->options = array('conditions' => "parent_id is null");
@@ -514,7 +515,6 @@ class ControllerCategory extends Template\Template{
 			}
 			else 
 			{
-				print "aaa";
 				foreach (self::$GlobalConfig['smenu'] as $key => $value) 
 				{
 					if(in_array($this->parents->dirid, $value['dirs']))
