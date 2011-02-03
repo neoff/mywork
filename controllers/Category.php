@@ -94,12 +94,12 @@ class ControllerCategory extends Template\Template{
 			else 
 			{
 				if($this->category_id < self::$Mult)
-					$this->Dirs();
+					$this->category = $this->Dirs();
 				else
 				{
 					$this->ToClass();
 					if(!$this->class_id)
-						$this->Classes();
+						$this->category = $this->Classes();
 				}
 			}
 		}
@@ -117,7 +117,8 @@ class ControllerCategory extends Template\Template{
 		if($this->group_id)
 			$this->productes();
 		else
-			$this->categories();
+			if($this->category)
+				$this->categories();
 	}
 	
 	private function rootCategories()
@@ -203,6 +204,7 @@ class ControllerCategory extends Template\Template{
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");
 		}
+		return False;
 	}
 	/**
 	 * ф-я выводит классы в дирах
@@ -235,6 +237,7 @@ class ControllerCategory extends Template\Template{
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");
 		}
+		return False;
 	}
 	/**
 	 * функция рисует на странице информацию о категориях 
