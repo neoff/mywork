@@ -86,10 +86,3 @@ class Marks extends ActiveRecord\Model
 	
 }
 
-class Groups extends ActiveRecord\Model
-{
-	static $table_name = 'groups';
-	static $primary_key = 'grid';
-	static $connection = CONNECTION;
-	
-}
