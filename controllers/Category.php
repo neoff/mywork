@@ -160,7 +160,7 @@ class ControllerCategory extends Template\Template{
 			{
 				//$val = $am[0];
 				//$amount =  $this->recurseAmount($val);
-				$key = $one_key;
+				$key = $this->ToDir($one_key);
 				//$value['name'] = $val->name;
 			}
 			$category = $this->categories->addChild("category");
@@ -203,7 +203,7 @@ class ControllerCategory extends Template\Template{
 												FROM warez_'.$this->region_id);
 		$this->all_dirs($wwwarez);
 		
-		foreach (self::$GlobalConfig['smenu'][$this->category_id]['dirs'] as $value) 
+		foreach (self::$GlobalConfig['smenu'][$this->dir_id]['dirs'] as $value) 
 		{
 			if(!in_array($value, $wwwarez))
 				continue;
