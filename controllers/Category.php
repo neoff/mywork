@@ -341,10 +341,11 @@ class ControllerCategory extends Template\Template{
 			//}
 			$this->parents->dirid .= " and (ware like \"%$search%\" or FullName like \"%$search%\" )";
 		}
-		var_dump($this->parents);
+		#var_dump($this->parents);
 		
 		if($this->parents)
 		{
+			print "ads";
 			$page = $this->page;
 			if($this->page > 0)
 				$page = ($this->page -1)*20;
