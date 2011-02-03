@@ -324,6 +324,11 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function productes()
 	{
+		$this->parents->dirid = $this->dir_id;
+		$this->parents->classid = $this->class_id;
+		$this->parents->grid = $this->group_id;
+		$this->parents->name = self::$Classes[$this->dir_id][$this->class_id]
+		#FIXME !!!!!!!!!!!!
 		
 		if($this->actions > 0 && $this->action_val)
 			$this->parents->dirid .= " and warecode in (".implode(",", $this->action_val).")";#$this->parents->search
@@ -345,12 +350,12 @@ class ControllerCategory extends Template\Template{
 		
 		if($this->parents)
 		{
-			print "ads";
+			#print "ads";
 			$page = $this->page;
 			if($this->page > 0)
 				$page = ($this->page -1)*20;
-			
-			$productes_count = count(Models\Warez::getWarez($this->region_id, $this->parents, False));
+			$productes_count = 0;
+			#$productes_count = count(Models\Warez::getWarez($this->region_id, $this->parents, False));
 			$productes_m = Models\Warez::getWarez($this->region_id, $this->parents, $page);
 			//print_r($productes);
 			$c_name="";
