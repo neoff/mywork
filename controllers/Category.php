@@ -498,7 +498,33 @@ class ControllerCategory extends Template\Template{
 			$this->parents->grid = $this->group_id;
 			$this->parents->name = self::$Groups[$this->dir_id][$this->class_id][$this->group_id];
 			
-			$cat_parrent_id = 0;
+			if($this->class_id)
+			{
+				$this->parents->parent_id = $this->ToDir($this->dir_id, $this->class_id);
+				$this->parents->parent_name = ToUTF(self::$Classes[$this->dir_id][$this->class_id]);
+				$cat_parrent_id = $this->ToDir($this->dir_id);
+				$cat_parrent_name = ToUTF(self::$Dirs[$this->dir_id]);
+				if($this->group_id)
+				{
+					$this->parents->parent_id = $this->ToDir($this->dir_id, $this->class_id, $this->group_id);
+					$this->parents->parent_name = ToUTF(self::$Groups[$this->dir_id][$this->class_id][$this->group_id]);
+					$cat_parrent_id = $this->ToDir($this->dir_id, $this->class_id);
+					$cat_parrent_name = ToUTF(self::$Classes[$this->dir_id][$this->class_id]);
+				}
+			}
+			else 
+			{
+				foreach (self::$GlobalConfig['smenu'] as $key => $value) 
+				{
+					if(in_array($this->parents->dirid, self::$GlobalConfig['smenu'][$key]['dirs']))
+						{
+							$this->parents->parent_id = ToUTF($key);
+							$this->parents->parent_name = ToUTF(self::$GlobalConfig['smenu'][$key]['name']);
+							break;
+						}
+				}
+			}
+			/*$cat_parrent_id = 0;
 			$cat_parrent_name = "Список категорий";
 			if($this->parents)
 				if(!$this->parents->parent_id)
@@ -521,7 +547,7 @@ class ControllerCategory extends Template\Template{
 					}
 					
 				}
-			/*	else
+				else
 				{
 					$cat_parrent_id = $this->parents->parent_id;
 					$p = Models\Category::first(array('category_id' => $cat_parrent_id));
@@ -529,9 +555,9 @@ class ControllerCategory extends Template\Template{
 				}
 			else 
 				$this->parents->name = "";*/
-			$this->options = array('parent_id' => $this->category_id);
+			//$this->options = array('parent_id' => $this->category_id);
 			$this->parent_name = ToUTF($this->parents->name);
-			$this->parent_id = $this->category_id;
+			$this->parent_id = $this->parents->category_id;
 		}
 		$this->parent_category="";
 		$this->parent_category->addChild("category_id", $cat_parrent_id);
