@@ -327,7 +327,7 @@ class ControllerCategory extends Template\Template{
 		$this->parents->dirid = $this->dir_id;
 		$this->parents->classid = $this->class_id;
 		$this->parents->grid = $this->group_id;
-		$this->parents->name = self::$Classes[$this->dir_id][$this->class_id];
+		$this->parents->name = self::$Groups[$this->dir_id][$this->class_id][$this->group_id];
 		#FIXME !!!!!!!!!!!!
 		
 		if($this->actions > 0 && $this->action_val)
