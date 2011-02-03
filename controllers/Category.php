@@ -232,7 +232,7 @@ class ControllerCategory extends Template\Template{
 												FROM warez_'.$this->region_id."
 												WHERE DirID = ".$this->dir_id);
 		$this->all_dirs($wwwarez);
-		print $this->dir_id;
+		//print $this->dir_id;
 		//print_r(array_keys(self::$Groups[$this->dir_id]));
 		foreach (array_keys(self::$Groups[$this->dir_id]) as $value) 
 		{
@@ -260,7 +260,32 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", $this->parent_name);
 		
-		$wwwarez =  Models\Warez::find_by_sql('SELECT DISTINCT ClassID as result 
+		
+		
+		$wwwarez =  Models\Warez::find_by_sql('SELECT distinct GrID as result 
+												FROM warez_'.$this->region_id."
+												WHERE DirID = ".$this->dir_id."
+												AND ClassID = ".$this->class_id);
+		$this->all_dirs($wwwarez);
+		//print $this->dir_id;
+		//print_r(array_keys(self::$Groups[$this->dir_id]));
+		foreach (array_keys(self::$Groups[$this->dir_id][$this->class_id]) as $value) 
+		{
+			if(!in_array($value, $wwwarez))
+				continue;
+			$category = $this->categories->addChild("category");
+			$category->addChild("category_id", $this->ToDir($this->dir_id, $this->class_id, $value));
+			$category->addChild("category_name", ToUTF(self::$Groups[$this->dir_id][$this->class_id][$value]));
+			$category->addChild("amount", "0"); 
+			$icon = $category->addChild("category_icon", 
+				"http://www.mvideo.ru/mobile/public/img/".$this->dir_id."_".$this->class_id."_".$value.".jpg"); 
+		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
+			$icon->addAttribute("width", "180");
+			$icon->addAttribute("height", "180");
+		}
+		return False;
+		
+		/*$wwwarez =  Models\Warez::find_by_sql('SELECT DISTINCT ClassID as result 
 											FROM warez_'.$this->region_id."
 											WHERE DirID=".$this->category_id);
 		$this->all_dirs($wwwarez);
@@ -292,7 +317,7 @@ class ControllerCategory extends Template\Template{
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");
 			
-		}
+		}*/
 	}
 	/**
 	 * функция рисует на странице информацию о продуктах в категории 
