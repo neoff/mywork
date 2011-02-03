@@ -103,7 +103,7 @@ class ControllerCategory extends Template\Template{
 					$this->category = $this->Dirs();
 				else
 				{
-					$this->ToClass();
+					
 					//print $this->class_id;
 					if(!$this->class_id)
 						$this->category = $this->Classes();
@@ -464,17 +464,17 @@ class ControllerCategory extends Template\Template{
 		
 		if(!$this->category_id || $this->category_id<0 )
 		{
-			$this->options = array('conditions' => "parent_id is null");
+			//$this->options = array('conditions' => "parent_id is null");
 			$cat_parrent_name = $this->parent_name = "Список категорий";
 			$cat_parrent_id = $this->parent_id = 0;
 			$this->category_id = 0;
 		}
-		elseif($this->category_id<1000)
+		elseif($this->category_id<self::$Mult)
 		{
-			$cond = array('conditions' => "parent_id is null");
+			//$cond = array('conditions' => "parent_id is null");
 			$cat_parrent_name = $this->parent_name = "Список категорий";
 			$cat_parrent_id = $this->parent_id = 0;
-			if(array_key_exists($this->category_id, self::$GlobalConfig['smenu']))
+			/*if(array_key_exists($this->category_id, self::$GlobalConfig['smenu']))
 			{
 				$cond =array('conditions' => 
 							array('parent_id is null and dirid in (?)', 
@@ -482,8 +482,8 @@ class ControllerCategory extends Template\Template{
 								)
 							);
 				$this->parent_name = ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['name']);
-			}
-			$this->options = $cond;
+			}*/
+			//$this->options = $cond;
 		}
 		else
 		{
@@ -491,6 +491,12 @@ class ControllerCategory extends Template\Template{
 			 * проверяем parent текущей категории
 			 * и выставляем id и name у родительского нода
 			 */
+			$this->ToClass();
+			
+			$this->parents->dirid = $this->dir_id;
+			$this->parents->classid = $this->class_id;
+			$this->parents->grid = $this->group_id;
+			$this->parents->name = self::$Groups[$this->dir_id][$this->class_id][$this->group_id];
 			
 			$cat_parrent_id = 0;
 			$cat_parrent_name = "Список категорий";
@@ -515,14 +521,14 @@ class ControllerCategory extends Template\Template{
 					}
 					
 				}
-				else
+			/*	else
 				{
 					$cat_parrent_id = $this->parents->parent_id;
 					$p = Models\Category::first(array('category_id' => $cat_parrent_id));
 					$cat_parrent_name = ToUTF($p->name);
 				}
 			else 
-				$this->parents->name = "";
+				$this->parents->name = "";*/
 			$this->options = array('parent_id' => $this->category_id);
 			$this->parent_name = ToUTF($this->parents->name);
 			$this->parent_id = $this->category_id;
