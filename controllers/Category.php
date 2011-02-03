@@ -86,8 +86,8 @@ class ControllerCategory extends Template\Template{
 		#var_dump(3123342323432234);
 		#exit();
 		
-		$this->options = array('parent_id' => $this->category_id);
-		$this->parents = Models\Category::find('first', array('conditions' => "category_id = $this->category_id"));
+		//$this->options = array('parent_id' => $this->category_id);
+		//$this->parents = Models\Category::find('first', array('conditions' => "category_id = $this->category_id"));
 		
 		
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
