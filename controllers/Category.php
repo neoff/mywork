@@ -186,7 +186,7 @@ class ControllerCategory extends Template\Template{
 	{
 		$this->dir_id = floor($this->category_id / self::$Mult);
 		$this->class_id = floor(($this->category_id % self::$Mult) / self::$MultC);
-		$this->group_id = floor((($this->category_id % self::$Mult) - $this->class_id) / self::$MultG);
+		$this->group_id = floor((($this->category_id % self::$Mult) % self::$MultC) / self::$MultG);
 	}
 	/**
 	 * ф-я выводит диры в рутовой категории
