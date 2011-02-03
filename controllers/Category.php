@@ -79,8 +79,8 @@ class ControllerCategory extends Template\Template{
 		self::$Dirs = $Dirs;
 		self::$Classes = $Classes;
 		self::$Groups = $Groups;
-		var_dump(3123342323432234);
-		exit();
+		#var_dump(3123342323432234);
+		#exit();
 		
 		$this->options = array('parent_id' => $this->category_id);
 		$this->parents = Models\Category::find('first', array('conditions' => "category_id = $this->category_id"));
