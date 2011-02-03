@@ -177,8 +177,8 @@ class ControllerCategory extends Template\Template{
 	}
 	private function ToClass()
 	{
-		$this->dir_id = round($this->category_id / self::$Mult);
-		$this->class_id = round(($this->category_id % self::$Mult) / self::$MultC);
+		$this->dir_id = floor($this->category_id / self::$Mult);
+		$this->class_id = floor(($this->category_id % self::$Mult) / self::$MultC);
 		$this->group_id = ($this->category_id % self::$Mult) % self::$MultC;
 	}
 	/**
