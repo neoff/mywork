@@ -557,7 +557,7 @@ class ControllerCategory extends Template\Template{
 				$this->parents->name = "";*/
 			//$this->options = array('parent_id' => $this->category_id);
 			$this->parent_name = ToUTF($this->parents->name);
-			$this->parent_id = $this->parents->category_id;
+			$this->parent_id = $this->parents->parent_id;
 		}
 		$this->parent_category="";
 		$this->parent_category->addChild("category_id", $cat_parrent_id);
