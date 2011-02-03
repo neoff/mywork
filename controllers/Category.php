@@ -101,7 +101,6 @@ class ControllerCategory extends Template\Template{
 				else
 				{
 					$this->ToClass();
-					print $this->class_id;
 					if(!$this->class_id)
 						$this->category = $this->Classes();
 				}
@@ -179,7 +178,8 @@ class ControllerCategory extends Template\Template{
 	private function ToClass()
 	{
 		$this->dir_id = round($this->category_id / self::$Mult);
-		$this->class_id = $this->category_id % self::$Mult;
+		$this->class_id = round(($this->category_id % self::$Mult) / self::$MultC);
+		$this->group_id = ($this->category_id % self::$Mult) % self::$MultC;
 	}
 	/**
 	 * ф-я выводит диры в рутовой категории
