@@ -342,6 +342,7 @@ class ControllerCategory extends Template\Template{
 			$this->parents->dirid .= " and (ware like \"%$search%\" or FullName like \"%$search%\" )";
 		}
 		//var_dump($this->parents);
+		print $this->parents;
 		if($this->parents)
 		{
 			$page = $this->page;
