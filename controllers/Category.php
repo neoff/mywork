@@ -79,6 +79,8 @@ class ControllerCategory extends Template\Template{
 		self::$Dirs = $Dirs;
 		self::$Classes = $Classes;
 		self::$Groups = $Groups;
+		print_r($Dirs);
+		exit();
 		
 		$this->options = array('parent_id' => $this->category_id);
 		$this->parents = Models\Category::find('first', array('conditions' => "category_id = $this->category_id"));
