@@ -96,6 +96,7 @@ class ControllerCategory extends Template\Template{
 				{
 					$dir = round($this->category_id / self::$Mult);
 					$class = $this->category_id % self::$Mult;
+					$this->Classes();
 				}
 			}
 		}
