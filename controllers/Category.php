@@ -187,7 +187,7 @@ class ControllerCategory extends Template\Template{
 			if(!in_array($value, $wwwarez))
 				continue;
 			$category = $this->categories->addChild("category");
-			$category->addChild("category_id", $value);
+			$category->addChild("category_id", $this->ToDir($value));
 			$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
 			$category->addChild("amount", "0"); 
 			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$value.".jpg"); #TODO откуда брать иконку категории???
