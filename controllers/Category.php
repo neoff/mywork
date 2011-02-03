@@ -496,7 +496,7 @@ class ControllerCategory extends Template\Template{
 			$this->parents->dirid = $this->dir_id;
 			$this->parents->classid = $this->class_id;
 			$this->parents->grid = $this->group_id;
-			$this->parents->name = self::$Groups[$this->dir_id][$this->class_id][$this->group_id];
+			$this->parents->parent_name = self::$Groups[$this->dir_id][$this->class_id][$this->group_id];
 			
 			if($this->class_id)
 			{
