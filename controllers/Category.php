@@ -165,7 +165,7 @@ class ControllerCategory extends Template\Template{
 	}
 	private function ToDir($d, $c=0)
 	{
-		return $d*self::$Mult+c;
+		return $d*self::$Mult+$c;
 	}
 	/**
 	 * ф-я выводит диры в рутовой категории
