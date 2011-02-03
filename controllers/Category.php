@@ -232,7 +232,7 @@ class ControllerCategory extends Template\Template{
 												FROM warez_'.$this->region_id."
 												WHERE DirID = ".$this->dir_id);
 		$this->all_dirs($wwwarez);
-		print $this->dir_id;
+		//print $this->dir_id;
 		//print_r(array_keys(self::$Groups[$this->dir_id]));
 		foreach (array_keys(self::$Groups[$this->dir_id]) as $value) 
 		{
