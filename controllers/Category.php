@@ -317,9 +317,13 @@ class ControllerCategory extends Template\Template{
 	}
 	private function ActionDirs()
 	{
+		$this->parent_node();
+		
 		$this->categories="";
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", $this->parent_name);
+		
+		
 		
 		$q = 'SELECT distinct w.DirID as result 
 			FROM warez_'.$this->region_id.' as w';
@@ -874,8 +878,8 @@ class ControllerCategory extends Template\Template{
 			$categorys = array();
 		}*/
 		//print_r($this->action_val);
-		//if(!$this->searches)
-		$this->parent_node();
+		#if(!$this->searches)
+		#	$this->parent_node();
 		return False;
 	}
 	/**
