@@ -15,7 +15,9 @@
 	
 
 class ControllerProduct extends Template\Template{
-	
+	private static $Mult = 1000000000;
+	private static $MultC = 100000;
+	private static $MultG = 1;
 	public function index( $array )
 	{
 		//print_r($array);
@@ -44,8 +46,11 @@ class ControllerProduct extends Template\Template{
 			*/
 			$rfile = dirname(dirname(dirname($_SERVER["SCRIPT_FILENAME"])));
 			require_once $rfile . '/www/classifier_'.$region_id.'.inc.php';
-			$category->category_id = 1111;
-			$category->name = "sdfsdfsdf";
+			$d = $productes->dirid*self::$Mult;
+			$c = $productes->classid*self::$MultC;
+			$g = $productes->grid*self::$MultG;
+			$category->category_id = $d+$c+$g;
+			$category->name = $Groups[$productes->dirid][$productes->classid][$productes->grid];
 			$this->categories="";
 			$this->categories->addChild("category_id", ($category)?$category->category_id:0);
 			$this->categories->addChild("category_name", ($category)?ToUTF($category->name):"Список категорий");
