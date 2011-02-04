@@ -744,11 +744,11 @@ class ControllerCategory extends Template\Template{
 	private function putActions($name)
 	{
 		
-		$options = array('select' => 'warecode',
+		$options = array('select' => 'w.warecode',
 						'from' => 'segment_cache sc',
-						'joins'=>" join warez_$this->region_id  on (sc.warecode=warecode)",
+						'joins'=>" join warez_$this->region_id w on (sc.warecode=w.warecode)",
 						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name' ");
-		
+		print $this->searches;
 		if($this->searches)
 			$options['conditions'] .= $this->searches;# AND"
 		/*{
