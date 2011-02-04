@@ -745,9 +745,10 @@ class ControllerCategory extends Template\Template{
 			
 			if($key < $time)
 			{
-				print 1;
+				
 				if($val['end_date']>=$time)
 				{
+					print 1;
 					$url = str_replace("/", "", $val['link']);//link
 					$imgfile = "imgs/action/main/$url.jpg";
 					$this->action = "";
