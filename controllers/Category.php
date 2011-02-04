@@ -750,7 +750,8 @@ class ControllerCategory extends Template\Template{
 						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name'");
 		
 		if($this->searches)
-		{
+			$options['conditions'] .= "";# AND"
+		/*{
 			$search = $this->searches;
 			//if($search[0]!="%")
 			//{
@@ -762,7 +763,7 @@ class ControllerCategory extends Template\Template{
 			// $options['joins'] = "";
 			$options['conditions'] = $options['conditions'].
 					" and (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
-		}
+		}*/
 		//print_r($options);
 		$segment = Models\Segments::find('all', $options);
 		#$segment = Models\Segments::segmentDirs($this->region_id, $name);
