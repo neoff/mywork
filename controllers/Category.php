@@ -339,19 +339,19 @@ class ControllerCategory extends Template\Template{
 				
 				
 			if($this->action_val)
-				$q = 'SELECT distinct w.dirid, w.classid, w.grid 
+				$q = 'SELECT distinct w.warecode 
 					FROM warez_'.$this->region_id." as w
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches
 					AND w.DirID = ".$value;
 			else 
-				$q = 'SELECT distinct w.dirid, w.classid, w.grid  
+				$q = 'SELECT distinct w.warecode  
 						FROM warez_'.$this->region_id." as w
 						WHERE w.DirID = ".$value."
 						$this->searches";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
-			print_r($wwwcat);
+			//print_r($wwwcat);
 			//$this->all_dirs($wwwcat);
 			if($wwwcat)
 				$amount = count($wwwcat);
@@ -364,11 +364,11 @@ class ControllerCategory extends Template\Template{
 				continue;
 					
 			$category = $this->categories->addChild("category");
-			$category->addChild("category_id", $this->ToDir($this->dir_id, $this->class_id, $value));
-			$category->addChild("category_name", ToUTF(self::$Groups[$this->dir_id][$this->class_id][$value]));
+			$category->addChild("category_id", $this->ToDir($value));
+			$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
 			$category->addChild("amount", $amount); 
 			$icon = $category->addChild("category_icon", 
-				"http://www.mvideo.ru/mobile/public/img/".$this->dir_id."_".$this->class_id."_".$value.".jpg"); 
+				"http://www.mvideo.ru/mobile/public/img/".$value.".jpg"); 
 		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");
