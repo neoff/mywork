@@ -319,9 +319,7 @@ class ControllerCategory extends Template\Template{
 	{
 		$this->parent_node();
 		
-		$this->categories="";
-		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", $this->parent_name);
+		
 		
 		
 		
@@ -349,6 +347,12 @@ class ControllerCategory extends Template\Template{
 			$this->parents->grid = "";
 			//var_dump($this->parents);
 			return $this->productes();
+		}
+		else 
+		{
+			$this->categories="";
+			$this->categories->addAttribute("category_id", $this->category_id);
+			$this->categories->addAttribute("category_name", $this->parent_name);
 		}
 		foreach (array_keys(self::$Dirs) as $value) 
 		{
@@ -569,7 +573,7 @@ class ControllerCategory extends Template\Template{
 			$productes_count = count(Models\Warez::getWarez($this->region_id, $this->parents, False));
 			$productes_m = Models\Warez::getWarez($this->region_id, $this->parents, $page);
 			//print_r($productes);
-			$c_name="";
+			$c_name=$this->parent_name;
 			if(property_exists($this->parents, 'name'))
 				$c_name = ToUTF($this->parents->name);
 			
