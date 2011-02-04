@@ -331,6 +331,9 @@ class ControllerCategory extends Template\Template{
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
 		//print_r(array_keys(self::$Groups[$this->dir_id]));
+		if($this->dir_id)
+			return $this->productes();
+			
 		foreach (array_keys(self::$Dirs) as $value) 
 		{
 			$amount = 0;
