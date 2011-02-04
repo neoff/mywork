@@ -89,10 +89,10 @@ class ControllerCategory extends Template\Template{
 		//$this->options = array('parent_id' => $this->category_id);
 		//$this->parents = Models\Category::find('first', array('conditions' => "category_id = $this->category_id"));
 		
-		
+		$this->parent_node();
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
 		{
-			$this->parent_node();
+			
 			if($this->category_id == 0)
 				$this->category = $this->rootCategories();
 			//if($this->category_id >0)
@@ -324,12 +324,7 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function productes()
 	{
-		/*$this->parents->dirid = $this->dir_id;
-		$this->parents->classid = $this->class_id;
-		$this->parents->grid = $this->group_id;
-		$this->parents->name = self::$Groups[$this->dir_id][$this->class_id][$this->group_id];
-		#FIXME !!!!!!!!!!!!
-		*/
+		
 		
 		if($this->actions > 0 && $this->action_val)
 			$this->parents->dirid .= " and warecode in (".implode(",", $this->action_val).")";#$this->parents->search
@@ -759,7 +754,7 @@ class ControllerCategory extends Template\Template{
 					
 					$this->action->addChild("url", "http://www.mvideo.ru/".$url
 													."/?ref=home_promo_". $url);
-					return "";#$this->putActions($url);
+					return $this->putActions($url);
 				//}
 			}
 		}
