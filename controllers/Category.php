@@ -644,7 +644,7 @@ class ControllerCategory extends Template\Template{
 		//print_r($options);
 		$segment = Models\Segments::find('all', $options);
 		#$segment = Models\Segments::segmentDirs($this->region_id, $name);
-		var_dump($segment);
+		//var_dump($segment);
 		#exit();
 		foreach ($segment as $val)
 		{
@@ -664,7 +664,7 @@ class ControllerCategory extends Template\Template{
 		{
 			$categorys = array();
 		}*/
-		print_r($this->action_val);
+		//print_r($this->action_val);
 		if(!$this->searches)
 			$this->parent_node();
 		return False;
@@ -718,7 +718,7 @@ class ControllerCategory extends Template\Template{
 					
 					$this->action->addChild("url", "http://www.mvideo.ru/".$url
 													."/?ref=home_promo_". $url);
-					print $url;
+					//print $url;
 					return $this->putActions($url);
 				//}
 			}
