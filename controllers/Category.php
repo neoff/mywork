@@ -96,7 +96,7 @@ class ControllerCategory extends Template\Template{
 		{
 			$this->search = $this->searches; #XML тег search!!!! не удалять
 			$search = iconv ("UTF-8",'CP1251', $this->searches);
-			$this->searches = " AND (ware like \"%$search%\" or FullName like \"%$search%\")";
+			$this->searches = " AND (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
 		}
 			
 		if($this->actions > 0)
@@ -150,9 +150,9 @@ class ControllerCategory extends Template\Template{
 		
 		if($this->action_val)
 		{
-			$q = 'SELECT distinct DirID as result 
-				FROM warez_'.$this->region_id."
-				WHERE warecode in (".implode(",", $this->action_val).")
+			$q = 'SELECT distinct w.DirID as result 
+				FROM warez_'.$this->region_id." as w
+				WHERE w.warecode in (".implode(",", $this->action_val).")
 				$this->searches ";
 			//print $q;
 			$actWarez =  Models\Warez::find_by_sql($q);
@@ -240,16 +240,16 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_name", $this->parent_name);
 		
 		
-		$q = 'SELECT distinct DirID as result 
-			FROM warez_'.$this->region_id;
+		$q = 'SELECT distinct w.DirID as result 
+			FROM warez_'.$this->region_id.' as w';
 		
 		if($this->searches)
 			$q .= " WHERE ".$this->searches;
 			
 		if($this->action_val)
-			$q = 'SELECT distinct DirID as result 
-				FROM warez_'.$this->region_id."
-					WHERE warecode in (".implode(",", $this->action_val).")
+			$q = 'SELECT distinct w.DirID as result 
+				FROM warez_'.$this->region_id." as w
+					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches";
 					
 		
@@ -267,11 +267,11 @@ class ControllerCategory extends Template\Template{
 				
 			$id = $this->ToDir($value);
 			if($this->action_val)
-				$q = 'SELECT distinct ClassID as result 
-					FROM warez_'.$this->region_id."
-					WHERE warecode in (".implode(",", $this->action_val).")
+				$q = 'SELECT distinct w.ClassID as result 
+					FROM warez_'.$this->region_id." as w
+					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches
-					AND DirID = ".$value;
+					AND w.DirID = ".$value;
 			else 
 				$q = 'SELECT distinct ClassID as result 
 					FROM warez_'.$this->region_id."
@@ -316,15 +316,15 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", $this->parent_name);
 		
-		$q = 'SELECT distinct ClassID as result 
-			FROM warez_'.$this->region_id."
-			WHERE DirID = ".$this->dir_id;
+		$q = 'SELECT distinct w.ClassID as result 
+			FROM warez_'.$this->region_id." as w
+			WHERE w.DirID = ".$this->dir_id;
 		
 		if($this->searches)
 			$q .= $this->searches;
 			
 		if($this->action_val)
-			$q .= " AND warecode in (".implode(",", $this->action_val).")";
+			$q .= " AND w.warecode in (".implode(",", $this->action_val).")";
 			
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
@@ -337,18 +337,18 @@ class ControllerCategory extends Template\Template{
 				continue;
 			
 			if($this->action_val)
-				$q = 'SELECT distinct GrID as result 
-					FROM warez_'.$this->region_id."
-					WHERE warecode in (".implode(",", $this->action_val).")
+				$q = 'SELECT distinct w.GrID as result 
+					FROM warez_'.$this->region_id." as w
+					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches
-					AND DirID = ".$this->dir_id."
-					AND ClassID = ".$value;
+					AND w.DirID = ".$this->dir_id."
+					AND w.ClassID = ".$value;
 			else 
-				$q = 'SELECT distinct GrID as result 
-						FROM warez_'.$this->region_id."
-						WHERE DirID = ".$this->dir_id."
+				$q = 'SELECT distinct w.GrID as result 
+						FROM warez_'.$this->region_id." as w
+						WHERE w.DirID = ".$this->dir_id."
 						$this->searches
-						AND ClassID = ".$value;
+						AND w.ClassID = ".$value;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
 			//$this->all_dirs($wwwcat);
@@ -384,11 +384,11 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", $this->parent_name);
 		
-		$q = 'SELECT distinct GrID as result 
-			FROM warez_'.$this->region_id."
-			WHERE DirID = ".$this->dir_id."
+		$q = 'SELECT distinct w.GrID as result 
+			FROM warez_'.$this->region_id." as w
+			WHERE w.DirID = ".$this->dir_id."
 			$this->searches
-			AND ClassID = ".$this->class_id;
+			AND w.ClassID = ".$this->class_id;
 		
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
@@ -402,20 +402,20 @@ class ControllerCategory extends Template\Template{
 				
 				
 			if($this->action_val)
-				$q = 'SELECT distinct warecode as result 
-					FROM warez_'.$this->region_id."
-					WHERE warecode in (".implode(",", $this->action_val).")
+				$q = 'SELECT distinct w.warecode as result 
+					FROM warez_'.$this->region_id." as w
+					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches
-					AND DirID = ".$this->dir_id."
-					AND ClassID = ".$this->class_id."
-					AND GrID = ".$value;
+					AND w.DirID = ".$this->dir_id."
+					AND w.ClassID = ".$this->class_id."
+					AND w.GrID = ".$value;
 			else 
-				$q = 'SELECT distinct warecode as result 
-						FROM warez_'.$this->region_id."
-						WHERE DirID = ".$this->dir_id."
+				$q = 'SELECT distinct w.warecode as result 
+						FROM warez_'.$this->region_id." as w
+						WHERE w.DirID = ".$this->dir_id."
 						$this->searches
-						AND ClassID = ".$this->class_id."
-						AND GrID = ".$value;
+						AND w.ClassID = ".$this->class_id."
+						AND w.GrID = ".$value;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
 			//print_r($wwwcat);
