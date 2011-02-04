@@ -343,7 +343,7 @@ class ControllerCategory extends Template\Template{
 		{
 			$this->parents->classid = "";
 			$this->parents->grid = "";
-			var_dump($this->parents)
+			var_dump($this->parents);
 			return $this->productes();
 		}
 		foreach (array_keys(self::$Dirs) as $value) 
