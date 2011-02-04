@@ -145,7 +145,7 @@ class ControllerCategory extends Template\Template{
 			$q = 'SELECT distinct DirID as result 
 				FROM warez_'.$this->region_id."
 				WHERE warecode in (".join(",", $this->action_val).")";
-			print $q;
+			//print $q;
 			$actWarez =  Models\Warez::find_by_sql($q);
 			$actWarez = $this->all_dirs($actWarez);
 		}
