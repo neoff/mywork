@@ -324,11 +324,12 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function productes()
 	{
-		$this->parents->dirid = $this->dir_id;
+		/*$this->parents->dirid = $this->dir_id;
 		$this->parents->classid = $this->class_id;
 		$this->parents->grid = $this->group_id;
 		$this->parents->name = self::$Groups[$this->dir_id][$this->class_id][$this->group_id];
 		#FIXME !!!!!!!!!!!!
+		*/
 		
 		if($this->actions > 0 && $this->action_val)
 			$this->parents->dirid .= " and warecode in (".implode(",", $this->action_val).")";#$this->parents->search
@@ -745,10 +746,10 @@ class ControllerCategory extends Template\Template{
 			
 			if($key < $time)
 			{
-				
+				#FIXME УБРАТЬ!!!!!!!!!!!!!!!!
 				//if($val['end_date']>=$time)
 				//{
-					print 1;
+					//print 1;
 					$url = str_replace("/", "", $val['link']);//link
 					$imgfile = "imgs/action/main/$url.jpg";
 					$this->action = "";
