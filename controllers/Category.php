@@ -167,7 +167,7 @@ class ControllerCategory extends Template\Template{
 				
 				if($this->action_val)
 					if(!in_array($v, $actWarez))
-						print $v;#continue 2;
+						print $v."\n";#continue 2;
 				$amount++;
 				$one_key = $v;
 				
