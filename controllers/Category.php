@@ -331,8 +331,11 @@ class ControllerCategory extends Template\Template{
 		#print $this->group_id;
 		//print_r(array_keys(self::$Groups[$this->dir_id]));
 		if($this->dir_id)
+		{
+			$this->parents->classid = "";
+			$this->parents->grid = "";
 			return $this->productes();
-			
+		}
 		foreach (array_keys(self::$Dirs) as $value) 
 		{
 			$amount = 0;
@@ -523,11 +526,8 @@ class ControllerCategory extends Template\Template{
 		
 		//var_dump($this->parents);
 		if($this->actions > 0 && $this->action_val)
-		{
-			$this->parents->classid = "";
-			$this->parents->grid = "";
 			$this->parents->dirid .= " and w.warecode in (".implode(",", $this->action_val).") $this->searches";#$this->parents->search
-		}
+		
 		/*if($this->searches)
 		{
 			$this->parent_node();
