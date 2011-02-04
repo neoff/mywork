@@ -184,6 +184,7 @@ class ControllerCategory extends Template\Template{
 				$key = $this->ToDir($one_key);
 				//$value['name'] = $val->name;
 			}
+			print "------".$key."---\n";
 			//if($amount == 0 )
 			//	continue;
 			$category = $this->categories->addChild("category");
