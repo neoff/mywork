@@ -594,9 +594,9 @@ class ControllerCategory extends Template\Template{
 				$action = $this->actions;
 				break;
 		}
-		print $action;
+		//print $action;
 		$act = Models\Actions::first(array("segment_id"=>$action, "hidden"=>0));
-		print_r($act);
+		//print_r($act);
 		if($act)
 		{
 			$url = str_replace("/", "", $act->segment_name);//link
@@ -608,7 +608,7 @@ class ControllerCategory extends Template\Template{
 			$this->action->addChild("description", ToUTF($act->segment_info));
 			$this->action->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $act->segment_name)
 																."/?ref=left_bat_". $act->segment_name);
-			print $act->segment_name;
+			
 			$categorys = $this->putActions($act->segment_name);
 			return $categorys;
 		}
@@ -718,6 +718,7 @@ class ControllerCategory extends Template\Template{
 					
 					$this->action->addChild("url", "http://www.mvideo.ru/".$url
 													."/?ref=home_promo_". $url);
+					print $url;
 					return $this->putActions($url);
 				//}
 			}
