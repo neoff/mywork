@@ -380,7 +380,7 @@ class ControllerCategory extends Template\Template{
 						AND GrID = ".$value;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
-			print_r($wwwcat);
+			//print_r($wwwcat);
 			//$this->all_dirs($wwwcat);
 			if($wwwcat)
 				$amount = count($wwwcat);
