@@ -652,7 +652,7 @@ class ControllerCategory extends Template\Template{
 		}
 		//print $region_id. $array;
 		
-		if(!$this->category_id)
+		/*if(!$this->category_id)
 		{
 			$condition = " and c.parent_id is null ";
 			//$this->parrent_id = 0;
@@ -663,10 +663,11 @@ class ControllerCategory extends Template\Template{
 		else
 		{
 			$categorys = array();
-		}
+		}*/
+		print_r($this->action_val);
 		if(!$this->searches)
 			$this->parent_node();
-		return $categorys;
+		return False;
 	}
 	/**
 	 * создает ноду с картинкой для акции
