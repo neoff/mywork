@@ -521,44 +521,13 @@ class ControllerCategory extends Template\Template{
 						}
 				}
 			}
-			/*$cat_parrent_id = 0;
-			$cat_parrent_name = "Список категорий";
-			if($this->parents)
-				if(!$this->parents->parent_id)
-				{
-					foreach (self::$GlobalConfig['smenu'] as $key => $value) {
-						if(in_array($this->parents->dirid, self::$GlobalConfig['smenu'][$key]['dirs']))
-						{
-							if(count($value['dirs'])!=1)
-							{
-								$cat_parrent_id = ToUTF($key);
-								$cat_parrent_name = ToUTF(self::$GlobalConfig['smenu'][$key]['name']);
-								break;
-							}
-							else 
-							{
-								break;
-							}
-						}
-						
-					}
-					
-				}
-				else
-				{
-					$cat_parrent_id = $this->parents->parent_id;
-					$p = Models\Category::first(array('category_id' => $cat_parrent_id));
-					$cat_parrent_name = ToUTF($p->name);
-				}
-			else 
-				$this->parents->name = "";*/
-			//$this->options = array('parent_id' => $this->category_id);
+			
 			$this->parent_name = $this->parents->parent_name;
 			$this->parent_id = $this->parents->parent_id;
 		}
-		$this->parent_category="";
-		$this->parent_category->addChild("category_id", $cat_parrent_id);
-		$this->parent_category->addChild("category_name", $cat_parrent_name);
+		//$this->parent_category="";
+		//$this->parent_category->addChild("category_id", $cat_parrent_id);
+		//$this->parent_category->addChild("category_name", $cat_parrent_name);
 		
 		return $this->options;
 	}
