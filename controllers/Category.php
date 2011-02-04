@@ -91,12 +91,18 @@ class ControllerCategory extends Template\Template{
 		//$this->parents = Models\Category::find('first', array('conditions' => "category_id = $this->category_id"));
 		
 		
+		
 		if($this->searches)
-			$this->category = $this->search();
+		{
+			$this->search = $this->searches; #XML тег search!!!! не удалять
+			$search = iconv ("UTF-8",'CP1251', $this->searches);
+			$this->searches = " AND (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
+		}
 			
 		if($this->actions > 0)
 			$this->category = $this->action();
-			
+		
+		
 		
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
 		{
@@ -140,18 +146,24 @@ class ControllerCategory extends Template\Template{
 		$this->categories="";
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", $this->parent_name);
+		
+		
 		if($this->action_val)
 		{
 			$q = 'SELECT distinct DirID as result 
 				FROM warez_'.$this->region_id."
-				WHERE warecode in (".implode(",", $this->action_val).")";
+				WHERE warecode in (".implode(",", $this->action_val).")
+				$this->searches ";
 			//print $q;
 			$actWarez =  Models\Warez::find_by_sql($q);
 			$this->all_dirs($actWarez);
 			#print_r($actWarez);
+			
 		}
+		if($this->searches)
+			$q .= " WHERE ".$this->searches;
 		
-		$wwwarez =  Models\Warez::find_by_sql('SELECT distinct DirID as result from warez_'.$this->region_id);
+		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
 		
 		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
@@ -228,9 +240,20 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_name", $this->parent_name);
 		
 		
+		$q = 'SELECT distinct DirID as result 
+			FROM warez_'.$this->region_id;
 		
-		$wwwarez =  Models\Warez::find_by_sql('SELECT distinct DirID as result 
-												FROM warez_'.$this->region_id);
+		if($this->searches)
+			$q .= " WHERE ".$this->searches;
+			
+		if($this->action_val)
+			$q = 'SELECT distinct DirID as result 
+				FROM warez_'.$this->region_id."
+					WHERE warecode in (".implode(",", $this->action_val).")
+					$this->searches";
+					
+		
+		$wwwarez =  Models\Warez::find_by_sql();
 		$this->all_dirs($wwwarez);
 		
 		
@@ -247,10 +270,12 @@ class ControllerCategory extends Template\Template{
 				$q = 'SELECT distinct ClassID as result 
 					FROM warez_'.$this->region_id."
 					WHERE warecode in (".implode(",", $this->action_val).")
+					$this->searches
 					AND DirID = ".$value;
 			else 
 				$q = 'SELECT distinct ClassID as result 
 					FROM warez_'.$this->region_id."
+					$this->searches
 					WHERE DirID = ".$value;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
@@ -291,9 +316,17 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", $this->parent_name);
 		
-		$wwwarez =  Models\Warez::find_by_sql('SELECT distinct ClassID as result 
-												FROM warez_'.$this->region_id."
-												WHERE DirID = ".$this->dir_id);
+		$q = 'SELECT distinct ClassID as result 
+			FROM warez_'.$this->region_id."
+			WHERE DirID = ".$this->dir_id;
+		
+		if($this->searches)
+			$q .= $this->searches;
+			
+		if($this->action_val)
+			$q .= " AND warecode in (".implode(",", $this->action_val).")";
+			
+		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
 		//print $this->dir_id;
 		//print_r(array_keys(self::$Groups[$this->dir_id]));
@@ -307,12 +340,14 @@ class ControllerCategory extends Template\Template{
 				$q = 'SELECT distinct GrID as result 
 					FROM warez_'.$this->region_id."
 					WHERE warecode in (".implode(",", $this->action_val).")
+					$this->searches
 					AND DirID = ".$this->dir_id."
 					AND ClassID = ".$value;
 			else 
 				$q = 'SELECT distinct GrID as result 
 						FROM warez_'.$this->region_id."
 						WHERE DirID = ".$this->dir_id."
+						$this->searches
 						AND ClassID = ".$value;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
@@ -349,12 +384,13 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", $this->parent_name);
 		
+		$q = 'SELECT distinct GrID as result 
+			FROM warez_'.$this->region_id."
+			WHERE DirID = ".$this->dir_id."
+			$this->searches
+			AND ClassID = ".$this->class_id;
 		
-		
-		$wwwarez =  Models\Warez::find_by_sql('SELECT distinct GrID as result 
-												FROM warez_'.$this->region_id."
-												WHERE DirID = ".$this->dir_id."
-												AND ClassID = ".$this->class_id);
+		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
 		//print_r(array_keys(self::$Groups[$this->dir_id]));
@@ -369,6 +405,7 @@ class ControllerCategory extends Template\Template{
 				$q = 'SELECT distinct warecode as result 
 					FROM warez_'.$this->region_id."
 					WHERE warecode in (".implode(",", $this->action_val).")
+					$this->searches
 					AND DirID = ".$this->dir_id."
 					AND ClassID = ".$this->class_id."
 					AND GrID = ".$value;
@@ -376,6 +413,7 @@ class ControllerCategory extends Template\Template{
 				$q = 'SELECT distinct warecode as result 
 						FROM warez_'.$this->region_id."
 						WHERE DirID = ".$this->dir_id."
+						$this->searches
 						AND ClassID = ".$this->class_id."
 						AND GrID = ".$value;
 				
@@ -414,9 +452,9 @@ class ControllerCategory extends Template\Template{
 		
 		
 		if($this->actions > 0 && $this->action_val)
-			$this->parents->dirid .= " and warecode in (".implode(",", $this->action_val).")";#$this->parents->search
+			$this->parents->dirid .= " and warecode in (".implode(",", $this->action_val).") $this->searches";#$this->parents->search
 		
-		if($this->searches)
+		/*if($this->searches)
 		{
 			$this->parent_node();
 			$search = $this->searches;
@@ -428,7 +466,7 @@ class ControllerCategory extends Template\Template{
 				$search = iconv ("UTF-8",'CP1251', $search );
 			//}
 			$this->parents->dirid .= " and (ware like \"%$search%\" or FullName like \"%$search%\" )";
-		}
+		}*/
 		#var_dump($this->parents);
 		
 		if($this->parents)
@@ -612,7 +650,7 @@ class ControllerCategory extends Template\Template{
 	
 	private function search()
 	{
-		$this->search = $this->searches;
+		/*$this->search = $this->searches; #XML тег search!!!! не удалять
 		$search = $this->searches;
 		
 		//if($search[0]!="%")
@@ -620,35 +658,35 @@ class ControllerCategory extends Template\Template{
 			//print $search;exit();
 			//$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
 			//$search = html_entity_decode($search,null,'UTF-8');
-			$search=iconv ("UTF-8",'CP1251', $search );
+			$search=iconv ("UTF-8",'CP1251', $search );*/
 		//}
 			
 		//$catid = " and c.parent_id is null ";
-		$catid = " and c.parent_id is null ";
-		if($this->parents)
+		//$catid = " and c.parent_id is null ";
+		//if($this->parents)
 			//if($this->parents->grid)
-				$catid .= " and c.parent_id is not null and c.category_id = " . $this->category_id;
+		//		$catid .= " and c.parent_id is not null and c.category_id = " . $this->category_id;
 		//if($this->category_id>0)		return array();
 		
-		$category = Models\Category::findByNameCategory($this->region_id, $search, $catid);
+		//$category = Models\Category::findByNameCategory($this->region_id, $search, $catid);
 		//print $catid;
 		//var_dump($this->parents);
 		//print_r($category);
 		//exit();
-		if(!$category)
-		{
+		//if(!$category)
+		//{
 			
 			//$this->products($region_id, $category_id, $parents, $array);
-			return array();
-		}
-		else
-		{
-			if(count($category)==1)
-			{
-				return array();
-			}
-		}
-		return $category;
+		//	return array();
+		//}
+		//else
+		//{
+		//	if(count($category)==1)
+		//	{
+		//		return array();
+		//	}
+		//}
+		//return $category;
 	}
 	
 	private function action()
