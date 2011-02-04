@@ -742,9 +742,10 @@ class ControllerCategory extends Template\Template{
 		//$keys = array_keys(self::$GlobalConfig['fed_act']);
 		foreach (self::$GlobalConfig['fed_act'] as $key => $val) 
 		{
-			print $key;
+			
 			if($key < $time)
 			{
+				print 1;
 				if($val['end_date']>=$time)
 				{
 					$url = str_replace("/", "", $val['link']);//link
