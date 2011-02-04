@@ -169,7 +169,7 @@ class ControllerCategory extends Template\Template{
 					if(!in_array($v, $actWarez))
 						continue 2;
 				
-				print $v."\n";
+				print $key."-".$v."\n";
 				$amount++;
 				$one_key = $v;
 				
