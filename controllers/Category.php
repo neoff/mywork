@@ -108,14 +108,15 @@ class ControllerCategory extends Template\Template{
 		{
 			$this->parent_node();
 		}
-		if($this->category_id == 0)
-			if($this->actions < 0)
-				$this->category = $this->rootCategories();
-		//if($this->category_id >0)
-		//	$this->category = Models\Category::find('all', $this->options);
+		if($this->actions > 0)
+			$this->category = $this->ActionDirs();
 		else 
-		{
-			if($this->actions < 0)
+			if($this->category_id == 0)
+				$this->category = $this->rootCategories();
+			//if($this->category_id >0)
+			//	$this->category = Models\Category::find('all', $this->options);
+			else 
+			{
 				if($this->category_id < self::$Mult)
 					$this->category = $this->Dirs();
 				else
@@ -125,9 +126,7 @@ class ControllerCategory extends Template\Template{
 					if(!$this->class_id)
 						$this->category = $this->Classes();
 				}
-			else 
-				$this->category = $this->ActionDirs();
-		}
+			}
 		//}
 		
 			
