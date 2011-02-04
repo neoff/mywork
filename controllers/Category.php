@@ -157,8 +157,6 @@ class ControllerCategory extends Template\Template{
 			//						array('parent_id is null and dirid in (?)', $value['dirs'])
 			//						));
 			$amount = 0;
-			if($this->action_val)
-				if()
 			foreach ($value['dirs'] as $v) 
 			{
 				if(!in_array($v, $wwwarez))
@@ -180,6 +178,8 @@ class ControllerCategory extends Template\Template{
 				$key = $this->ToDir($one_key);
 				//$value['name'] = $val->name;
 			}
+			if($amount == 0 )
+				continue;
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $key);
 			$category->addChild("category_name", ToUTF($value['name']));
