@@ -316,13 +316,13 @@ class ControllerCategory extends Template\Template{
 						AND ClassID = ".$value;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
-			$this->all_dirs($wwwcat);
+			//$this->all_dirs($wwwcat);
 			if($wwwcat)
 				$amount = count($wwwcat);
 			
-			if($this->action_val)
+			/*if($this->action_val)
 				if(!in_array($value, $wwwcat))
-					continue;
+					continue;*/
 			
 			if($amount == 0)
 				continue;
@@ -380,13 +380,13 @@ class ControllerCategory extends Template\Template{
 						AND GrID = ".$value;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
-			$this->all_dirs($wwwcat);
+			//$this->all_dirs($wwwcat);
 			if($wwwcat)
 				$amount = count($wwwcat);
 			
-			if($this->action_val)
+			/*if($this->action_val)
 				if(!in_array($value, $wwwcat))
-					continue;
+					continue;*/
 					
 			if($amount == 0)
 				continue;
