@@ -366,14 +366,14 @@ class ControllerCategory extends Template\Template{
 				
 				
 			if($this->action_val)
-				$q = 'SELECT distinct GrID as result 
+				$q = 'SELECT distinct warecode as result 
 					FROM warez_'.$this->region_id."
 					WHERE warecode in (".implode(",", $this->action_val).")
 					AND DirID = ".$this->dir_id."
 					AND ClassID = ".$this->class_id."
 					AND GrID = ".$value;
 			else 
-				$q = 'SELECT distinct GrID as result 
+				$q = 'SELECT distinct warecode as result 
 						FROM warez_'.$this->region_id."
 						WHERE DirID = ".$this->dir_id."
 						AND ClassID = ".$this->class_id."
