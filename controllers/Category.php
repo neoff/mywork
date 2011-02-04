@@ -169,11 +169,13 @@ class ControllerCategory extends Template\Template{
 					if(!in_array($v, $actWarez))
 						continue 2;
 				
-				print $key."-".$v."\n";
+				
 				$amount++;
 				$one_key = $v;
+				print $key."-".$v."-".$amount."-".$one_key."\n";
 				
 			}
+			print "--".$key."-".$amount."-".$one_key."\n";
 			print "------".$key."---\n";
 			//$amount = count(self::$Groups[$v]);
 			$id = $key;
