@@ -167,7 +167,7 @@ class ControllerCategory extends Template\Template{
 				
 				if($this->action_val)
 					if(!in_array($v, $actWarez))
-						continue 2;
+						continue;
 				
 				
 				$amount++;
