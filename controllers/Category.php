@@ -334,7 +334,7 @@ class ControllerCategory extends Template\Template{
 					$this->searches";
 		
 		
-		print $q;
+		//print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
@@ -343,6 +343,7 @@ class ControllerCategory extends Template\Template{
 		{
 			$this->parents->classid = "";
 			$this->parents->grid = "";
+			var_dump($this->parents)
 			return $this->productes();
 		}
 		foreach (array_keys(self::$Dirs) as $value) 
