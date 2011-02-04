@@ -252,11 +252,11 @@ class ControllerCategory extends Template\Template{
 			
 		if($this->action_val)
 			$q = 'SELECT distinct w.DirID as result 
-				FROM warez_'.$this->region_id." as w
+					FROM warez_'.$this->region_id." as w
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches";
 					
-		
+		print $Q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
 		
