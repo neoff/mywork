@@ -608,7 +608,7 @@ class ControllerCategory extends Template\Template{
 			$this->action->addChild("description", ToUTF($act->segment_info));
 			$this->action->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $act->segment_name)
 																."/?ref=left_bat_". $act->segment_name);
-			
+			print $act->segment_name;
 			$categorys = $this->putActions($act->segment_name);
 			return $categorys;
 		}
