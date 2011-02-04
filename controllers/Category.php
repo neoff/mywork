@@ -594,9 +594,9 @@ class ControllerCategory extends Template\Template{
 				$action = $this->actions;
 				break;
 		}
-		//print $action;
+		print $action;
 		$act = Models\Actions::first(array("segment_id"=>$action, "hidden"=>0));
-		//print_r($act);
+		print_r($act);
 		if($act)
 		{
 			$url = str_replace("/", "", $act->segment_name);//link
