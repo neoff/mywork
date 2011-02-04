@@ -834,8 +834,8 @@ class ControllerCategory extends Template\Template{
 			if($key < $time)
 			{
 				#FIXME УБРАТЬ!!!!!!!!!!!!!!!!
-				//if($val['end_date']>=$time)
-				//{
+				if($val['end_date']>=$time)
+				{
 					//print 1;
 					$url = str_replace("/", "", $val['link']);//link
 					$imgfile = "imgs/action/main/$url.jpg";
@@ -848,7 +848,7 @@ class ControllerCategory extends Template\Template{
 													."/?ref=home_promo_". $url);
 					//print $url;
 					return $this->putActions($url);
-				//}
+				}
 			}
 		}
 		
