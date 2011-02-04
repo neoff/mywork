@@ -110,12 +110,12 @@ class ControllerCategory extends Template\Template{
 				}
 			}
 		}
-		/*if($this->searches)
+		if($this->searches)
 			$this->category = $this->search();
 			
 		if($this->actions > 0)
 			$this->category = $this->action();
-			*/
+			
 			
 		//print_r($this->category);
 		//$condition = "";
@@ -754,7 +754,7 @@ class ControllerCategory extends Template\Template{
 					
 					$this->action->addChild("url", "http://www.mvideo.ru/".$url
 													."/?ref=home_promo_". $url);
-					return $this->putActions($url);
+					return "";#$this->putActions($url);
 				}
 			}
 		}
