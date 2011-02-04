@@ -644,7 +644,7 @@ class ControllerCategory extends Template\Template{
 		//print_r($options);
 		$segment = Models\Segments::find('all', $options);
 		#$segment = Models\Segments::segmentDirs($this->region_id, $name);
-		#var_dump($segment);
+		var_dump($segment);
 		#exit();
 		foreach ($segment as $val)
 		{
