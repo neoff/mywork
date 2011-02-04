@@ -747,10 +747,10 @@ class ControllerCategory extends Template\Template{
 		$options = array('select' => 'w.warecode',
 						'from' => 'segment_cache sc',
 						'joins'=>" join warez_$this->region_id w on (sc.warecode=w.warecode)",
-						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name'");
+						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name' ");
 		
 		if($this->searches)
-			$options['conditions'] .= "";# AND"
+			$options['conditions'] .= $this->searches;# AND"
 		/*{
 			$search = $this->searches;
 			//if($search[0]!="%")
