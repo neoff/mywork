@@ -326,7 +326,7 @@ class ControllerCategory extends Template\Template{
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches";
 					
-		print $q;
+		//print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
@@ -351,7 +351,7 @@ class ControllerCategory extends Template\Template{
 						$this->searches";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
-			//print_r($wwwcat);
+			print_r($wwwcat);
 			//$this->all_dirs($wwwcat);
 			if($wwwcat)
 				$amount = count($wwwcat);
