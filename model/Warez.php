@@ -82,7 +82,7 @@ class Warez extends ActiveRecord\Model
 			$sql_impl.= $parents->search;*/
 		if(!$region_id || !$sql_impl)
 			return;
-		$sql = 'select * from `warez_' .$region_id . '` as w 
+		$sql = 'select w.* from `warez_' .$region_id . '` as w 
 				where ' . $sql_impl. $limit;
 		//print $sql_impl;
 		//print $sql;
