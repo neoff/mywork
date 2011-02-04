@@ -144,7 +144,7 @@ class ControllerCategory extends Template\Template{
 		{
 			$q = 'SELECT distinct DirID as result 
 				FROM warez_'.$this->region_id."
-				WHERE warecode in (".join(",", $this->action_val).")";
+				WHERE warecode in (".implode(",", $this->action_val).")";
 			//print $q;
 			$actWarez =  Models\Warez::find_by_sql($q);
 			$this->all_dirs($actWarez);
@@ -246,7 +246,7 @@ class ControllerCategory extends Template\Template{
 			if($this->action_val)
 				$q = 'SELECT distinct ClassID as result 
 					FROM warez_'.$this->region_id."
-					WHERE warecode in (".join(",", $this->action_val).")
+					WHERE warecode in (".implode(",", $this->action_val).")
 					AND DirID = ".$value;
 			else 
 				$q = 'SELECT distinct ClassID as result 
@@ -306,7 +306,7 @@ class ControllerCategory extends Template\Template{
 			if($this->action_val)
 				$q = 'SELECT distinct GrID as result 
 					FROM warez_'.$this->region_id."
-					WHERE warecode in (".join(",", $this->action_val).")
+					WHERE warecode in (".implode(",", $this->action_val).")
 					AND DirID = ".$this->dir_id."
 					AND ClassID = ".$value;
 			else 
@@ -368,7 +368,7 @@ class ControllerCategory extends Template\Template{
 			if($this->action_val)
 				$q = 'SELECT distinct GrID as result 
 					FROM warez_'.$this->region_id."
-					WHERE warecode in (".join(",", $this->action_val).")
+					WHERE warecode in (".implode(",", $this->action_val).")
 					AND DirID = ".$this->dir_id."
 					AND ClassID = ".$this->class_id."
 					AND GrID = ".$value;
@@ -380,6 +380,7 @@ class ControllerCategory extends Template\Template{
 						AND GrID = ".$value;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
+			print_r($wwwcat);
 			//$this->all_dirs($wwwcat);
 			if($wwwcat)
 				$amount = count($wwwcat);
@@ -403,39 +404,7 @@ class ControllerCategory extends Template\Template{
 		}
 		return False;
 		
-		/*$wwwarez =  Models\Warez::find_by_sql('SELECT DISTINCT ClassID as result 
-											FROM warez_'.$this->region_id."
-											WHERE DirID=".$this->category_id);
-		$this->all_dirs($wwwarez);
 		
-		foreach ($this->category as $key => $val)
-		{
-			$amount = $this->recurseAmount($val);
-			if($amount == 1 )
-			{
-				$val = Models\Category::find('first',array('parent_id' => $val->category_id));
-				$amount = $this->recurseAmount($val);
-			}
-			#print "\n\n\n ================================================" . $val->name. " ". $amount."\n\n\n";
-			if($amount == 0 )
-				continue;
-			#print "\n\n\n ================================================" . $val->name. " ". $amount."\n\n\n";
-			$category = $this->categories->addChild("category");
-			$category->addChild("category_id", $val->category_id);
-			$category->addChild("category_name", ToUTF($val->name));
-			$category->addChild("amount", $amount); 
-			///imgs/catalog/ico/back/11_254
-			if($this->category_id < 100)
-				//$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/dir_$val->dirid.gif"); #TODO откуда брать иконку категории???
-				$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$val->dirid.".jpg");
-			else 
-				//$icon = $category->addChild("category_icon", "http://www.mvideo.ru/imgs/catalog/ico/back/".$val->dirid."_".$val->classid.".jpg");
-				$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
-			
-			$icon->addAttribute("width", "180");
-			$icon->addAttribute("height", "180");
-			
-		}*/
 	}
 	/**
 	 * функция рисует на странице информацию о продуктах в категории 
