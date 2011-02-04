@@ -254,7 +254,8 @@ class ControllerCategory extends Template\Template{
 					WHERE DirID = ".$value;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
-			$amount = count($wwwcat);
+			if($wwwcat)
+				$amount = count($wwwcat);
 			
 			if($this->action_val)
 				if(!in_array($value, $wwwcat))
@@ -262,11 +263,14 @@ class ControllerCategory extends Template\Template{
 						
 			if($amount == 1)
 				$id = $this->ToDir($value, $wwwcat[0]->result);
+			
+			if($amount == 0)
+				continue;
 				
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $id);
 			$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
-			$category->addChild("amount", "0"); 
+			$category->addChild("amount", $amount); 
 			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$value.".jpg"); #TODO откуда брать иконку категории???
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");
@@ -292,6 +296,7 @@ class ControllerCategory extends Template\Template{
 		//print_r(array_keys(self::$Groups[$this->dir_id]));
 		foreach (array_keys(self::$Groups[$this->dir_id]) as $value) 
 		{
+			$amount = 0;
 			if(!in_array($value, $wwwarez))
 				continue;
 			
@@ -308,16 +313,20 @@ class ControllerCategory extends Template\Template{
 						AND ClassID = ".$value;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
-			$amount = count($wwwcat);
+			if($wwwcat)
+				$amount = count($wwwcat);
 			
 			if($this->action_val)
 				if(!in_array($value, $wwwcat))
 					continue;
 			
+			if($amount == 0)
+				continue;
+				
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $this->ToDir($this->dir_id, $value));
 			$category->addChild("category_name", ToUTF(self::$Classes[$this->dir_id][$value]));
-			$category->addChild("amount", "0"); 
+			$category->addChild("amount", $amount); 
 			$icon = $category->addChild("category_icon", 
 				"http://www.mvideo.ru/mobile/public/img/".$this->dir_id."_".$value."_.jpg"); 
 		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
@@ -347,8 +356,36 @@ class ControllerCategory extends Template\Template{
 		//print_r(array_keys(self::$Groups[$this->dir_id]));
 		foreach (array_keys(self::$Groups[$this->dir_id][$this->class_id]) as $value) 
 		{
+			$amount = 0;
 			if(!in_array($value, $wwwarez))
 				continue;
+				
+				
+			if($this->action_val)
+				$q = 'SELECT distinct GrID as result 
+					FROM warez_'.$this->region_id."
+					WHERE warecode in (".join(",", $this->action_val).")
+					AND DirID = ".$this->dir_id."
+					AND ClassID = ".$this->class_id."
+					AND GrID = ".$value;
+			else 
+				$q = 'SELECT distinct GrID as result 
+						FROM warez_'.$this->region_id."
+						WHERE DirID = ".$this->dir_id."
+						AND ClassID = ".$this->class_id."
+						AND GrID = ".$value;
+				
+			$wwwcat =  Models\Warez::find_by_sql($q);
+			if($wwwcat)
+				$amount = count($wwwcat);
+			
+			if($this->action_val)
+				if(!in_array($value, $wwwcat))
+					continue;
+					
+			if($amount == 0)
+				continue;
+					
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $this->ToDir($this->dir_id, $this->class_id, $value));
 			$category->addChild("category_name", ToUTF(self::$Groups[$this->dir_id][$this->class_id][$value]));
