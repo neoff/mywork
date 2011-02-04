@@ -746,8 +746,8 @@ class ControllerCategory extends Template\Template{
 			if($key < $time)
 			{
 				
-				if($val['end_date']>=$time)
-				{
+				//if($val['end_date']>=$time)
+				//{
 					print 1;
 					$url = str_replace("/", "", $val['link']);//link
 					$imgfile = "imgs/action/main/$url.jpg";
@@ -759,7 +759,7 @@ class ControllerCategory extends Template\Template{
 					$this->action->addChild("url", "http://www.mvideo.ru/".$url
 													."/?ref=home_promo_". $url);
 					return "";#$this->putActions($url);
-				}
+				//}
 			}
 		}
 		
