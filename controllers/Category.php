@@ -738,6 +738,7 @@ class ControllerCategory extends Template\Template{
 	private function localActions()
 	{
 		$time = time();
+		print $time;
 		//$keys = array_keys(self::$GlobalConfig['fed_act']);
 		foreach (self::$GlobalConfig['fed_act'] as $key => $val) 
 		{
