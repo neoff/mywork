@@ -744,9 +744,9 @@ class ControllerCategory extends Template\Template{
 	private function putActions($name)
 	{
 		
-		$options = array('select' => 'w.warecode',
+		$options = array('select' => 'warecode',
 						'from' => 'segment_cache sc',
-						'joins'=>" join warez_$this->region_id w on (sc.warecode=w.warecode)",
+						'joins'=>" join warez_$this->region_id  on (sc.warecode=warecode)",
 						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name' ");
 		
 		if($this->searches)
