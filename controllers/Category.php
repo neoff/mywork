@@ -256,7 +256,7 @@ class ControllerCategory extends Template\Template{
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches";
 					
-		print $Q;
+		print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
 		
