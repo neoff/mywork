@@ -108,9 +108,9 @@ class ControllerCategory extends Template\Template{
 		{
 			$this->parent_node();
 		}
-		if($this->actions > 0)
+		else
 			$this->category = $this->ActionDirs();
-		else 
+		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
 			if($this->category_id == 0)
 				$this->category = $this->rootCategories();
 			//if($this->category_id >0)
@@ -321,10 +321,18 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_name", $this->parent_name);
 		
 		$q = 'SELECT distinct w.DirID as result 
+			FROM warez_'.$this->region_id.' as w';
+		
+		if($this->searches)
+			$q .= " WHERE w.warecode ".$this->searches;
+			
+		if($this->action_val)
+			$q = 'SELECT distinct w.DirID as result 
 					FROM warez_'.$this->region_id." as w
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches";
-					
+		
+		
 		//print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
