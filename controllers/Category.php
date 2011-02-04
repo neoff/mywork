@@ -748,7 +748,7 @@ class ControllerCategory extends Template\Template{
 						'from' => 'segment_cache sc',
 						'joins'=>" join warez_$this->region_id w on (sc.warecode=w.warecode)",
 						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name' ");
-		print $this->searches;
+		//print $this->searches;
 		if($this->searches)
 			$options['conditions'] .= $this->searches;# AND"
 		/*{
