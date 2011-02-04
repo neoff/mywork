@@ -227,15 +227,7 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", $this->parent_name);
 		
-		if($this->action_val)
-		{
-			$q = 'SELECT distinct DirID as result 
-				FROM warez_'.$this->region_id."
-				WHERE warecode in (".join(",", $this->action_val).")";
-			//print $q;
-			$actWarez =  Models\Warez::find_by_sql($q);
-			$actWarez = $this->all_dirs($actWarez);
-		}
+		
 		
 		$wwwarez =  Models\Warez::find_by_sql('SELECT distinct DirID as result 
 												FROM warez_'.$this->region_id);
@@ -248,13 +240,29 @@ class ControllerCategory extends Template\Template{
 			$amount = 0;
 			if(!in_array($value, $wwwarez))
 				continue;
+
+				
 			$id = $this->ToDir($value);
-			$wwwcat =  Models\Warez::find_by_sql('SELECT distinct ClassID as result 
-												FROM warez_'.$this->region_id."
-												WHERE DirID = ".$value);
+			if($this->action_val)
+				$q = 'SELECT distinct ClassID as result 
+					FROM warez_'.$this->region_id."
+					WHERE warecode in (".join(",", $this->action_val).")
+					AND DirID = ".$value;
+			else 
+				$q = 'SELECT distinct ClassID as result 
+					FROM warez_'.$this->region_id."
+					WHERE DirID = ".$value;
+				
+			$wwwcat =  Models\Warez::find_by_sql($q);
 			$amount = count($wwwcat);
+			
+			if($this->action_val)
+				if(!in_array($value, $actWarez))
+					continue;
+						
 			if($amount == 1)
 				$id = $this->ToDir($value, $wwwcat[0]->result);
+				
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $id);
 			$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
