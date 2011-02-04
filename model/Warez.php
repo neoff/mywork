@@ -57,7 +57,7 @@ class Warez extends ActiveRecord\Model
 		
 		if(isset($parents->dirid))
 		{
-			$sql_impl.='DirID = ';
+			$sql_impl.='w.DirID = ';
 			
 			$subject = $parents->dirid;
 			$pattern = '/^\d+/';
@@ -69,11 +69,11 @@ class Warez extends ActiveRecord\Model
 		}
 		if(isset($parents->classid))
 			if($parents->classid)
-				$sql_impl.="  and ClassID = ". $parents->classid;
+				$sql_impl.="  and w.ClassID = ". $parents->classid;
 			
 		if(isset($parents->grid))
 			if($parents->grid)
-				$sql_impl.=" and GrID = " .$parents->grid;
+				$sql_impl.=" and w.GrID = " .$parents->grid;
 		
 		/*if($parents->dirid && $parents->search)
 			$sql_impl.= " and ";
@@ -82,7 +82,7 @@ class Warez extends ActiveRecord\Model
 			$sql_impl.= $parents->search;*/
 		if(!$region_id || !$sql_impl)
 			return;
-		$sql = 'select * from `warez_' .$region_id . '` 
+		$sql = 'select * from `warez_' .$region_id . '` as w 
 				where ' . $sql_impl. $limit;
 		//print $sql_impl;
 		//print $sql;
