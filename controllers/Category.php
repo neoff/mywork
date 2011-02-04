@@ -96,10 +96,10 @@ class ControllerCategory extends Template\Template{
 		if($this->actions > 0)
 			$this->category = $this->action();
 			
-		$this->parent_node();
+		
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
 		{
-			
+			$this->parent_node();
 			if($this->category_id == 0)
 				$this->category = $this->rootCategories();
 			//if($this->category_id >0)
@@ -520,9 +520,8 @@ class ControllerCategory extends Template\Template{
 			$this->parent_id = $this->parents->parent_id;
 		}
 		$this->parent_category="";
-		$this->parent_category->addChild("category_id", " ");
-		//$this->parent_category->addChild("category_id", $cat_parrent_id);
-		//$this->parent_category->addChild("category_name", $cat_parrent_name);
+		$this->parent_category->addChild("category_id", $cat_parrent_id);
+		$this->parent_category->addChild("category_name", $cat_parrent_name);
 		
 		return $this->options;
 	}
