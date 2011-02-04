@@ -457,7 +457,7 @@ class ControllerCategory extends Template\Template{
 		
 		
 		if($this->actions > 0 && $this->action_val)
-			$this->parents->dirid .= " and warecode in (".implode(",", $this->action_val).") $this->searches";#$this->parents->search
+			$this->parents->dirid .= " and w.warecode in (".implode(",", $this->action_val).") $this->searches";#$this->parents->search
 		
 		/*if($this->searches)
 		{

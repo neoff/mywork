@@ -29,8 +29,8 @@ class ControllerProduct extends Template\Template{
 			$productes = $productes[0];
 			
 			//print_r($productes);
-			$options = array("dirid"=>$productes->dirid, "classid"=>$productes->classid, "grid"=>$productes->grid);
-			$category = Models\Category::find('fist', $options);
+			//$options = array("dirid"=>$productes->dirid, "classid"=>$productes->classid, "grid"=>$productes->grid);
+			/*$category = Models\Category::find('fist', $options);
 			if(!$category)
 			{
 				unset($options["grid"]);
@@ -41,6 +41,11 @@ class ControllerProduct extends Template\Template{
 				unset($options["classid"]);
 				$category = Models\Category::find('fist', $options);
 			}
+			*/
+			$rfile = dirname(dirname(dirname($_SERVER["SCRIPT_FILENAME"])));
+			require_once $rfile . '/www/classifier_'.$this->region_id.'.inc.php';
+			$category->category_id = 1111;
+			$category->name = "sdfsdfsdf";
 			$this->categories="";
 			$this->categories->addChild("category_id", ($category)?$category->category_id:0);
 			$this->categories->addChild("category_name", ($category)?ToUTF($category->name):"Список категорий");
