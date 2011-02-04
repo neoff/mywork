@@ -184,6 +184,8 @@ class ControllerCategory extends Template\Template{
 				//$val = $am[0];
 				//$amount =  $this->recurseAmount($val);
 				$key = $this->ToDir($one_key);
+				if($this->action_val)
+					$value['name'] = self::$Dirs[$one_key];
 				//$value['name'] = $val->name;
 			}
 			#print "------".$key."---\n";
