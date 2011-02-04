@@ -521,10 +521,13 @@ class ControllerCategory extends Template\Template{
 	private function productes()
 	{
 		
-		var_dump($this->parents);
+		//var_dump($this->parents);
 		if($this->actions > 0 && $this->action_val)
+		{
+			$this->parents->classid = "";
+			$this->parents->grid = "";
 			$this->parents->dirid .= " and w.warecode in (".implode(",", $this->action_val).") $this->searches";#$this->parents->search
-		
+		}
 		/*if($this->searches)
 		{
 			$this->parent_node();
