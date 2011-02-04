@@ -96,7 +96,7 @@ class ControllerCategory extends Template\Template{
 		{
 			$this->search = $this->searches; #XML тег search!!!! не удалять
 			$search = iconv ("UTF-8",'CP1251', $this->searches);
-			$this->searches = " AND (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
+			$this->searches = " AND (ware like \"%$search%\" or FullName like \"%$search%\")";
 		}
 			
 		if($this->actions > 0)
