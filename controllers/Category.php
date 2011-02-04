@@ -257,7 +257,7 @@ class ControllerCategory extends Template\Template{
 			$amount = count($wwwcat);
 			
 			if($this->action_val)
-				if(!in_array($value, $actWarez))
+				if(!in_array($value, $wwwcat))
 					continue;
 						
 			if($amount == 1)
@@ -294,6 +294,26 @@ class ControllerCategory extends Template\Template{
 		{
 			if(!in_array($value, $wwwarez))
 				continue;
+			
+			if($this->action_val)
+				$q = 'SELECT distinct GrID as result 
+					FROM warez_'.$this->region_id."
+					WHERE warecode in (".join(",", $this->action_val).")
+					AND DirID = ".$this->dir_id."
+					AND ClassID = ".$value;
+			else 
+				$q = 'SELECT distinct GrID as result 
+						FROM warez_'.$this->region_id."
+						WHERE DirID = ".$this->dir_id."
+						AND ClassID = ".$value;
+				
+			$wwwcat =  Models\Warez::find_by_sql($q);
+			$amount = count($wwwcat);
+			
+			if($this->action_val)
+				if(!in_array($value, $wwwcat))
+					continue;
+			
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $this->ToDir($this->dir_id, $value));
 			$category->addChild("category_name", ToUTF(self::$Classes[$this->dir_id][$value]));
