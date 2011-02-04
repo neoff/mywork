@@ -172,11 +172,11 @@ class ControllerCategory extends Template\Template{
 				
 				$amount++;
 				$one_key = $v;
-				print $key."-".$v."-".$amount."-".$one_key."\n";
+				#print $key."-".$v."-".$amount."-".$one_key."\n";
 				
 			}
-			print "--".$key."-".$amount."-".$one_key."\n";
-			print "------".$key."---\n";
+			#print "--".$key."-".$amount."-".$one_key."\n";
+			#print "------".$key."---\n";
 			//$amount = count(self::$Groups[$v]);
 			$id = $key;
 			if($amount == 1 )
@@ -186,7 +186,7 @@ class ControllerCategory extends Template\Template{
 				$key = $this->ToDir($one_key);
 				//$value['name'] = $val->name;
 			}
-			print "------".$key."---\n";
+			#print "------".$key."---\n";
 			//if($amount == 0 )
 			//	continue;
 			$category = $this->categories->addChild("category");
