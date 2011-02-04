@@ -254,6 +254,7 @@ class ControllerCategory extends Template\Template{
 					WHERE DirID = ".$value;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
+			$this->all_dirs($wwwcat);
 			if($wwwcat)
 				$amount = count($wwwcat);
 			
@@ -313,6 +314,7 @@ class ControllerCategory extends Template\Template{
 						AND ClassID = ".$value;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
+			$this->all_dirs($wwwcat);
 			if($wwwcat)
 				$amount = count($wwwcat);
 			
@@ -376,6 +378,7 @@ class ControllerCategory extends Template\Template{
 						AND GrID = ".$value;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
+			$this->all_dirs($wwwcat);
 			if($wwwcat)
 				$amount = count($wwwcat);
 			
@@ -389,7 +392,7 @@ class ControllerCategory extends Template\Template{
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $this->ToDir($this->dir_id, $this->class_id, $value));
 			$category->addChild("category_name", ToUTF(self::$Groups[$this->dir_id][$this->class_id][$value]));
-			$category->addChild("amount", "0"); 
+			$category->addChild("amount", $amount); 
 			$icon = $category->addChild("category_icon", 
 				"http://www.mvideo.ru/mobile/public/img/".$this->dir_id."_".$this->class_id."_".$value.".jpg"); 
 		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
