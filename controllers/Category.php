@@ -142,9 +142,11 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_name", $this->parent_name);
 		if($this->action_val)
 		{
-			$actWarez =  Models\Warez::find_by_sql('SELECT distinct DirID as result 
-												FROM warez_'.$this->region_id."
-												WHERE ware in (".join(",", $this->action_val).")");
+			$q = 'SELECT distinct DirID as result 
+				FROM warez_'.$this->region_id."
+				WHERE ware in (".join(",", $this->action_val).")";
+			print $q;
+			$actWarez =  Models\Warez::find_by_sql($q);
 			$actWarez = $this->all_dirs($actWarez);
 		}
 		
@@ -178,8 +180,8 @@ class ControllerCategory extends Template\Template{
 				$key = $this->ToDir($one_key);
 				//$value['name'] = $val->name;
 			}
-			if($amount == 0 )
-				continue;
+			//if($amount == 0 )
+			//	continue;
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $key);
 			$category->addChild("category_name", ToUTF($value['name']));
