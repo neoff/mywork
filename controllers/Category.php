@@ -471,16 +471,7 @@ class ControllerCategory extends Template\Template{
 			//$cond = array('conditions' => "parent_id is null");
 			$cat_parrent_name = $this->parent_name = "Список категорий";
 			$cat_parrent_id = $this->parent_id = 0;
-			/*if(array_key_exists($this->category_id, self::$GlobalConfig['smenu']))
-			{
-				$cond =array('conditions' => 
-							array('parent_id is null and dirid in (?)', 
-								self::$GlobalConfig['smenu'][$this->category_id]['dirs']
-								)
-							);
-				$this->parent_name = ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['name']);
-			}*/
-			//$this->options = $cond;
+			
 		}
 		else
 		{
@@ -525,7 +516,7 @@ class ControllerCategory extends Template\Template{
 			$this->parent_name = $this->parents->parent_name;
 			$this->parent_id = $this->parents->parent_id;
 		}
-		//$this->parent_category="";
+		$this->parent_category="";
 		//$this->parent_category->addChild("category_id", $cat_parrent_id);
 		//$this->parent_category->addChild("category_name", $cat_parrent_name);
 		
