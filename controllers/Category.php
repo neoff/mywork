@@ -160,6 +160,10 @@ class ControllerCategory extends Template\Template{
 			#print_r($actWarez);
 			
 		}
+		
+		$q = 'SELECT distinct w.DirID as result 
+				FROM warez_'.$this->region_id." as w";
+		
 		if($this->searches)
 			$q .= " WHERE ".$this->searches;
 		
