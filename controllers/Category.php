@@ -100,6 +100,7 @@ class ControllerCategory extends Template\Template{
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
 		{
 			$this->parent_node();
+		}
 			if($this->category_id == 0)
 				$this->category = $this->rootCategories();
 			//if($this->category_id >0)
@@ -116,7 +117,7 @@ class ControllerCategory extends Template\Template{
 						$this->category = $this->Classes();
 				}
 			}
-		}
+		//}
 		
 			
 			
