@@ -89,6 +89,13 @@ class ControllerCategory extends Template\Template{
 		//$this->options = array('parent_id' => $this->category_id);
 		//$this->parents = Models\Category::find('first', array('conditions' => "category_id = $this->category_id"));
 		
+		
+		if($this->searches)
+			$this->category = $this->search();
+			
+		if($this->actions > 0)
+			$this->category = $this->action();
+			
 		$this->parent_node();
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
 		{
@@ -110,11 +117,7 @@ class ControllerCategory extends Template\Template{
 				}
 			}
 		}
-		if($this->searches)
-			$this->category = $this->search();
-			
-		if($this->actions > 0)
-			$this->category = $this->action();
+		
 			
 			
 		//print_r($this->category);
