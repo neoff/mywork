@@ -174,6 +174,7 @@ class ControllerCategory extends Template\Template{
 				$one_key = $v;
 				
 			}
+			print "------".$key."---\n";
 			//$amount = count(self::$Groups[$v]);
 			$id = $key;
 			if($amount == 1 )
