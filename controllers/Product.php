@@ -43,7 +43,7 @@ class ControllerProduct extends Template\Template{
 			}
 			*/
 			$rfile = dirname(dirname(dirname($_SERVER["SCRIPT_FILENAME"])));
-			require_once $rfile . '/www/classifier_'.$this->region_id.'.inc.php';
+			require_once $rfile . '/www/classifier_'.$region_id.'.inc.php';
 			$category->category_id = 1111;
 			$category->name = "sdfsdfsdf";
 			$this->categories="";
