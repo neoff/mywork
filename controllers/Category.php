@@ -148,7 +148,7 @@ class ControllerCategory extends Template\Template{
 			//print $q;
 			$actWarez =  Models\Warez::find_by_sql($q);
 			$this->all_dirs($actWarez);
-			//print_r($actWarez);
+			print_r($actWarez);
 		}
 		
 		$wwwarez =  Models\Warez::find_by_sql('SELECT distinct DirID as result from warez_'.$this->region_id);
@@ -168,6 +168,8 @@ class ControllerCategory extends Template\Template{
 				if($this->action_val)
 					if(!in_array($v, $actWarez))
 						continue 2;
+				
+				print $v."\n";
 				$amount++;
 				$one_key = $v;
 				
