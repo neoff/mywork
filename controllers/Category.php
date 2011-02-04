@@ -65,6 +65,7 @@ class ControllerCategory extends Template\Template{
 			self::$TmpDir[] = $value->result;
 		}
 		$a=self::$TmpDir;
+		return $a;
 	}
 	public function index( $array )
 	{
@@ -139,6 +140,13 @@ class ControllerCategory extends Template\Template{
 		$this->categories="";
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", $this->parent_name);
+		if($this->action_val)
+		{
+			$actWarez =  Models\Warez::find_by_sql('SELECT distinct DirID as result 
+												FROM warez_'.$this->region_id."
+												WHERE ware in (".join(",", $this->action_val).")");
+			$actWarez = $this->all_dirs($actWarez);
+		}
 		
 		$wwwarez =  Models\Warez::find_by_sql('SELECT distinct DirID as result from warez_'.$this->region_id);
 		$this->all_dirs($wwwarez);
@@ -149,11 +157,16 @@ class ControllerCategory extends Template\Template{
 			//						array('parent_id is null and dirid in (?)', $value['dirs'])
 			//						));
 			$amount = 0;
-			
+			if($this->action_val)
+				if()
 			foreach ($value['dirs'] as $v) 
 			{
 				if(!in_array($v, $wwwarez))
 					continue 2;
+				
+				if($this->action_val)
+					if(!in_array($v, $actWarez))
+						continue 2;
 				$amount++;
 				$one_key = $v;
 				
