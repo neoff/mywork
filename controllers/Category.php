@@ -254,7 +254,9 @@ class ControllerCategory extends Template\Template{
 					WHERE DirID = ".$value;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
+			print_r($wwwcat);
 			$this->all_dirs($wwwcat);
+			print_r($wwwcat);
 			if($wwwcat)
 				$amount = count($wwwcat);
 			
