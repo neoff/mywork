@@ -108,12 +108,14 @@ class ControllerCategory extends Template\Template{
 		{
 			$this->parent_node();
 		}
-			if($this->category_id == 0)
+		if($this->category_id == 0)
+			if($this->actions < 0)
 				$this->category = $this->rootCategories();
-			//if($this->category_id >0)
-			//	$this->category = Models\Category::find('all', $this->options);
-			else 
-			{
+		//if($this->category_id >0)
+		//	$this->category = Models\Category::find('all', $this->options);
+		else 
+		{
+			if($this->actions < 0)
 				if($this->category_id < self::$Mult)
 					$this->category = $this->Dirs();
 				else
@@ -123,7 +125,9 @@ class ControllerCategory extends Template\Template{
 					if(!$this->class_id)
 						$this->category = $this->Classes();
 				}
-			}
+			else 
+				$this->category = $this->ActionDirs();
+		}
 		//}
 		
 			
@@ -133,7 +137,7 @@ class ControllerCategory extends Template\Template{
 		//$categoryssss = Models\Category::getWarezAction($this->region_id, $this->action_val, $condition);
 		//print_r($categoryssss);
 		if($this->class_id)
-			if($this->group_id)
+			if($this->group_id || $this->actions > 0)
 				$this->productes();
 			else
 				$this->categories();
@@ -306,6 +310,66 @@ class ControllerCategory extends Template\Template{
 			$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
 			$category->addChild("amount", $amount); 
 			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$value.".jpg"); #TODO откуда брать иконку категории???
+			$icon->addAttribute("width", "180");
+			$icon->addAttribute("height", "180");
+		}
+		return False;
+	}
+	private function ActionDirs()
+	{
+		$this->categories="";
+		$this->categories->addAttribute("category_id", $this->category_id);
+		$this->categories->addAttribute("category_name", $this->parent_name);
+		
+		$q = 'SELECT distinct w.DirID as result 
+					FROM warez_'.$this->region_id." as w
+					WHERE w.warecode in (".implode(",", $this->action_val).")
+					$this->searches";
+					
+		print $q;
+		$wwwarez =  Models\Warez::find_by_sql($q);
+		$this->all_dirs($wwwarez);
+		#print $this->group_id;
+		//print_r(array_keys(self::$Groups[$this->dir_id]));
+		foreach (array_keys(self::$Dirs) as $value) 
+		{
+			$amount = 0;
+			if(!in_array($value, $wwwarez))
+				continue;
+				
+				
+			if($this->action_val)
+				$q = 'SELECT distinct w.dirid, w.classid, w.grid 
+					FROM warez_'.$this->region_id." as w
+					WHERE w.warecode in (".implode(",", $this->action_val).")
+					$this->searches
+					AND w.DirID = ".$value;
+			else 
+				$q = 'SELECT distinct w.dirid, w.classid, w.grid  
+						FROM warez_'.$this->region_id." as w
+						WHERE w.DirID = ".$value."
+						$this->searches";
+				
+			$wwwcat =  Models\Warez::find_by_sql($q);
+			//print_r($wwwcat);
+			//$this->all_dirs($wwwcat);
+			if($wwwcat)
+				$amount = count($wwwcat);
+			
+			/*if($this->action_val)
+				if(!in_array($value, $wwwcat))
+					continue;*/
+					
+			if($amount == 0)
+				continue;
+					
+			$category = $this->categories->addChild("category");
+			$category->addChild("category_id", $this->ToDir($this->dir_id, $this->class_id, $value));
+			$category->addChild("category_name", ToUTF(self::$Groups[$this->dir_id][$this->class_id][$value]));
+			$category->addChild("amount", $amount); 
+			$icon = $category->addChild("category_icon", 
+				"http://www.mvideo.ru/mobile/public/img/".$this->dir_id."_".$this->class_id."_".$value.".jpg"); 
+		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");
 		}
