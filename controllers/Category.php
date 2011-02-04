@@ -334,7 +334,7 @@ class ControllerCategory extends Template\Template{
 					$this->searches";
 		
 		
-		//print $q;
+		print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
@@ -535,7 +535,7 @@ class ControllerCategory extends Template\Template{
 	private function productes()
 	{
 		
-		var_dump($this->parents);
+		//var_dump($this->parents);
 		if($this->actions > 0 && $this->action_val)
 			$this->parents->dirid .= " and w.warecode in (".implode(",", $this->action_val).") $this->searches";#$this->parents->search
 		
