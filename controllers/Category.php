@@ -520,7 +520,8 @@ class ControllerCategory extends Template\Template{
 			$this->parent_id = $this->parents->parent_id;
 		}
 		$this->parent_category="";
-		$this->parent_category->addChild("category_id", $cat_parrent_id);
+		$this->parent_category->addChild("category_id", " ");
+		//$this->parent_category->addChild("category_id", $cat_parrent_id);
 		//$this->parent_category->addChild("category_name", $cat_parrent_name);
 		
 		return $this->options;
