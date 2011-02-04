@@ -793,8 +793,8 @@ class ControllerCategory extends Template\Template{
 			$categorys = array();
 		}*/
 		//print_r($this->action_val);
-		if(!$this->searches)
-			$this->parent_node();
+		//if(!$this->searches)
+		$this->parent_node();
 		return False;
 	}
 	/**
