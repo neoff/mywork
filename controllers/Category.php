@@ -204,6 +204,8 @@ class ControllerCategory extends Template\Template{
 					$value['name'] = self::$Dirs[$one_key];
 				//$value['name'] = $val->name;
 			}
+			if($amount == 0)
+				continue;
 			#print "------".$key."---\n";
 			//if($amount == 0 )
 			//	continue;
@@ -256,7 +258,7 @@ class ControllerCategory extends Template\Template{
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches";
 					
-		print $q;
+		//print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
 		
