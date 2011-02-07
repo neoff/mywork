@@ -250,7 +250,7 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_name", $this->parent_name);
 		
 		
-		$q = 'SELECT distinct w.DirID as result, w.warecode 
+		$q = 'SELECT distinct w.DirID as result 
 			FROM warez_'.$this->region_id.' as w';
 		
 		if($this->searches)
@@ -283,13 +283,13 @@ class ControllerCategory extends Template\Template{
 					$this->searches
 					AND w.DirID = ".$value;
 			else 
-				$q = 'SELECT distinct ClassID as result 
+				$q = 'SELECT distinct ClassID as result, w.warecode
 					FROM warez_'.$this->region_id."
 					
 					WHERE DirID = ".$value.$this->searches;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
-			//print_r($wwwcat);
+			print_r($wwwcat);
 			//$this->all_dirs($wwwcat);
 			//print_r($wwwcat);
 			if($wwwcat)
