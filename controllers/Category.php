@@ -410,7 +410,7 @@ class ControllerCategory extends Template\Template{
 		#print $this->category_id;
 		$this->categories="";
 		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", $this->parent_name);
+		$this->categories->addAttribute("category_name", ToUTF(self::$Dirs[$this->dir_id]));
 		
 		$q = 'SELECT distinct w.ClassID as result 
 			FROM warez_'.$this->region_id." as w
