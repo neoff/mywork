@@ -281,12 +281,12 @@ class ControllerCategory extends Template\Template{
 					FROM warez_'.$this->region_id." as w
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches
-					AND w.DirID = ".$value." order by w.price ASC ";
+					AND w.DirID = ".$value." group by result order by w.price ASC ";
 			else 
 				$q = 'SELECT distinct ClassID as result, w.warecode 
 					FROM warez_'.$this->region_id." as w
 					
-					WHERE DirID = ".$value.$this->searches." order by w.price ASC ";
+					WHERE DirID = ".$value.$this->searches." group by result order by w.price ASC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
 			//print_r($wwwcat);
