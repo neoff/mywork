@@ -289,7 +289,7 @@ class ControllerCategory extends Template\Template{
 					WHERE DirID = ".$value.$this->searches;
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
-			print_r($wwwcat);
+			//print_r($wwwcat);
 			//$this->all_dirs($wwwcat);
 			//print_r($wwwcat);
 			if($wwwcat)
@@ -309,7 +309,7 @@ class ControllerCategory extends Template\Template{
 			$category->addChild("category_id", $id);
 			$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
 			$category->addChild("amount", $amount); 
-			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/".$value.".jpg"); #TODO откуда брать иконку категории???
+			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"); #TODO откуда брать иконку категории???
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");
 		}
