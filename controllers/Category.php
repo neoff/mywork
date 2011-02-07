@@ -465,15 +465,15 @@ class ControllerCategory extends Template\Template{
 						WHERE w.warecode in (".implode(",", $this->action_val).")
 						$this->searches
 						AND w.DirID = ".$this->dir_id."
-						AND w.ClassID = ".$this->class_id."
-						AND w.GrID = ".$value." group by result order by w.price ASC ";
+						AND w.ClassID = ".$value."
+						AND w.GrID = ".$wwwcat[0]->result." group by result order by w.price ASC ";
 				else 
 					$q = 'SELECT distinct w.warecode as result, w.warecode 
 							FROM warez_'.$this->region_id." as w
 							WHERE w.DirID = ".$this->dir_id."
 							$this->searches
-							AND w.ClassID = ".$this->class_id."
-							AND w.GrID = ".$value." group by result order by w.price ASC ";
+							AND w.ClassID = ".$value."
+							AND w.GrID = ".$wwwcat[0]->result." group by result order by w.price ASC ";
 						
 				$id = $this->ToDir($this->dir_id, $value, $wwwcat[0]->result);
 				$wwwcats =  Models\Warez::find_by_sql($q);
