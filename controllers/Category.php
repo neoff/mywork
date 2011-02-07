@@ -247,7 +247,7 @@ class ControllerCategory extends Template\Template{
 		
 		$this->categories="";
 		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", $this->parent_name);
+		$this->categories->addAttribute("category_name", ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['name']));
 		
 		
 		$q = 'SELECT distinct w.DirID as result 
