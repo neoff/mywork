@@ -448,7 +448,7 @@ class ControllerCategory extends Template\Template{
 						AND w.ClassID = ".$value." group by result order by w.price ASC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
-			print_r($wwwcat);
+			//print_r($wwwcat);
 			//$this->all_dirs($wwwcat);
 			if($wwwcat)
 				$amount = count($wwwcat);
