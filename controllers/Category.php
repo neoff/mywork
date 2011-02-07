@@ -154,7 +154,7 @@ class ControllerCategory extends Template\Template{
 		
 		if($this->action_val)
 		{
-			$q = 'SELECT distinct w.DirID as result 
+			$q = 'SELECT distinct w.DirID as result, w.warecode 
 				FROM warez_'.$this->region_id." as w
 				WHERE w.warecode in (".implode(",", $this->action_val).")
 				$this->searches ";
@@ -165,7 +165,7 @@ class ControllerCategory extends Template\Template{
 			
 		}
 		
-		$q = 'SELECT distinct w.DirID as result 
+		$q = 'SELECT distinct w.DirID as result, w.warecode 
 				FROM warez_'.$this->region_id." as w";
 		
 		if($this->searches)
@@ -250,14 +250,14 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_name", $this->parent_name);
 		
 		
-		$q = 'SELECT distinct w.DirID as result 
+		$q = 'SELECT distinct w.DirID as result, w.warecode 
 			FROM warez_'.$this->region_id.' as w';
 		
 		if($this->searches)
 			$q .= " WHERE w.warecode ".$this->searches;
 			
 		if($this->action_val)
-			$q = 'SELECT distinct w.DirID as result 
+			$q = 'SELECT distinct w.DirID as result, w.warecode 
 					FROM warez_'.$this->region_id." as w
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches";
@@ -277,7 +277,7 @@ class ControllerCategory extends Template\Template{
 				
 			$id = $this->ToDir($value);
 			if($this->action_val)
-				$q = 'SELECT distinct w.ClassID as result 
+				$q = 'SELECT distinct w.ClassID as result, w.warecode 
 					FROM warez_'.$this->region_id." as w
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches
@@ -409,7 +409,7 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", $this->parent_name);
 		
-		$q = 'SELECT distinct w.ClassID as result 
+		$q = 'SELECT distinct w.ClassID as result, w.warecode 
 			FROM warez_'.$this->region_id." as w
 			WHERE w.DirID = ".$this->dir_id;
 		
@@ -478,7 +478,7 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", $this->parent_name);
 		
-		$q = 'SELECT distinct w.GrID as result 
+		$q = 'SELECT distinct w.GrID as result, w.warecode 
 			FROM warez_'.$this->region_id." as w
 			WHERE w.DirID = ".$this->dir_id."
 			$this->searches

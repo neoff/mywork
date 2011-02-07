@@ -30,20 +30,7 @@ class ControllerProduct extends Template\Template{
 		{
 			$productes = $productes[0];
 			
-			//print_r($productes);
-			//$options = array("dirid"=>$productes->dirid, "classid"=>$productes->classid, "grid"=>$productes->grid);
-			/*$category = Models\Category::find('fist', $options);
-			if(!$category)
-			{
-				unset($options["grid"]);
-				$category = Models\Category::find('fist', $options);
-			}	
-			if(!$category)
-			{
-				unset($options["classid"]);
-				$category = Models\Category::find('fist', $options);
-			}
-			*/
+			
 			$rfile = dirname(dirname(dirname($_SERVER["SCRIPT_FILENAME"])));
 			require_once $rfile . '/www/classifier_'.$region_id.'.inc.php';
 			$d = $productes->dirid*self::$Mult;
