@@ -392,7 +392,9 @@ class ControllerCategory extends Template\Template{
 			$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
 			$category->addChild("amount", $amount); 
 			$icon = $category->addChild("category_icon", 
-				"http://www.mvideo.ru/mobile/public/img/".$value.".jpg"); 
+			"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
+				#"http://www.mvideo.ru/mobile/public/img/".$value.".jpg"
+			); 
 		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");
@@ -437,13 +439,13 @@ class ControllerCategory extends Template\Template{
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches
 					AND w.DirID = ".$this->dir_id."
-					AND w.ClassID = ".$value;
+					AND w.ClassID = ".$value." order by price ASC ";
 			else 
 				$q = 'SELECT distinct w.GrID as result, w.warecode 
 						FROM warez_'.$this->region_id." as w
 						WHERE w.DirID = ".$this->dir_id."
 						$this->searches
-						AND w.ClassID = ".$value;
+						AND w.ClassID = ".$value." order by price ASC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
 			//$this->all_dirs($wwwcat);
@@ -453,12 +455,14 @@ class ControllerCategory extends Template\Template{
 			/*if($this->action_val)
 				if(!in_array($value, $wwwcat))
 					continue;*/
-			
+			$id = $this->ToDir($this->dir_id, $value);
+			if($amount == 1)
+				$id = $this->ToDir($this->dir_id, $value, $wwwcat[0]->result);
 			if($amount == 0)
 				continue;
 				
 			$category = $this->categories->addChild("category");
-			$category->addChild("category_id", $this->ToDir($this->dir_id, $value));
+			$category->addChild("category_id", $id);
 			$category->addChild("category_name", ToUTF(self::$Classes[$this->dir_id][$value]));
 			$category->addChild("amount", $amount); 
 			$icon = $category->addChild("category_icon", 
@@ -505,14 +509,14 @@ class ControllerCategory extends Template\Template{
 					$this->searches
 					AND w.DirID = ".$this->dir_id."
 					AND w.ClassID = ".$this->class_id."
-					AND w.GrID = ".$value;
+					AND w.GrID = ".$value." order by price ASC ";
 			else 
 				$q = 'SELECT distinct w.warecode as result, w.warecode 
 						FROM warez_'.$this->region_id." as w
 						WHERE w.DirID = ".$this->dir_id."
 						$this->searches
 						AND w.ClassID = ".$this->class_id."
-						AND w.GrID = ".$value;
+						AND w.GrID = ".$value." order by price ASC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
 			//print_r($wwwcat);
