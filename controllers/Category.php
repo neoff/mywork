@@ -548,21 +548,6 @@ class ControllerCategory extends Template\Template{
 		if($this->actions > 0 && $this->action_val)
 			$this->parents->dirid .= " and w.warecode in (".implode(",", $this->action_val).") $this->searches";#$this->parents->search
 		
-		/*if($this->searches)
-		{
-			$this->parent_node();
-			$search = $this->searches;
-			//if($search[0]!="%")
-			//{
-				//print $search;exit();
-				//$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
-				//$search = html_entity_decode($search,null,'UTF-8');
-				$search = iconv ("UTF-8",'CP1251', $search );
-			//}
-			$this->parents->dirid .= " and (ware like \"%$search%\" or FullName like \"%$search%\" )";
-		}*/
-		#var_dump($this->parents);
-		
 		if($this->parents)
 		{
 			#print "ads";

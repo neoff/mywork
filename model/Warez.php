@@ -83,7 +83,7 @@ class Warez extends ActiveRecord\Model
 		if(!$region_id || !$sql_impl)
 			return;
 		$sql = 'select w.* from `warez_' .$region_id . '` as w 
-				where ' . $sql_impl. $limit;
+				where ' . $sql_impl." order by price ASC ". $limit;
 		//print $sql_impl;
 		//print $sql;
 		return self::find_by_sql($sql);
@@ -100,7 +100,7 @@ class Warez extends ActiveRecord\Model
 	public function getRatingRev()
 	{
 		$options = array('select' => 'count(rating) c, sum(rating) s', 
-						'conditions' => array('warecode = ?', $this->warecode));
+						'conditions' => array('approved=1 and warecode = ?', $this->warecode));
 		$rewiews = Reviews::first($options);
 		if($options)
 		{
