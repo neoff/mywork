@@ -458,7 +458,27 @@ class ControllerCategory extends Template\Template{
 					continue;*/
 			$id = $this->ToDir($this->dir_id, $value);
 			if($amount == 1)
+			{
+				if($this->action_val)
+					$q = 'SELECT distinct w.warecode as result, w.warecode 
+						FROM warez_'.$this->region_id." as w
+						WHERE w.warecode in (".implode(",", $this->action_val).")
+						$this->searches
+						AND w.DirID = ".$this->dir_id."
+						AND w.ClassID = ".$this->class_id."
+						AND w.GrID = ".$value." group by result order by w.price ASC ";
+				else 
+					$q = 'SELECT distinct w.warecode as result, w.warecode 
+							FROM warez_'.$this->region_id." as w
+							WHERE w.DirID = ".$this->dir_id."
+							$this->searches
+							AND w.ClassID = ".$this->class_id."
+							AND w.GrID = ".$value." group by result order by w.price ASC ";
+						
 				$id = $this->ToDir($this->dir_id, $value, $wwwcat[0]->result);
+				if($wwwcat)
+					$amount = count($wwwcat);
+			}
 			if($amount == 0)
 				continue;
 				
