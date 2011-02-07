@@ -277,7 +277,7 @@ class ControllerCategory extends Template\Template{
 				
 			$id = $this->ToDir($value);
 			if($this->action_val)
-				$q = 'SELECT distinct w.ClassID as result 
+				$q = 'SELECT distinct w.ClassID as result, w.warecode
 					FROM warez_'.$this->region_id." as w
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches
@@ -309,7 +309,8 @@ class ControllerCategory extends Template\Template{
 			$category->addChild("category_id", $id);
 			$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
 			$category->addChild("amount", $amount); 
-			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"); #TODO откуда брать иконку категории???
+			$icon = $category->addChild("category_icon", 
+			"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"); #TODO откуда брать иконку категории???
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");
 		}
@@ -431,14 +432,14 @@ class ControllerCategory extends Template\Template{
 				continue;
 			
 			if($this->action_val)
-				$q = 'SELECT distinct w.GrID as result 
+				$q = 'SELECT distinct w.GrID as result, w.warecode 
 					FROM warez_'.$this->region_id." as w
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches
 					AND w.DirID = ".$this->dir_id."
 					AND w.ClassID = ".$value;
 			else 
-				$q = 'SELECT distinct w.GrID as result 
+				$q = 'SELECT distinct w.GrID as result, w.warecode 
 						FROM warez_'.$this->region_id." as w
 						WHERE w.DirID = ".$this->dir_id."
 						$this->searches
@@ -461,7 +462,9 @@ class ControllerCategory extends Template\Template{
 			$category->addChild("category_name", ToUTF(self::$Classes[$this->dir_id][$value]));
 			$category->addChild("amount", $amount); 
 			$icon = $category->addChild("category_icon", 
-				"http://www.mvideo.ru/mobile/public/img/".$this->dir_id."_".$value."_.jpg"); 
+			"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
+				#"http://www.mvideo.ru/mobile/public/img/".$this->dir_id."_".$value."_.jpg"
+			); 
 		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");
