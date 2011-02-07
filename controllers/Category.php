@@ -476,6 +476,7 @@ class ControllerCategory extends Template\Template{
 							AND w.GrID = ".$value." group by result order by w.price ASC ";
 						
 				$id = $this->ToDir($this->dir_id, $value, $wwwcat[0]->result);
+				$wwwcat =  Models\Warez::find_by_sql($q);
 				if($wwwcat)
 					$amount = count($wwwcat);
 			}
