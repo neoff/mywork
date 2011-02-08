@@ -281,12 +281,12 @@ class ControllerCategory extends Template\Template{
 					FROM warez_'.$this->region_id." as w
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches
-					AND w.DirID = ".$value." group by result order by w.price DESC ";
+					AND w.DirID = ".$value." group by result order by w.hit DESC, w.price DESC ";
 			else 
 				$q = 'SELECT distinct ClassID as result, w.warecode 
 					FROM warez_'.$this->region_id." as w
 					
-					WHERE DirID = ".$value.$this->searches." group by result order by w.price DESC ";
+					WHERE DirID = ".$value.$this->searches." group by result order by w.hit DESC, w.price DESC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
 			//print_r($wwwcat);
@@ -439,13 +439,13 @@ class ControllerCategory extends Template\Template{
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches
 					AND w.DirID = ".$this->dir_id."
-					AND w.ClassID = ".$value." group by result order by w.price DESC ";
+					AND w.ClassID = ".$value." group by result order by w.hit DESC, w.price DESC ";
 			else 
 				$q = 'SELECT distinct w.GrID as result, w.warecode 
 						FROM warez_'.$this->region_id." as w
 						WHERE w.DirID = ".$this->dir_id."
 						$this->searches
-						AND w.ClassID = ".$value." group by result order by w.price DESC ";
+						AND w.ClassID = ".$value." group by result order by w.hit DESC, w.price DESC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
 			//print_r($wwwcat);
@@ -489,7 +489,7 @@ class ControllerCategory extends Template\Template{
 			$category->addChild("category_name", ToUTF(self::$Classes[$this->dir_id][$value]));
 			$category->addChild("amount", $amount); 
 			$icon = $category->addChild("category_icon", 
-			"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
+			"http://www.mvideo.ru/Pdb/".$wwwcat[1]->warecode.".jpg"
 				#"http://www.mvideo.ru/mobile/public/img/".$this->dir_id."_".$value."_.jpg"
 			); 
 		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
