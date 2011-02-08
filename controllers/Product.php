@@ -43,9 +43,8 @@ class ControllerProduct extends Template\Template{
 			$this->categories->addChild("category_name", ($category)?ToUTF($category->name):"Список категорий");
 			
 			$this->product="";
-			$pr = $this->product;
 			if($productes->inetqty>0)
-				$pr->addAttribute("inetSale", 1);
+				$this->product->addAttribute("inetSale", 1);
 			$this->product->addChild("product_id", $product_id);
 			$this->product->addChild("region_id", $region_id);
 			$this->product->addChild("title", StripTags($productes->ware));
