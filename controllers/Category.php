@@ -281,12 +281,12 @@ class ControllerCategory extends Template\Template{
 					FROM warez_'.$this->region_id." as w
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches
-					AND w.DirID = ".$value." group by result order by w.price ASC ";
+					AND w.DirID = ".$value." group by result order by w.price DESC ";
 			else 
 				$q = 'SELECT distinct ClassID as result, w.warecode 
 					FROM warez_'.$this->region_id." as w
 					
-					WHERE DirID = ".$value.$this->searches." group by result order by w.price ASC ";
+					WHERE DirID = ".$value.$this->searches." group by result order by w.price DESC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
 			//print_r($wwwcat);
@@ -439,13 +439,13 @@ class ControllerCategory extends Template\Template{
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches
 					AND w.DirID = ".$this->dir_id."
-					AND w.ClassID = ".$value." group by result order by w.price ASC ";
+					AND w.ClassID = ".$value." group by result order by w.price DESC ";
 			else 
 				$q = 'SELECT distinct w.GrID as result, w.warecode 
 						FROM warez_'.$this->region_id." as w
 						WHERE w.DirID = ".$this->dir_id."
 						$this->searches
-						AND w.ClassID = ".$value." group by result order by w.price ASC ";
+						AND w.ClassID = ".$value." group by result order by w.price DESC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
 			//print_r($wwwcat);
@@ -466,14 +466,14 @@ class ControllerCategory extends Template\Template{
 						$this->searches
 						AND w.DirID = ".$this->dir_id."
 						AND w.ClassID = ".$value."
-						AND w.GrID = ".$wwwcat[0]->result." group by result order by w.price ASC ";
+						AND w.GrID = ".$wwwcat[0]->result." group by result order by w.price DESC ";
 				else 
 					$q = 'SELECT distinct w.warecode as result, w.warecode 
 							FROM warez_'.$this->region_id." as w
 							WHERE w.DirID = ".$this->dir_id."
 							$this->searches
 							AND w.ClassID = ".$value."
-							AND w.GrID = ".$wwwcat[0]->result." group by result order by w.price ASC ";
+							AND w.GrID = ".$wwwcat[0]->result." group by result order by w.price DESC ";
 						
 				$id = $this->ToDir($this->dir_id, $value, $wwwcat[0]->result);
 				$wwwcats =  Models\Warez::find_by_sql($q);
@@ -531,14 +531,14 @@ class ControllerCategory extends Template\Template{
 					$this->searches
 					AND w.DirID = ".$this->dir_id."
 					AND w.ClassID = ".$this->class_id."
-					AND w.GrID = ".$value." group by result order by w.price ASC ";
+					AND w.GrID = ".$value." group by result order by w.price DESC ";
 			else 
 				$q = 'SELECT distinct w.warecode as result, w.warecode 
 						FROM warez_'.$this->region_id." as w
 						WHERE w.DirID = ".$this->dir_id."
 						$this->searches
 						AND w.ClassID = ".$this->class_id."
-						AND w.GrID = ".$value." group by result order by w.price ASC ";
+						AND w.GrID = ".$value." group by result order by w.price DESC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
 			//print_r($wwwcat);
