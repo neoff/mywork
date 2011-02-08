@@ -489,7 +489,7 @@ class ControllerCategory extends Template\Template{
 			$category->addChild("category_name", ToUTF(self::$Classes[$this->dir_id][$value]));
 			$category->addChild("amount", $amount); 
 			$icon = $category->addChild("category_icon", 
-			"http://www.mvideo.ru/Pdb/".$wwwcat[1]->warecode.".jpg"
+			"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
 				#"http://www.mvideo.ru/mobile/public/img/".$this->dir_id."_".$value."_.jpg"
 			); 
 		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
