@@ -44,7 +44,7 @@ class ControllerProduct extends Template\Template{
 			
 			$this->product="";
 			if($productes->inetqty>0)
-				$this->product->addArtibute("inetSale", 1);
+				$this->product->addAttribute("inetSale", 1);
 			$this->product->addChild("product_id", $product_id);
 			$this->product->addChild("region_id", $region_id);
 			$this->product->addChild("title", StripTags($productes->ware));
