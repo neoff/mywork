@@ -483,7 +483,7 @@ class ControllerCategory extends Template\Template{
 			}
 			if($amount == 0)
 				continue;
-				
+			print_r($wwwcats);
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $id);
 			$category->addChild("category_name", ToUTF(self::$Classes[$this->dir_id][$value]));
