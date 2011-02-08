@@ -475,6 +475,7 @@ class ControllerCategory extends Template\Template{
 							AND w.ClassID = ".$value."
 							AND w.GrID = ".$wwwcat[0]->result." group by result order by w.hit DESC, w.price DESC ";
 						
+				print $q;
 				$id = $this->ToDir($this->dir_id, $value, $wwwcat[0]->result);
 				$wwwcats =  Models\Warez::find_by_sql($q);
 				if($wwwcat)
