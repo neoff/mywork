@@ -538,7 +538,7 @@ class ControllerCategory extends Template\Template{
 						WHERE w.DirID = ".$this->dir_id."
 						$this->searches
 						AND w.ClassID = ".$this->class_id."
-						AND w.GrID = ".$value." group by result order by w.price DESC ";
+						AND w.GrID = ".$value." group by result order by w.hit DESC, w.price ASC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
 			//print_r($wwwcat);
