@@ -28,6 +28,7 @@ class ControllerRegion extends Template\Template{
 			
 				$region->addChild("region_id", $val->id );
 				$region->addChild("region_name", ToUTF($val->name));
+				$region->addChild("region_domain", $val->domain );
 				$coordinates = $region->addChild("coordinates");
 				$val->coordinates();
 				$coordinates->addChild("longitude", $val->longitude);

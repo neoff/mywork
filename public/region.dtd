@@ -2,9 +2,10 @@
 <!ELEMENT mvideo_xml ((regions)) >
 <!ATTLIST mvideo_xml date CDATA  "YYYY-MM-DD hh:mm:ss">
 <!ELEMENT regions ((region+))>
-<!ELEMENT region ((region_id, region_name, coordinates))>
+<!ELEMENT region ((region_id, region_name,region_domain, coordinates))>
 <!ELEMENT region_id (#PCDATA)>
 <!ELEMENT region_name (#PCDATA)>
+<!ELEMENT region_domain (#PCDATA)>
 <!ELEMENT coordinates ((longitude, latitude))>
 <!ELEMENT longitude (#PCDATA)>
 <!ELEMENT latitude (#PCDATA)>
