@@ -182,8 +182,8 @@ class ControllerCategory extends Template\Template{
 			$amount = 0;
 			foreach ($value['dirs'] as $v) 
 			{
-				#if(!in_array($v, $wwwarez))
-				#	continue 2;
+				if(!in_array($v, $wwwarez))
+					continue 2;
 				
 				if($this->action_val)
 					if(!in_array($v, $actWarez))
