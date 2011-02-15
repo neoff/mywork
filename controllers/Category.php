@@ -341,7 +341,7 @@ class ControllerCategory extends Template\Template{
 					ORDER BY count DESC";
 		
 		
-		//print $q;
+		print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
