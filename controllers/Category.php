@@ -324,20 +324,24 @@ class ControllerCategory extends Template\Template{
 		
 		
 		
-		$q = 'SELECT distinct w.DirID as result 
+		$q = 'SELECT distinct w.DirID as result, count(w.warecode) as count 
 			FROM warez_'.$this->region_id.' as w';
 		
 		if($this->searches)
 			$q .= " WHERE w.warecode ".$this->searches;
-			
+		$q = "GROUP BY result
+				ORDER BY count DESC";
+		
 		if($this->action_val)
 			$q = 'SELECT distinct w.DirID as result, count(w.warecode) as count 
 					FROM warez_'.$this->region_id." as w
 					WHERE w.warecode in (".implode(",", $this->action_val).")
-					$this->searches";
+					$this->searches
+					GROUP BY result
+					ORDER BY count DESC";
 		
 		
-		print $q;
+		//print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
