@@ -364,7 +364,7 @@ class ControllerCategory extends Template\Template{
 		//foreach (array_keys(self::$Dirs) as $value) 
 		foreach ($res as $val) 
 		{
-			$value = $val->dirid;
+			$value = $val->result;
 			$amount = 0;
 			if(in_array($value, array_keys(self::$Dirs)))
 			{
