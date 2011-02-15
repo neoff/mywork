@@ -331,13 +331,13 @@ class ControllerCategory extends Template\Template{
 			$q .= " WHERE w.warecode ".$this->searches;
 			
 		if($this->action_val)
-			$q = 'SELECT distinct w.DirID as result 
+			$q = 'SELECT distinct w.DirID as result, count(w.warecode) as count 
 					FROM warez_'.$this->region_id." as w
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches";
 		
 		
-		//print $q;
+		print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
