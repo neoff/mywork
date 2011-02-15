@@ -344,6 +344,7 @@ class ControllerCategory extends Template\Template{
 		
 		//print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
+		$res = $wwwarez;
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
 		//print_r(array_keys(self::$Groups[$this->dir_id]));
@@ -360,49 +361,54 @@ class ControllerCategory extends Template\Template{
 			$this->categories->addAttribute("category_id", $this->category_id);
 			$this->categories->addAttribute("category_name", $this->parent_name);
 		}
-		foreach (array_keys(self::$Dirs) as $value) 
+		//foreach (array_keys(self::$Dirs) as $value) 
+		foreach ($res as $val) 
 		{
+			$value = $val->dirid;
 			$amount = 0;
-			if(!in_array($value, $wwwarez))
-				continue;
-				
-				
-			if($this->action_val)
-				$q = 'SELECT distinct w.warecode 
-					FROM warez_'.$this->region_id." as w
-					WHERE w.warecode in (".implode(",", $this->action_val).")
-					$this->searches
-					AND w.DirID = ".$value;
-			else 
-				$q = 'SELECT distinct w.warecode  
+			if(in_array($value, array_keys(self::$Dirs)))
+			{
+				if(!in_array($value, $wwwarez))
+					continue;
+					
+					
+				if($this->action_val)
+					$q = 'SELECT distinct w.warecode 
 						FROM warez_'.$this->region_id." as w
-						WHERE w.DirID = ".$value."
-						$this->searches";
+						WHERE w.warecode in (".implode(",", $this->action_val).")
+						$this->searches
+						AND w.DirID = ".$value;
+				else 
+					$q = 'SELECT distinct w.warecode  
+							FROM warez_'.$this->region_id." as w
+							WHERE w.DirID = ".$value."
+							$this->searches";
+					
+				$wwwcat =  Models\Warez::find_by_sql($q);
+				//print_r($wwwcat);
+				//$this->all_dirs($wwwcat);
+				if($wwwcat)
+					$amount = count($wwwcat);
 				
-			$wwwcat =  Models\Warez::find_by_sql($q);
-			//print_r($wwwcat);
-			//$this->all_dirs($wwwcat);
-			if($wwwcat)
-				$amount = count($wwwcat);
-			
-			/*if($this->action_val)
-				if(!in_array($value, $wwwcat))
-					continue;*/
-					
-			if($amount == 0)
-				continue;
-					
-			$category = $this->categories->addChild("category");
-			$category->addChild("category_id", $this->ToDir($value));
-			$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
-			$category->addChild("amount", $amount); 
-			$icon = $category->addChild("category_icon", 
-			"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
-				#"http://www.mvideo.ru/mobile/public/img/".$value.".jpg"
-			); 
-		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
-			$icon->addAttribute("width", "180");
-			$icon->addAttribute("height", "180");
+				/*if($this->action_val)
+					if(!in_array($value, $wwwcat))
+						continue;*/
+						
+				if($amount == 0)
+					continue;
+						
+				$category = $this->categories->addChild("category");
+				$category->addChild("category_id", $this->ToDir($value));
+				$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
+				$category->addChild("amount", $amount); 
+				$icon = $category->addChild("category_icon", 
+				"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
+					#"http://www.mvideo.ru/mobile/public/img/".$value.".jpg"
+				); 
+			#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
+				$icon->addAttribute("width", "180");
+				$icon->addAttribute("height", "180");
+			}
 		}
 		return False;
 	}
