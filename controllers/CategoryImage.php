@@ -68,8 +68,9 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 	}
 	private function rootCategories()
 	{
-		$q = 'SELECT distinct w.DirID as result 
-				FROM warez_'.$this->region_id." as w";
+		$q = 'SELECT distinct w.DirID as result, w.warecode 
+				FROM warez_'.$this->region_id." as w
+				GROUP BY w.DirID;
 		
 		print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
@@ -96,17 +97,6 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 			#print "------".$key."---\n";
 			//$amount = count(self::$Groups[$v]);
 			$id = $key;
-			if($amount == 1 )
-			{
-				//$val = $am[0];
-				//$amount =  $this->recurseAmount($val);
-				$key = $this->ToDir($one_key);
-				if($this->action_val)
-					$value['name'] = self::$Dirs[$one_key];
-				//$value['name'] = $val->name;
-			}
-			if($amount == 0)
-				continue;
 			#print "------".$key."---\n";
 			//if($amount == 0 )
 			//	continue;
@@ -115,9 +105,7 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 			#/public/img/s$id.jpg"
 			
 		}
-		//exit();
 		return True;
-		
 	}
 	
 	/**
