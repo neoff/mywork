@@ -72,7 +72,6 @@ class ControllerCategory extends Template\Template{
 		$GlobalConfig=array();
 		$rfile = dirname(dirname(dirname($_SERVER["SCRIPT_FILENAME"])));
 		
-		list($this->region_id, $this->category_id, $this->actions, $this->searches, $this->page)=$array;
 		
 		$GlobalConfig['RegionID']=$this->region_id;
 		require_once $rfile . '/lib/federal_info.lib.php';
@@ -84,6 +83,10 @@ class ControllerCategory extends Template\Template{
 		self::$Dirs = $Dirs;
 		self::$Classes = $Classes;
 		self::$Groups = $Groups;
+		
+		if($array)
+			list($this->region_id, $this->category_id, $this->actions, $this->searches, $this->page)=$array;
+		
 		#var_dump(3123342323432234);
 		#exit();
 		
