@@ -26,6 +26,7 @@
 	define( 'CONNECTION', ($conn->base)?$conn->base:'develop' );
 	
 	require_once ROOT_PATH . '/lib/ActiveRecord.php';
+	require_once ROOT_PATH . '/lib/Template.php';
 	require_once ROOT_PATH . '/config/config.php';
 	require_once ROOT_PATH . '/model/__init__.php';
 	require_once ROOT_PATH . '/controllers/Category.php';
