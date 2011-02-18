@@ -13,7 +13,7 @@
 	/*namespace Controllers;
 	use Models;*/
 	//ini_set('display_errors', True);
-	//error_reporting(E_ALL);
+	error_reporting(0);
 	date_default_timezone_set( 'Europe/Moscow' );
 	define( "ROOT_PATH", dirname(dirname(__FILE__)) );
 	
