@@ -34,7 +34,7 @@ class ControllerCategory extends Template\Template{
 	
 	private $parent_name;
 	private $parent_id;
-	private $region_id;
+	protected $region_id;
 	private $category_id;
 	private $actions;
 	private $action_val = array();
