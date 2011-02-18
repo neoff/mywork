@@ -124,7 +124,8 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 					WHERE DirID = ".$value." group by result order by w.hit DESC, w.price DESC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
-			
+			if(!$wwwcat)
+				continue;
 			$this->getFile($id, $wwwcat[0]->warecode);
 			$this->Classes();
 		}
@@ -156,6 +157,8 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 						AND w.ClassID = ".$value." group by result order by w.hit DESC, w.price DESC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
+			if(!$wwwcat)
+				continue;
 			$this->class_id = $value;
 			$id = $this->ToDir($this->dir_id, $value);
 			$this->getFile($id, $wwwcat[0]->warecode);
@@ -193,6 +196,8 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 						AND w.GrID = ".$value." group by result order by w.hit DESC, w.price ASC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
+			if(!$wwwcat)
+				continue;
 			//print_r($wwwcat);
 			//$this->all_dirs($wwwcat);
 			$id = $this->ToDir($this->dir_id, $this->class_id, $value);
