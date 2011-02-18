@@ -69,9 +69,13 @@ class ControllerCategory extends Template\Template{
 	}
 	public function index( $array )
 	{
+		
+		
+		if($array)
+			list($this->region_id, $this->category_id, $this->actions, $this->searches, $this->page)=$array;
+		
 		$GlobalConfig=array();
 		$rfile = dirname(dirname(dirname($_SERVER["SCRIPT_FILENAME"])));
-		
 		
 		$GlobalConfig['RegionID']=$this->region_id;
 		require_once $rfile . '/lib/federal_info.lib.php';
@@ -83,15 +87,6 @@ class ControllerCategory extends Template\Template{
 		self::$Dirs = $Dirs;
 		self::$Classes = $Classes;
 		self::$Groups = $Groups;
-		
-		if($array)
-			list($this->region_id, $this->category_id, $this->actions, $this->searches, $this->page)=$array;
-		
-		#var_dump(3123342323432234);
-		#exit();
-		
-		//$this->options = array('parent_id' => $this->category_id);
-		//$this->parents = Models\Category::find('first', array('conditions' => "category_id = $this->category_id"));
 		
 		
 		
@@ -111,7 +106,7 @@ class ControllerCategory extends Template\Template{
 		{
 			$this->parent_node();
 		}
-		else
+		elseif($this->category_id >=0 && ($this->searches || $this->actions > 0))
 			$this->category = $this->ActionDirs();
 			
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
