@@ -49,7 +49,7 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 	{
 		$file = ROOT_PATH . "/public/img/$file.jpg";
 		$imgdir = dirname(ROOT_PATH);
-		$idir = "ln -s $imgdir/Pdb/$warecode.jpg " . $file;
+		$idir = "ln -s $imgdir/Pdb/$warecode.jpg " . $file . "\n";
 		print $idir;
 		//if(!file_exists($file))
 		//	exec($idir);
