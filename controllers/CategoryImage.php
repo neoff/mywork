@@ -75,36 +75,33 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 		
 		print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
-		//$this->all_dirs($wwwarez);
+		$this->all_dirs($wwwarez);
 		var_dump($wwwarez);
 		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
 		{
 			$amount = 0;
-			/*foreach ($value['dirs'] as $v) 
+			foreach ($value['dirs'] as $v) 
 			{
 				array_keys($wwwarez, "blue")
 				if(!in_array($v, $wwwarez))
 					continue 2;
 				
-				if($this->action_val)
-					if(!in_array($v, $actWarez))
-						continue;
 				
 				
-				$amount++;
+				$this->getFile($v, );
 				$one_key = $v;
 				#print $key."-".$v."-".$amount."-".$one_key."\n";
 				
-			}*/
+			}
 			#print "--".$key."-".$amount."-".$one_key."\n";
 			#print "------".$key."---\n";
 			//$amount = count(self::$Groups[$v]);
-			$id = $key;
+			//$id = $key;
 			#print "------".$key."---\n";
 			//if($amount == 0 )
 			//	continue;
 			//var_dump($wwwarez);
-			//$this->getFile($key);
+			//
 				
 			#/public/img/s$id.jpg"
 			
