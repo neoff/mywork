@@ -58,7 +58,7 @@ class ControllerCategory extends Template\Template{
 	protected $class_id;
 	protected $group_id;
 	
-	private function all_dirs(&$a)
+	protected function all_dirs(&$a)
 	{
 		//SELECT distinct DirID, ClassID, GrID from warez_1;
 		foreach ($a as $value) {

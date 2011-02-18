@@ -70,16 +70,17 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 	{
 		$q = 'SELECT distinct w.DirID as result, w.warecode 
 				FROM warez_'.$this->region_id." as w
-				GROUP BY w.DirID;
+				GROUP BY w.DirID";
 		
 		print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
-		
+		//$this->all_dirs($wwwarez);
 		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
 		{
 			$amount = 0;
-			foreach ($value['dirs'] as $v) 
+			/*foreach ($value['dirs'] as $v) 
 			{
+				array_keys($wwwarez, "blue")
 				if(!in_array($v, $wwwarez))
 					continue 2;
 				
@@ -92,7 +93,7 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 				$one_key = $v;
 				#print $key."-".$v."-".$amount."-".$one_key."\n";
 				
-			}
+			}*/
 			#print "--".$key."-".$amount."-".$one_key."\n";
 			#print "------".$key."---\n";
 			//$amount = count(self::$Groups[$v]);
@@ -100,7 +101,8 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 			#print "------".$key."---\n";
 			//if($amount == 0 )
 			//	continue;
-			
+			var_dump($wwwarez);
+			//$this->getFile($key);
 				
 			#/public/img/s$id.jpg"
 			
