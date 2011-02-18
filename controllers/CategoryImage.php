@@ -207,6 +207,10 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 		
 		
 	}
+	public function __destruct()
+	{
+		return False;
+	}
 	
 }
 
