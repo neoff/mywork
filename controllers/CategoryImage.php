@@ -88,7 +88,7 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 				
 				
 				
-				$this->getFile($v, );
+				$this->getFile($v);
 				$one_key = $v;
 				#print $key."-".$v."-".$amount."-".$one_key."\n";
 				
