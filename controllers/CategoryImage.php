@@ -75,6 +75,7 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 		
 		print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
+		$wdir = $wwwarez;
 		$this->all_dirs($wwwarez);
 		var_dump($wwwarez);
 		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
@@ -82,7 +83,7 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 			$amount = 0;
 			foreach ($value['dirs'] as $v) 
 			{
-				array_keys($wwwarez, "blue")
+				//array_keys($wwwarez, "blue")
 				if(!in_array($v, $wwwarez))
 					continue 2;
 				
