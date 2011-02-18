@@ -17,7 +17,7 @@
 	date_default_timezone_set( 'Europe/Moscow' );
 	define( "ROOT_PATH", dirname(dirname(__FILE__)) );
 	
-	print ROOT_PATH;
+	
 	define("FILE", ROOT_PATH . "/config.ini");
 	require_once ROOT_PATH . '/conf_parse.php';
 	
@@ -39,20 +39,20 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 	{
 		$this->region_id = "1";
 		$this->index(array());
-		if($this->rootCategories());
-			
-				/*if()
-					$this->Groups();*/
+		$this->rootCategories();
+		
 	}
 	
 	private function getFile($file, $warecode)
 	{
 		$file = ROOT_PATH . "/public/img/$file.jpg";
 		$imgdir = dirname(ROOT_PATH);
-		$idir = "ln -s $imgdir/Pdb/$warecode.jpg " . $file . "\n";
-		print $idir;
-		if(!file_exists($file))
-			exec($idir);
+		$ln = "$imgdir/Pdb/$warecode.jpg";
+		$idir = "ln -s $ln " . $file . "\n";
+		//print $idir;
+		if(file_exists($ln))
+			if(!file_exists($file))
+				exec($idir);
 		
 	}
 	private function rootCategories()
