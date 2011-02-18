@@ -153,7 +153,6 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 			$q = 'SELECT distinct w.GrID as result, w.warecode 
 						FROM warez_'.$this->region_id." as w
 						WHERE w.DirID = ".$this->dir_id."
-						$this->searches
 						AND w.ClassID = ".$value." group by result order by w.hit DESC, w.price DESC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
@@ -190,7 +189,6 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 			$q = 'SELECT distinct w.warecode as result, w.warecode 
 						FROM warez_'.$this->region_id." as w
 						WHERE w.DirID = ".$this->dir_id."
-						$this->searches
 						AND w.ClassID = ".$this->class_id."
 						AND w.GrID = ".$value." group by result order by w.hit DESC, w.price ASC ";
 				
