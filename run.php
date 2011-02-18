@@ -3,8 +3,8 @@
 	//print_r($_SERVER);
 	date_default_timezone_set( 'Europe/Moscow' );
 	define( "ROOT_PATH", dirname(__FILE__) );
-	define("FILE", ROOT_PATH . "config.ini");
-	require_once ROOT_PATH . 'conf_parse.php';
+	define("FILE", ROOT_PATH . "/config.ini");
+	require_once ROOT_PATH . '/conf_parse.php';
 	
 	$conn = new config(FILE);
 	define( "DEBUG", ($conn->debug)?$conn->debug:True );
