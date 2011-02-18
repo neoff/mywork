@@ -28,13 +28,13 @@
 	require_once ROOT_PATH . '/lib/ActiveRecord.php';
 	require_once ROOT_PATH . '/config/config.php';
 	require_once ROOT_PATH . '/model/__init__.php';
+	require_once ROOT_PATH . '/controllers/Category.php';
 	
-class ControllerCategoryImage{
+class ControllerCategoryImage implements Controllers\ControllerCategory{
 	private $region_id;
 	public function image()
 	{
 		$this->region_id = "1";
-		print $this->region_id;
 		if($this->rootCategories())
 			if($this->Dirs())
 				if($this->Classes())
@@ -60,17 +60,11 @@ class ControllerCategoryImage{
 		$q = 'SELECT distinct w.DirID as result 
 				FROM warez_'.$this->region_id." as w";
 		
-		if($this->searches)
-			$q .= " WHERE w.warecode ".$this->searches;
-		
+		print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
-		$this->all_dirs($wwwarez);
 		
 		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
 		{
-			//$am = Models\Category::find('all', array('conditions' => 
-			//						array('parent_id is null and dirid in (?)', $value['dirs'])
-			//						));
 			$amount = 0;
 			foreach ($value['dirs'] as $v) 
 			{
