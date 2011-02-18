@@ -48,10 +48,11 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 	private function getFile($file, $warecode)
 	{
 		$file = ROOT_PATH . "/public/img/$file.jpg";
-		$idir = "ln -s ../../Pdb/$warecode.jpg " . $file;
+		$imgdir = dirname(ROOT_PATH);
+		$idir = "ln -s $imgdir/Pdb/$warecode.jpg " . $file;
 		print $idir;
-		if(!file_exists($file))
-			exec($idir);
+		//if(!file_exists($file))
+		//	exec($idir);
 		
 	}
 	private function ToDir($d, $c = 0, $g = 0)
@@ -73,10 +74,10 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 				FROM warez_'.$this->region_id." as w
 				GROUP BY w.DirID";
 		
-		print $q;
+		//print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
-		var_dump($wwwarez);
+		//var_dump($wwwarez);
 		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
 		{
 			$amount = 0;
@@ -87,8 +88,8 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 					continue 2;
 				
 				$wdir =  Models\Warez::first(array('conditions'=>"dirid = ". $v, 'order' => 'price ASC'));
-				print $wdir->warecode;
-				//$this->getFile($v);
+				//print $wdir->warecode;
+				$this->getFile("s".$v, $wdir->warecode);
 				$one_key = $v;
 				#print $key."-".$v."-".$amount."-".$one_key."\n";
 				
