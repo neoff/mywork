@@ -116,7 +116,7 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 			if(!in_array($value, $wwwarez))
 				continue;
 			
-			$this->dir_id = ;
+			$this->dir_id = $value;
 			$id = $this->ToDir($value);
 			$q = 'SELECT distinct ClassID as result, w.warecode 
 					FROM warez_'.$this->region_id." as w
