@@ -51,12 +51,8 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 		$imgdir = dirname(ROOT_PATH);
 		$idir = "ln -s $imgdir/Pdb/$warecode.jpg " . $file . "\n";
 		print $idir;
-		//if(!file_exists($file))
-		//	exec($idir);
-		
-	}
-	private function getImg($s = "")
-	{
+		if(!file_exists($file))
+			exec($idir);
 		
 	}
 	private function rootCategories()
