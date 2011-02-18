@@ -25,7 +25,7 @@
 	define( "DEBUG", ($conn->debug)?$conn->debug:True );
 	define( 'CONNECTION', ($conn->base)?$conn->base:'develop' );
 	$_SERVER['HTTP_HOST'] = "localhost";
-	$_SERVER["SCRIPT_FILENAME"] = FILE;
+	$_SERVER["SCRIPT_FILENAME"] = dirname("~/newmvideo/www/");
 	
 	require_once ROOT_PATH . '/lib/ActiveRecord.php';
 	require_once ROOT_PATH . '/lib/Template.php';
