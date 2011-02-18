@@ -34,16 +34,25 @@
 	
 class ControllerCategoryImage extends Controllers\ControllerCategory{
 	private $region_id;
+	
 	public function image()
 	{
 		$this->region_id = "1";
-		if($this->rootCategories())
-			if($this->Dirs())
+		if($this->rootCategories());
+			/*if($this->Dirs())
 				if($this->Classes())
-					$this->Groups();
+					$this->Groups();*/
 	}
 	
-	
+	private function getFile($file, $warecode)
+	{
+		$file = ROOT_PATH . "/public/img/$file.jpg";
+		$idir = "ln -s ../../Pdb/$warecode.jpg " . $file;
+		print $idir;
+		if(!file_exists($file))
+			exec($idir);
+		
+	}
 	private function ToDir($d, $c = 0, $g = 0)
 	{
 		$d = $d*self::$Mult;
@@ -101,13 +110,10 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 			#print "------".$key."---\n";
 			//if($amount == 0 )
 			//	continue;
-			$category = $this->categories->addChild("category");
-			$category->addChild("category_id", $key);
-			$category->addChild("category_name", ToUTF($value['name']));
-			$category->addChild("amount", $amount); 
-			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/s$id.jpg"); #TODO откуда брать иконку категории???
-			$icon->addAttribute("width", "180");
-			$icon->addAttribute("height", "180");
+			
+				
+			#/public/img/s$id.jpg"
+			
 		}
 		//exit();
 		return True;
