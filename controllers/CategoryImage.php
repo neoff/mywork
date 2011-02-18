@@ -75,7 +75,6 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 		
 		print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
-		$wdir = $wwwarez;
 		$this->all_dirs($wwwarez);
 		var_dump($wwwarez);
 		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
@@ -87,9 +86,9 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 				if(!in_array($v, $wwwarez))
 					continue 2;
 				
-				
-				
-				$this->getFile($v);
+				$wdir =  Models\Warez::first(array('conditions'=>"dirid = ". $v, 'order' => 'price ASC'));
+				print $wdir->warecode;
+				//$this->getFile($v);
 				$one_key = $v;
 				#print $key."-".$v."-".$amount."-".$one_key."\n";
 				
