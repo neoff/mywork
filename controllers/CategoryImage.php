@@ -39,8 +39,8 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 	{
 		$this->region_id = "1";
 		$this->index(array());
-		if($this->rootCategories())
-			if($this->Dirs());
+		if($this->rootCategories());
+			
 				/*if($this->Classes())
 					$this->Groups();*/
 	}
@@ -72,11 +72,15 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
 		{
 			$amount = 0;
+			$this->category_id = $key;
+			$this->Dirs();
 			foreach ($value['dirs'] as $v) 
 			{
 				//array_keys($wwwarez, "blue")
 				if(!in_array($v, $wwwarez))
 					continue 2;
+				
+				
 				if($amount!=0)
 					break;
 				$wdir =  Models\Warez::first(array('conditions'=>"dirid = ". $v, 'order' => 'price ASC'));
