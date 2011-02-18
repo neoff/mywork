@@ -31,7 +31,7 @@
 	require_once ROOT_PATH . '/model/__init__.php';
 	require_once ROOT_PATH . '/controllers/Category.php';
 	
-class ControllerCategoryImage implements Controllers\ControllerCategory{
+class ControllerCategoryImage extends Controllers\ControllerCategory{
 	private $region_id;
 	public function image()
 	{
