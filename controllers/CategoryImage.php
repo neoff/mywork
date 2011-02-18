@@ -86,11 +86,12 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 				//array_keys($wwwarez, "blue")
 				if(!in_array($v, $wwwarez))
 					continue 2;
-				
+				if($amount!=0)
+					break;
 				$wdir =  Models\Warez::first(array('conditions'=>"dirid = ". $v, 'order' => 'price ASC'));
 				//print $wdir->warecode;
-				$this->getFile("s".$v, $wdir->warecode);
-				$one_key = $v;
+				$this->getFile("s".$key, $wdir->warecode);
+				$amount = $v;
 				#print $key."-".$v."-".$amount."-".$one_key."\n";
 				
 			}
