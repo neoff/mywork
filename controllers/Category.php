@@ -35,7 +35,7 @@ class ControllerCategory extends Template\Template{
 	private $parent_name;
 	private $parent_id;
 	protected $region_id;
-	private $category_id;
+	protected $category_id;
 	private $actions;
 	private $action_val = array();
 	private $searches;
@@ -223,14 +223,14 @@ class ControllerCategory extends Template\Template{
 		return False;
 		
 	}
-	private function ToDir($d, $c = 0, $g = 0)
+	protected function ToDir($d, $c = 0, $g = 0)
 	{
 		$d = $d*self::$Mult;
 		$c = $c*self::$MultC;
 		$g = $g*self::$MultG;
 		return $d+$c+$g;
 	}
-	private function ToClass()
+	protected function ToClass()
 	{
 		$this->dir_id = floor($this->category_id / self::$Mult);
 		$this->class_id = floor(($this->category_id % self::$Mult) / self::$MultC);

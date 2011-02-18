@@ -39,9 +39,9 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 	{
 		$this->region_id = "1";
 		$this->index(array());
-		if($this->rootCategories());
-			/*if($this->Dirs())
-				if($this->Classes())
+		if($this->rootCategories())
+			if($this->Dirs());
+				/*if($this->Classes())
 					$this->Groups();*/
 	}
 	
@@ -55,18 +55,9 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 		//	exec($idir);
 		
 	}
-	private function ToDir($d, $c = 0, $g = 0)
+	private function getImg($s = "")
 	{
-		$d = $d*self::$Mult;
-		$c = $c*self::$MultC;
-		$g = $g*self::$MultG;
-		return $d+$c+$g;
-	}
-	private function ToClass()
-	{
-		$this->dir_id = floor($this->category_id / self::$Mult);
-		$this->class_id = floor(($this->category_id % self::$Mult) / self::$MultC);
-		$this->group_id = floor((($this->category_id % self::$Mult) % self::$MultC) / self::$MultG);
+		
 	}
 	private function rootCategories()
 	{
@@ -89,24 +80,11 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 				if($amount!=0)
 					break;
 				$wdir =  Models\Warez::first(array('conditions'=>"dirid = ". $v, 'order' => 'price ASC'));
-				//print $wdir->warecode;
 				$this->getFile("s".$key, $wdir->warecode);
 				$amount = $v;
-				#print $key."-".$v."-".$amount."-".$one_key."\n";
+				
 				
 			}
-			#print "--".$key."-".$amount."-".$one_key."\n";
-			#print "------".$key."---\n";
-			//$amount = count(self::$Groups[$v]);
-			//$id = $key;
-			#print "------".$key."---\n";
-			//if($amount == 0 )
-			//	continue;
-			//var_dump($wwwarez);
-			//
-				
-			#/public/img/s$id.jpg"
-			
 		}
 		return True;
 	}
@@ -118,23 +96,11 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 	private function Dirs()
 	{
 		
-		$this->categories="";
-		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['name']));
-		
 		
 		$q = 'SELECT distinct w.DirID as result 
 			FROM warez_'.$this->region_id.' as w';
 		
-		if($this->searches)
-			$q .= " WHERE w.warecode ".$this->searches;
-			
-		if($this->action_val)
-			$q = 'SELECT distinct w.DirID as result 
-					FROM warez_'.$this->region_id." as w
-					WHERE w.warecode in (".implode(",", $this->action_val).")
-					$this->searches";
-					
+		
 		//print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
@@ -149,43 +115,14 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 
 				
 			$id = $this->ToDir($value);
-			if($this->action_val)
-				$q = 'SELECT distinct w.ClassID as result, w.warecode
-					FROM warez_'.$this->region_id." as w
-					WHERE w.warecode in (".implode(",", $this->action_val).")
-					$this->searches
-					AND w.DirID = ".$value." group by result order by w.hit DESC, w.price DESC ";
-			else 
-				$q = 'SELECT distinct ClassID as result, w.warecode 
+			$q = 'SELECT distinct ClassID as result, w.warecode 
 					FROM warez_'.$this->region_id." as w
 					
-					WHERE DirID = ".$value.$this->searches." group by result order by w.hit DESC, w.price DESC ";
+					WHERE DirID = ".$value." group by result order by w.hit DESC, w.price DESC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);
-			//print_r($wwwcat);
-			//$this->all_dirs($wwwcat);
-			//print_r($wwwcat);
-			if($wwwcat)
-				$amount = count($wwwcat);
 			
-			/*if($this->action_val)
-				if(!in_array($value, $wwwcat))
-					continue;*/
-						
-			if($amount == 1)
-				$id = $this->ToDir($value, $wwwcat[0]->result);
-			
-			if($amount == 0)
-				continue;
-				
-			$category = $this->categories->addChild("category");
-			$category->addChild("category_id", $id);
-			$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
-			$category->addChild("amount", $amount); 
-			$icon = $category->addChild("category_icon", 
-			"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"); #TODO откуда брать иконку категории???
-			$icon->addAttribute("width", "180");
-			$icon->addAttribute("height", "180");
+			$this->getFile($id, $wwwcat[0]->warecode);
 		}
 		return True;
 	}
