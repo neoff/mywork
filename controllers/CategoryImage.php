@@ -38,6 +38,7 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 	public function image()
 	{
 		$this->region_id = "1";
+		$this->index(array());
 		if($this->rootCategories());
 			/*if($this->Dirs())
 				if($this->Classes())
