@@ -34,7 +34,6 @@
 	require_once ROOT_PATH . '/controllers/Category.php';
 	
 class ControllerCategoryImage extends Controllers\ControllerCategory{
-	private $region_id;
 	
 	public function image()
 	{
