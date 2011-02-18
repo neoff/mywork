@@ -44,19 +44,19 @@ class ControllerCategory extends Template\Template{
 	private $options;
 	private $page;
 	
-	private static $TmpDir = array();
-	private static $GlobalConfig = array();
-	private static $Brands = array();
-	private static $Dirs = array();
-	private static $Classes = array();
-	private static $Groups = array();
-	private static $Mult = 1000000000;
-	private static $MultC = 100000;
-	private static $MultG = 1;
+	protected static $TmpDir = array();
+	protected static $GlobalConfig = array();
+	protected static $Brands = array();
+	protected static $Dirs = array();
+	protected static $Classes = array();
+	protected static $Groups = array();
+	protected static $Mult = 1000000000;
+	protected static $MultC = 100000;
+	protected static $MultG = 1;
 	
-	private $dir_id;
-	private $class_id;
-	private $group_id;
+	protected $dir_id;
+	protected $class_id;
+	protected $group_id;
 	
 	private function all_dirs(&$a)
 	{
