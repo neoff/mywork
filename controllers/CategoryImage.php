@@ -76,6 +76,7 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 		print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		//$this->all_dirs($wwwarez);
+		var_dump($wwwarez);
 		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
 		{
 			$amount = 0;
@@ -102,7 +103,7 @@ class ControllerCategoryImage extends Controllers\ControllerCategory{
 			#print "------".$key."---\n";
 			//if($amount == 0 )
 			//	continue;
-			var_dump($wwwarez);
+			//var_dump($wwwarez);
 			//$this->getFile($key);
 				
 			#/public/img/s$id.jpg"
