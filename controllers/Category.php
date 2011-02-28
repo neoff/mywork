@@ -962,8 +962,8 @@ class ControllerCategory extends Template\Template{
 					
 					$this->action->addChild("description", ToUTF($val['name']));//descr
 					
-					$this->action->addChild("url", "http://www.mvideo.ru/".$url."-cond/"
-													);
+					$this->action->addChild("url", "http://www.mvideo.ru/".$url."-cond/");
+					$this->action->addChild("link", "http://www.mvideo.ru/".$url."/");
 					//print $url;
 					return $this->putActions($url);
 				}
