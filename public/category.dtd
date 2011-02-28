@@ -2,11 +2,12 @@
 <!ELEMENT mvideo_xml ((search*, action*, parent_category*, categories*, params*, products*, pages*))>
 <!ATTLIST mvideo_xml date CDATA #REQUIRED >
 <!ELEMENT search (#PCDATA)>
-<!ELEMENT action ((image*, description, url))>
+<!ELEMENT action ((image*, description, url, link))>
 <!ELEMENT image (#PCDATA)>
 <!ATTLIST image height CDATA #REQUIRED width CDATA #REQUIRED>
 <!ELEMENT description (#PCDATA)>
 <!ELEMENT url (#PCDATA)>
+<!ELEMENT link (#PCDATA)>
 <!ELEMENT parent_category ((category_id, category_name))>
 <!ELEMENT category_id (#PCDATA)>
 <!ELEMENT category_name (#PCDATA)>
