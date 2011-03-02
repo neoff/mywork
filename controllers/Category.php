@@ -342,7 +342,7 @@ class ControllerCategory extends Template\Template{
 					ORDER BY c DESC";
 		
 		
-		print "<!--\ ".$q." \-->";
+		//print "<!--\ ".$q." \-->";
 		$wwwarez =  Models\Warez::find_by_sql($q);
 		$res = $wwwarez;
 		$this->all_dirs($wwwarez);
