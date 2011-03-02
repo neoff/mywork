@@ -325,12 +325,12 @@ class ControllerCategory extends Template\Template{
 		
 		
 		$q = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
-			FROM warez_'.$this->region_id.' as w';
+			FROM warez_'.$this->region_id.' as w ';
 		
 		if($this->searches)
 			$q .= " WHERE w.warecode ".$this->searches;
 			
-		$q .= "GROUP BY result
+		$q .= " GROUP BY result
 			ORDER BY c DESC";
 		
 		if($this->action_val)
