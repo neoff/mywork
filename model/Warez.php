@@ -120,7 +120,11 @@ class Warez extends ActiveRecord\Model
 				FROM segment_cache
 				JOIN segments ON segments.segment_name = segment_cache.segment_name
 				WHERE segment_cache.region_id = ".$region." AND segment_cache.warecode = ".$ware;
-		return self::find_by_sql($q);
+		$res = self::find_by_sql($q);;
+		if(!empty($res))
+			return $res[0]->online_stop;
+			
+		return 0;
 		
 	}
 	
