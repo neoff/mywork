@@ -122,9 +122,11 @@ class Warez extends ActiveRecord\Model
 				WHERE segment_cache.region_id = ".$region." AND segment_cache.warecode = ".$ware;
 		$res = self::find_by_sql($q);;
 		if(!empty($res))
-			return $res[0]->online_stop;
+			if($res[0]->online_stop > 0)
+				return 0;
+			return 1;
 			
-		return 0;
+		return 1;
 		
 	}
 	
