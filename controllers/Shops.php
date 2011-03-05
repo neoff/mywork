@@ -64,7 +64,7 @@ class ControllerShops extends Template\Template{
 			$shop->addChild("wayTo", StripTags($val->howto));
 			$shop->addChild("zoom", $val->map_zoom);
 			$images = $shop->addChild("images"); 
-			$image = $images->addChild("image", "http://www.mvideo.ru/imgs/shop/face/big_$val->p.gif"); #TODO узнать где брать image
+			$image = $images->addChild("image", "http://www.mvideo.ru/imgs/shop/face/big_$val->p.gif"); 
 			$image->addAttribute("width", "500"); 
 			$image->addAttribute("height", "375"); 
 		}

@@ -215,7 +215,7 @@ class ControllerCategory extends Template\Template{
 			$category->addChild("category_id", $key);
 			$category->addChild("category_name", ToUTF($value['name']));
 			$category->addChild("amount", $amount); 
-			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/s$id.jpg"); #TODO откуда брать иконку категории???
+			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/s$id.jpg"); 
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");
 		}
@@ -310,7 +310,7 @@ class ControllerCategory extends Template\Template{
 			$icon = $category->addChild("category_icon", 
 			#"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
 			"http://www.mvideo.ru/mobile/public/img/$id.jpg"
-			); #TODO откуда брать иконку категории???
+			); 
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");
 		}
@@ -658,6 +658,10 @@ class ControllerCategory extends Template\Template{
 					$product->addChild("reviews_num", $val->reviews);
 					$product->addChild("inet_price", $val->inetprice);
 					
+					$dic = $val->getInetDiscountStatus($val->warecode, $this->region_id);
+					var_dump($dic);
+					//$product->addChild("inet_price", $dic->);
+					
 					if($val->oldprice)
 						$old_price = $val->oldprice;
 					else
@@ -666,7 +670,7 @@ class ControllerCategory extends Template\Template{
 					$product->addChild("old_price", $old_price);
 					
 					$product->addChild("price", $val->price);
-					$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); #TODO где взять картинка для продукта
+					$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); 
 					$image->addAttribute("width", "180");
 					$image->addAttribute("height", "180");
 				}
@@ -951,7 +955,6 @@ class ControllerCategory extends Template\Template{
 			
 			if($key < $time)
 			{
-				#FIXME УБРАТЬ!!!!!!!!!!!!!!!!
 				if($val['end_date']>=$time)
 				{
 					//print 1;

@@ -71,7 +71,7 @@ class ControllerCategory extends Template{
 				$category->addChild("category_id", $val->category_id);
 				$category->addChild("category_name", ToUTF($val->name));
 				$category->addChild("amount", $amount); 
-				$icon = $category->addChild("category_icon"); #TODO откуда брать иконку категории???
+				$icon = $category->addChild("category_icon"); 
 				$icon->addAttribute("width", "");
 				$icon->addAttribute("height", "");
 			}
