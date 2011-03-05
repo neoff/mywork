@@ -24,13 +24,13 @@
 <!ATTLIST option value CDATA #REQUIRED>
 <!ELEMENT products ((product*))>
 <!ATTLIST products category_id CDATA #REQUIRED category_name CDATA #REQUIRED>
-<!ELEMENT product ((product_id, title, description, rating, reviews_num, inet_price, cardDiscount, old_price, price, image))>
+<!ELEMENT product ((product_id, title, description, rating, reviews_num, inet_price, card_discount, old_price, price, image))>
 <!ELEMENT product_id (#PCDATA)>
 <!ELEMENT title (#PCDATA)>
 <!ELEMENT rating (#PCDATA)>
 <!ELEMENT reviews_num (#PCDATA)>
 <!ELEMENT inet_price (#PCDATA)>
-<!ELEMENT cardDiscount (#PCDATA)>
+<!ELEMENT card_discount (#PCDATA)>
 <!ELEMENT old_price (#PCDATA)>
 <!ELEMENT price (#PCDATA)>
 <!ELEMENT pages ((amount, onpage, page))>

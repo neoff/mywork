@@ -47,7 +47,7 @@ class ControllerProduct extends Template\Template{
 				$this->product->addAttribute("inetSale", 1);
 			
 			$dic = $productes->getInetDiscountStatus($productes->warecode, $region_id);
-			$this->product->addAttribute("cardDiscount", $dic);
+			$this->product->addAttribute("card_discount", $dic);
 			
 			$this->product->addChild("product_id", $product_id);
 			$this->product->addChild("region_id", $region_id);

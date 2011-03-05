@@ -6,7 +6,7 @@
 <!ELEMENT category_name (#PCDATA)>
 <!ELEMENT product ((product_id, region_id*, title, images*, movies*, inet_price, old_price, price, rating, reviews_num, description, options*, aks*, reviews*, image* ))>
 <!ATTLIST product inetSale CDATA "" >
-<!ATTLIST product cardDiscount CDATA "" >
+<!ATTLIST product card_discount CDATA "" >
 <!ELEMENT product_id (#PCDATA)>
 <!ELEMENT region_id (#PCDATA)>
 <!ELEMENT title (#PCDATA)>
