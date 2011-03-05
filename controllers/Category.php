@@ -659,7 +659,7 @@ class ControllerCategory extends Template\Template{
 					$product->addChild("inet_price", $val->inetprice);
 					
 					$dic = $val->getInetDiscountStatus($val->warecode, $this->region_id);
-					$product->addChild("cardDiscount", $dic);
+					$product->addChild("card_discount", $dic);
 					
 					if($val->oldprice)
 						$old_price = $val->oldprice;
