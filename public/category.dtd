@@ -30,7 +30,7 @@
 <!ELEMENT rating (#PCDATA)>
 <!ELEMENT reviews_num (#PCDATA)>
 <!ELEMENT inet_price (#PCDATA)>
-<!ELEMENT inet_discount (#PCDATA)>
+<!ELEMENT cardDiscount (#PCDATA)>
 <!ELEMENT old_price (#PCDATA)>
 <!ELEMENT price (#PCDATA)>
 <!ELEMENT pages ((amount, onpage, page))>
