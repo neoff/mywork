@@ -116,6 +116,9 @@ class Warez extends ActiveRecord\Model
 	
 	public function getInetDiscountStatus($ware, $region)
 	{
+		if( $region!=1 )
+			return 0;
+			
 		$q = "SELECT segments.online_stop  
 				FROM segment_cache
 				JOIN segments ON segments.segment_name = segment_cache.segment_name
