@@ -592,7 +592,7 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function productes()
 	{
-		
+		print 4;
 		//var_dump($this->parents);
 		if($this->actions > 0 && $this->action_val)
 			$this->parents->dirid .= " and w.warecode in (".implode(",", $this->action_val).") ";#$this->parents->search
