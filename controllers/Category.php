@@ -605,7 +605,7 @@ class ControllerCategory extends Template\Template{
 			if(property_exists($this->parents, 'name'))
 				$c_name = ToUTF($this->parents->name);
 			
-			exit();
+			
 			//add params
 			$this->params="";
 			$grid=array();
@@ -613,7 +613,7 @@ class ControllerCategory extends Template\Template{
 			//var_dump($this->parents);
 			//print "<br>";
 			//$markid = array();
-			
+			exit();
 			$param_m = $this->params->addChild("param"); 
 			$param_m->addAttribute("param_name", "mark");
 			$param_m->addAttribute("title", "Производители");
