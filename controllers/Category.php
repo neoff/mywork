@@ -620,7 +620,7 @@ class ControllerCategory extends Template\Template{
 			$param_m->addAttribute("current_value", "0");
 			$option_m = $param_m->addChild("option", "Все производители");
 			$option_m->addAttribute("value", "0");
-			exit();
+			
 			//2
 			$param_g = $this->params->addChild("param"); 
 			$param_g->addAttribute("param_name", "grid");
@@ -628,7 +628,7 @@ class ControllerCategory extends Template\Template{
 			$param_g->addAttribute("current_value", "0");
 			$option_g = $param_g->addChild("option", "Все группы");
 			$option_g->addAttribute("value", "0");
-			
+			exit();
 			$this->products="";
 			$this->products->addAttribute("category_id", $this->category_id);
 			$this->products->addAttribute("category_name", $c_name);
