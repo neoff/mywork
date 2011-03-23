@@ -355,8 +355,7 @@ class ControllerCategory extends Template\Template{
 			$this->parents->classid = "";
 			$this->parents->grid = "";
 			//var_dump($this->parents);
-			print 2;
-			return $this->productes();
+			return "";#$this->productes();
 		}
 		else 
 		{
@@ -434,10 +433,7 @@ class ControllerCategory extends Template\Template{
 			$q .= " AND w.warecode in (".implode(",", $this->action_val).")";
 			
 		if($this->searches)
-		{
-			print 3;
 			return $this->productes();
-		}
 			
 		#print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
@@ -592,7 +588,7 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function productes()
 	{
-		print 4;
+		//print 4;
 		//var_dump($this->parents);
 		if($this->actions > 0 && $this->action_val)
 			$this->parents->dirid .= " and w.warecode in (".implode(",", $this->action_val).") ";#$this->parents->search
