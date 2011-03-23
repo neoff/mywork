@@ -608,13 +608,13 @@ class ControllerCategory extends Template\Template{
 			
 			
 			//add params
-			$params = $this->params="";
+			$this->params="";
 			$grid=array();
 			$markid = array();
 			//var_dump($this->params);
 			//$markid = array();
 			
-			$param_m = $params->addChild("param"); 
+			$param_m = $this->params->addChild("param"); 
 			$param_m->addAttribute("param_name", "mark");
 			$param_m->addAttribute("title", "Производители");
 			$param_m->addAttribute("current_value", "0");
