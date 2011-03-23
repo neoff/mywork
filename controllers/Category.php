@@ -643,7 +643,7 @@ class ControllerCategory extends Template\Template{
 			//exit();
 			if($productes_m)
 			{
-				/*foreach ($productes_m as $key => $val)
+				foreach ($productes_m as $key => $val)
 				{
 					if (!in_array($val->grid, $grid))
 						$grid[]=$val->grid;
@@ -676,7 +676,7 @@ class ControllerCategory extends Template\Template{
 					$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); 
 					$image->addAttribute("width", "180");
 					$image->addAttribute("height", "180");
-				}*/
+				}
 			}
 			
 			foreach($grid as $val)
