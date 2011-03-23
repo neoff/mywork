@@ -614,7 +614,7 @@ class ControllerCategory extends Template\Template{
 			//var_dump($this->params);
 			//$markid = array();
 			
-			$param_m = $this->params->addChild("param"); 
+			$param_m = $params->addChild("param"); 
 			$param_m->addAttribute("param_name", "mark");
 			$param_m->addAttribute("title", "Производители");
 			$param_m->addAttribute("current_value", "0");
