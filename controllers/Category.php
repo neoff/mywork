@@ -628,7 +628,7 @@ class ControllerCategory extends Template\Template{
 			$param_g->addAttribute("current_value", "0");
 			$option_g = $param_g->addChild("option", "Все группы");
 			$option_g->addAttribute("value", "0");
-			exit();
+			
 			$this->products="";
 			$this->products->addAttribute("category_id", $this->category_id);
 			$this->products->addAttribute("category_name", $c_name);
@@ -639,6 +639,7 @@ class ControllerCategory extends Template\Template{
 				$this->pages->addChild("onpage", "20");
 				$this->pages->addChild("page", $this->page);
 			}
+			exit();
 			if($productes_m)
 				foreach ($productes_m as $key => $val)
 				{
