@@ -611,7 +611,7 @@ class ControllerCategory extends Template\Template{
 			$params = $this->params="";
 			$grid=array();
 			$markid = array();
-			print_r($params);
+			//print_r($params);
 			//$markid = array();
 			
 			$param_m = $this->params->addChild("param"); 
