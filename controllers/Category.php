@@ -620,7 +620,7 @@ class ControllerCategory extends Template\Template{
 			//var_dump($this->parents);
 			//print "<br>";
 			//$markid = array();
-			
+			exit();
 			$param_m = $parm->addChild("param"); 
 			$param_m->addAttribute("param_name", "mark");
 			$param_m->addAttribute("title", "Производители");
