@@ -613,14 +613,14 @@ class ControllerCategory extends Template\Template{
 			//var_dump($this->parents);
 			//print "<br>";
 			//$markid = array();
-			$this->params->addChild("param");
-			exit();
+			
 			$param_m = $this->params->addChild("param"); 
 			$param_m->addAttribute("param_name", "mark");
 			$param_m->addAttribute("title", "Производители");
 			$param_m->addAttribute("current_value", "0");
 			$option_m = $param_m->addChild("option", "Все производители");
 			$option_m->addAttribute("value", "0");
+			exit();
 			//2
 			$param_g = $this->params->addChild("param"); 
 			$param_g->addAttribute("param_name", "grid");
