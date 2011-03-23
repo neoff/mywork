@@ -641,7 +641,7 @@ class ControllerCategory extends Template\Template{
 			}
 			//var_dump($productes_m);
 			//exit();
-			if($productes_m)
+			//if($productes_m)
 				/*foreach ($productes_m as $key => $val)
 				{
 					if (!in_array($val->grid, $grid))
@@ -676,7 +676,7 @@ class ControllerCategory extends Template\Template{
 					$image->addAttribute("width", "180");
 					$image->addAttribute("height", "180");
 				}*/
-			foreach($grid as $val)
+			/*foreach($grid as $val)
 			{
 				$m_group = Models\Groups::find('first', array("grid"=>$val));
 				if($m_group){
@@ -693,7 +693,7 @@ class ControllerCategory extends Template\Template{
 					$option_m = $param_m->addChild("option", StripTags($m_marks->markname));
 					$option_m->addAttribute("value", $val);
 				}
-			}
+			}*/
 		}
 	}
 	
