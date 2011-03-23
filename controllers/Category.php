@@ -355,6 +355,7 @@ class ControllerCategory extends Template\Template{
 			$this->parents->classid = "";
 			$this->parents->grid = "";
 			//var_dump($this->parents);
+			print 2;
 			return $this->productes();
 		}
 		else 
