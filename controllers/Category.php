@@ -134,7 +134,7 @@ class ControllerCategory extends Template\Template{
 		//$categoryssss = Models\Category::getWarezAction($this->region_id, $this->action_val, $condition);
 		//print_r($categoryssss);
 		if($this->class_id)
-			if(($this->group_id || $this->actions > 0) && !$this->searches)
+			if($this->group_id || $this->actions > 0)
 				$this->productes();
 			else
 				$this->categories();
@@ -352,7 +352,9 @@ class ControllerCategory extends Template\Template{
 			$this->parents->classid = "";
 			$this->parents->grid = "";
 			//var_dump($this->parents);
-			return $this->productes();
+			if(!$this->searches)
+				return $this->productes();
+			return false;
 		}
 		else 
 		{
