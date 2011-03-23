@@ -687,8 +687,8 @@ class ControllerCategory extends Template\Template{
 				$m_marks = Models\Marks::find('first', array("markid"=>$val));
 				if($m_marks){
 					//print ToUTF($m_marks->markname);
-					$option_m = $param_m->addChild("option", StripTags($m_marks->markname));
-					$option_m->addAttribute("value", $val);
+					#$option_m = $param_m->addChild("option", StripTags($m_marks->markname));
+					#$option_m->addAttribute("value", $val);
 				}
 			}
 		}
