@@ -434,7 +434,10 @@ class ControllerCategory extends Template\Template{
 			$q .= " AND w.warecode in (".implode(",", $this->action_val).")";
 			
 		if($this->searches)
+		{
+			print 3;
 			return $this->productes();
+		}
 			
 		#print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
