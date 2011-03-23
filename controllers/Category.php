@@ -590,8 +590,8 @@ class ControllerCategory extends Template\Template{
 		//var_dump($this->parents);
 		if($this->actions > 0 && $this->action_val)
 			$this->parents->dirid .= " and w.warecode in (".implode(",", $this->action_val).") ";#$this->parents->search
-		if($this->searches)
-			$this->parents->dirid .= $this->searches;
+		#if($this->searches)
+		#	$this->parents->dirid .= $this->searches;
 		if($this->parents)
 		{
 			#print "ads";
@@ -614,12 +614,12 @@ class ControllerCategory extends Template\Template{
 			//var_dump($this->params);
 			//$markid = array();
 			
-			/*$param_m = $this->params->addChild("param"); 
+			$param_m = $this->params->addChild("param"); 
 			$param_m->addAttribute("param_name", "mark");
 			$param_m->addAttribute("title", "Производители");
 			$param_m->addAttribute("current_value", "0");
 			$option_m = $param_m->addChild("option", "Все производители");
-			$option_m->addAttribute("value", "0");*/
+			$option_m->addAttribute("value", "0");
 			//2
 			$param_g = $this->params->addChild("param"); 
 			$param_g->addAttribute("param_name", "grid");
@@ -687,8 +687,8 @@ class ControllerCategory extends Template\Template{
 				$m_marks = Models\Marks::find('first', array("markid"=>$val));
 				if($m_marks){
 					//print ToUTF($m_marks->markname);
-					#$option_m = $param_m->addChild("option", StripTags($m_marks->markname));
-					#$option_m->addAttribute("value", $val);
+					$option_m = $param_m->addChild("option", StripTags($m_marks->markname));
+					$option_m->addAttribute("value", $val);
 				}
 			}
 		}
