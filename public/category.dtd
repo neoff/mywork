@@ -18,7 +18,7 @@
 <!ELEMENT category_icon (#PCDATA)>
 <!ATTLIST category_icon height CDATA #REQUIRED width CDATA #REQUIRED>
 <!ELEMENT params ((param*))>
-<!ELEMENT param ((option+))>
+<!ELEMENT param ((option*))>
 <!ATTLIST param current_value CDATA #REQUIRED param_name CDATA #REQUIRED title CDATA #REQUIRED>
 <!ELEMENT option (#PCDATA)>
 <!ATTLIST option value CDATA #REQUIRED>
