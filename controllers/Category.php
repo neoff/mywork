@@ -352,7 +352,7 @@ class ControllerCategory extends Template\Template{
 			$this->parents->classid = "";
 			$this->parents->grid = "";
 			//var_dump($this->parents);
-			#if(!$this->searches || ($this->action_val && $this->searches))
+			if(!$this->class_id)
 				return $this->productes();
 			return false;
 		}
