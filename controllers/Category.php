@@ -612,6 +612,7 @@ class ControllerCategory extends Template\Template{
 			$grid=array();
 			$markid = array();
 			var_dump($this->searches);
+			print "<br>";
 			//$markid = array();
 			
 			$param_m = $this->params->addChild("param"); 
