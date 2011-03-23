@@ -85,7 +85,7 @@ class Warez extends ActiveRecord\Model
 		$sql = 'select w.* from `warez_' .$region_id . '` as w 
 				where ' . $sql_impl." order by price ASC ". $limit;
 		//print $sql_impl;
-		//print $sql;
+		print $sql;
 		return self::find_by_sql($sql);
 	}
 	
