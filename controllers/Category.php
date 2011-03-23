@@ -607,14 +607,14 @@ class ControllerCategory extends Template\Template{
 			
 			
 			//add params
-			$this->params="";
+			$parm = $this->params="";
 			$grid=array();
 			$markid = array();
 			//var_dump($this->parents);
 			//print "<br>";
 			//$markid = array();
 			
-			$param_m = $this->params->addChild("param"); 
+			$param_m = $parm->addChild("param"); 
 			$param_m->addAttribute("param_name", "mark");
 			$param_m->addAttribute("title", "Производители");
 			$param_m->addAttribute("current_value", "0");
@@ -622,7 +622,7 @@ class ControllerCategory extends Template\Template{
 			$option_m->addAttribute("value", "0");
 			
 			//2
-			$param_g = $this->params->addChild("param"); 
+			$param_g = $parm->addChild("param"); 
 			$param_g->addAttribute("param_name", "grid");
 			$param_g->addAttribute("title", "Группы");
 			$param_g->addAttribute("current_value", "0");
