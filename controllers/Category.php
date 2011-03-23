@@ -650,7 +650,7 @@ class ControllerCategory extends Template\Template{
 						$markid[]=$val->mark;
 					//add products
 	
-					$product = $this->products->addChild("product");
+					/*$product = $this->products->addChild("product");
 					$product->addChild("product_id", ToUTF($val->warecode));
 					$product->addChild("title", StripTags($val->name));
 					$val->getDesctiptions();
@@ -674,9 +674,9 @@ class ControllerCategory extends Template\Template{
 					$product->addChild("price", $val->price);
 					$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); 
 					$image->addAttribute("width", "180");
-					$image->addAttribute("height", "180");
+					$image->addAttribute("height", "180");*/
 				}
-			/*foreach($grid as $val)
+			foreach($grid as $val)
 			{
 				$m_group = Models\Groups::find('first', array("grid"=>$val));
 				if($m_group){
@@ -693,7 +693,7 @@ class ControllerCategory extends Template\Template{
 					$option_m = $param_m->addChild("option", StripTags($m_marks->markname));
 					$option_m->addAttribute("value", $val);
 				}
-			}*/
+			}
 		}
 	}
 	
