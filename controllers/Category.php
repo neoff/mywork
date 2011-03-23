@@ -89,12 +89,11 @@ class ControllerCategory extends Template\Template{
 		self::$Groups = $Groups;
 		
 		
-		
 		if($this->searches)
 		{
 			$this->search = $this->searches; #XML тег search!!!! не удалять
 			$search = iconv ("UTF-8",'CP1251', $this->searches);
-			$this->searches = " AND (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
+			$this->searches = " AND (UPPER(w.ware) like \"%".strtoupper($search)."%\" or UPPER(w.FullName) like \"%".strtoupper($search)."%\")";
 		}
 			
 		if($this->actions > 0)
@@ -606,7 +605,7 @@ class ControllerCategory extends Template\Template{
 			if(property_exists($this->parents, 'name'))
 				$c_name = ToUTF($this->parents->name);
 			
-			
+			exit();
 			//add params
 			$this->params="";
 			$grid=array();
