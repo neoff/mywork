@@ -590,8 +590,8 @@ class ControllerCategory extends Template\Template{
 		//var_dump($this->parents);
 		if($this->actions > 0 && $this->action_val)
 			$this->parents->dirid .= " and w.warecode in (".implode(",", $this->action_val).") ";#$this->parents->search
-		#if($this->searches)
-		#	$this->parents->dirid .= $this->searches;
+		if($this->searches)
+			$this->parents->dirid .= $this->searches;
 		if($this->parents)
 		{
 			#print "ads";
