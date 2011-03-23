@@ -135,7 +135,7 @@ class ControllerCategory extends Template\Template{
 		//print_r($categoryssss);
 		if($this->class_id)
 			if($this->group_id || $this->actions > 0)
-				$this->productes();
+				"";#$this->productes();
 			else
 				$this->categories();
 	}
