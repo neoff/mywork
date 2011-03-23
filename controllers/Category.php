@@ -639,8 +639,8 @@ class ControllerCategory extends Template\Template{
 				$this->pages->addChild("onpage", "20");
 				$this->pages->addChild("page", $this->page);
 			}
-			var_dump($productes_m);
-			exit();
+			//var_dump($productes_m);
+			//exit();
 			if($productes_m)
 				foreach ($productes_m as $key => $val)
 				{
