@@ -58,7 +58,7 @@ abstract class Template {
 		return $this->$name = $this->xml->addChild( $name, $value );
 	}
 	
-	final public function __construct($data = "")
+	public function __construct($data = "")
 	{
 		$child = get_called_class();
 		
