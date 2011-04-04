@@ -151,6 +151,7 @@ class ControllerCategory extends Template\Template{
 	{
 		//$this->createParrentLink( $this->parent_name );
 		$this->categories="";
+		exit();
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", "" );
 		if($this->action_val)
