@@ -103,10 +103,10 @@ class ControllerCategory extends Template\Template{
 		
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
 		{
-			$this->parent_node();
+			$this->parentNode();
 		}
 		elseif($this->category_id >=0 && ($this->searches || $this->actions > 0))
-			$this->category = $this->ActionDirs();
+			$this->category = $this->createActionDirs();
 			
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
 			if($this->category_id == 0)
@@ -116,13 +116,13 @@ class ControllerCategory extends Template\Template{
 			else 
 			{
 				if($this->category_id < self::$Mult)
-					$this->category = $this->Dirs();
+					$this->category = $this->createDir();
 				else
 				{
 					
 					//print $this->class_id;
 					if(!$this->class_id)
-						$this->category = $this->Classes();
+						$this->category = $this->createClasses();
 				}
 			}
 		//}
@@ -137,17 +137,12 @@ class ControllerCategory extends Template\Template{
 			if($this->group_id || $this->actions > 0)
 				$this->productes();
 			else
-				$this->categories();
+				$this->createProduct();
 	}
 	
-	private function createParrentLink( $name )
-	{
-		$this->categories="";
-		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", $name );
-	}
 	
-	private function rootCategories()
+	
+	protected function rootCategories()
 	{
 		$this->createParrentLink( $this->parent_name );
 		/*$this->categories="";
@@ -214,24 +209,12 @@ class ControllerCategory extends Template\Template{
 		return False;
 		
 	}
-	protected function ToDir($d, $c = 0, $g = 0)
-	{
-		$d = $d*self::$Mult;
-		$c = $c*self::$MultC;
-		$g = $g*self::$MultG;
-		return $d+$c+$g;
-	}
-	protected function ToClass()
-	{
-		$this->dir_id = floor($this->category_id / self::$Mult);
-		$this->class_id = floor(($this->category_id % self::$Mult) / self::$MultC);
-		$this->group_id = floor((($this->category_id % self::$Mult) % self::$MultC) / self::$MultG);
-	}
+	
 	/**
 	 * ф-я выводит диры в рутовой категории
 	 * Enter description here ...
 	 */
-	private function Dirs()
+	protected function createDir()
 	{
 		$this->createParrentLink(ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['name']));
 		
@@ -304,102 +287,12 @@ class ControllerCategory extends Template\Template{
 		return False;
 	}
 	
-	private function ActionDirs()
-	{
-		$this->parent_node();
-		$q = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
-			FROM warez_'.$this->region_id.' as w ';
-		
-		if($this->searches)
-			$q .= " WHERE w.warecode ".$this->searches;
-			
-		$q .= " GROUP BY result
-			ORDER BY c DESC";
-		
-		if($this->action_val)
-			$q = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
-					FROM warez_'.$this->region_id." as w
-					WHERE w.warecode in (".implode(",", $this->action_val).")
-					$this->searches
-					GROUP BY result
-					ORDER BY c DESC";
-		
-		
-		//print "<!--\ ".$q." \-->";
-		$wwwarez =  Models\Warez::find_by_sql($q);
-		$res = $wwwarez;
-		$this->all_dirs($wwwarez);
-		#print $this->group_id;
-		//print_r(array_keys(self::$Groups[$this->dir_id]));
-		if($this->dir_id)
-		{
-			$this->parents->classid = "";
-			$this->parents->grid = "";
-			//var_dump($this->parents);
-			if(!$this->class_id)
-				return $this->productes();
-			return false;
-		}
-		else 
-		{
-			$this->createParrentLink($this->parent_name);
-		}
-		//foreach (array_keys(self::$Dirs) as $value) 
-		foreach ($res as $val) 
-		{
-			$value = $val->result;
-			$amount = 0;
-			if(in_array($value, array_keys(self::$Dirs)))
-			{
-				if(!in_array($value, $wwwarez))
-					continue;
-					
-					
-				if($this->action_val)
-					$q = 'SELECT distinct w.warecode 
-						FROM warez_'.$this->region_id." as w
-						WHERE w.warecode in (".implode(",", $this->action_val).")
-						$this->searches
-						AND w.DirID = ".$value;
-				else 
-					$q = 'SELECT distinct w.warecode  
-							FROM warez_'.$this->region_id." as w
-							WHERE w.DirID = ".$value."
-							$this->searches";
-					
-				$wwwcat =  Models\Warez::find_by_sql($q);
-				//print_r($wwwcat);
-				//$this->all_dirs($wwwcat);
-				if($wwwcat)
-					$amount = count($wwwcat);
-				
-				/*if($this->action_val)
-					if(!in_array($value, $wwwcat))
-						continue;*/
-						
-				if($amount == 0)
-					continue;
-						
-				$category = $this->categories->addChild("category");
-				$category->addChild("category_id", $this->ToDir($value));
-				$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
-				$category->addChild("amount", $amount); 
-				$icon = $category->addChild("category_icon", 
-					#"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
-					"http://www.mvideo.ru/mobile/public/img/".$this->ToDir($value).".jpg"
-				); 
-			#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
-				$icon->addAttribute("width", "180");
-				$icon->addAttribute("height", "180");
-			}
-		}
-		return False;
-	}
+	
 	/**
 	 * ф-я выводит классы в дирах
 	 * Enter description here ...
 	 */
-	private function Classes()
+	protected function createClasses()
 	{
 		$this->createParrentLink(ToUTF(self::$Dirs[$this->dir_id]));
 		
@@ -492,7 +385,7 @@ class ControllerCategory extends Template\Template{
 	/**
 	 * функция рисует на странице информацию о категориях 
 	 */
-	private function categories()
+	protected function categories()
 	{
 		$this->createParrentLink($this->parent_name);
 		
@@ -561,7 +454,7 @@ class ControllerCategory extends Template\Template{
 	/**
 	 * функция рисует на странице информацию о продуктах в категории 
 	 */
-	private function productes()
+	protected function createProduct()
 	{
 		//print 4;
 		//var_dump($this->parents);
@@ -678,91 +571,7 @@ class ControllerCategory extends Template\Template{
 		}
 	}
 	
-	/**
-	 * устанавливаем ноду parent_category
-	 * проверяем название и предыдущую категорию 
-	 * 
-	 * @param int $category_id
-	 * @param object $parents_m
-	 * @return array $options
-	 */
-	private function parent_node()
-	{
-		/*
-		 * ставим заголовки блока parents
-		 * если parent = 0 то ставим список всех категорий
-		 */
-		$cat_parrent_name = $this->parents->parent_name = "Список категорий";
-		$cat_parrent_id = $this->parents->parent_id = 0;
-		//если пустой category_id
-		if(!$this->category_id || $this->category_id<0 )
-		{
-			//$this->options = array('conditions' => "parent_id is null");
-			$cat_parrent_name = $this->parent_name = "Список категорий";
-			$cat_parrent_id = $this->parent_id = 0;
-			$this->category_id = 0;
-		}
-		//если не пустой category_id
-		else
-		{
-			//category_id меньше модификатора
-			if($this->category_id < self::$Mult)
-			{
-				$cat_parrent_name = $this->parent_name = "Список категорий";
-				$cat_parrent_id = $this->parent_id = 0;
-				
-			}
-			else
-			{
-				/*
-				 * проверяем parent текущей категории
-				 * и выставляем id и name у родительского нода
-				 */
-				$this->ToClass();
-				
-				$this->parents->dirid = $this->dir_id;
-				$this->parents->classid = $this->class_id;
-				$this->parents->grid = $this->group_id;
-				$this->parents->parent_name = ToUTF(self::$Dirs[$this->dir_id]);
-				
-				//если есть класс
-				if($this->class_id)
-				{
-					$this->parents->parent_id = $this->ToDir($this->dir_id, $this->class_id);
-					$this->parents->parent_name = ToUTF(self::$Classes[$this->dir_id][$this->class_id]);
-					$cat_parrent_id = $this->ToDir($this->dir_id);
-					$cat_parrent_name = ToUTF(self::$Dirs[$this->dir_id]);
-					//если еть группа
-					if($this->group_id)
-					{
-						$this->parents->parent_id = $this->ToDir($this->dir_id, $this->class_id, $this->group_id);
-						$this->parents->parent_name = ToUTF(self::$Groups[$this->dir_id][$this->class_id][$this->group_id]);
-						$cat_parrent_id = $this->ToDir($this->dir_id, $this->class_id);
-						$cat_parrent_name = ToUTF(self::$Classes[$this->dir_id][$this->class_id]);
-					}
-				}
-				//если нет класса проверяем родительские категории
-				else 
-				{
-					foreach (self::$GlobalConfig['smenu'] as $key => $value) 
-					{
-						if(in_array($this->parents->dirid, $value['dirs']))
-							{
-								$cat_parrent_id = $this->parents->parent_id = ToUTF($key);
-								$cat_parrent_name = $this->parents->parent_name = ToUTF($value['name']);
-								break;
-							}
-					}
-				}
-				
-				$this->parent_name = $this->parents->parent_name;
-				$this->parent_id = $this->parents->parent_id;
-			}
-		}
-		
-		$this->createParrentLink($cat_parrent_name);
-		return $this->options;
-	}
+	
 	
 	private function action()
 	{
@@ -809,6 +618,98 @@ class ControllerCategory extends Template\Template{
 			$categorys = $this->putActions($act->segment_name);
 			return $categorys;
 		}
+	}
+	
+private function createActionDirs()
+	{
+		$this->parentNode();
+		$q = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
+			FROM warez_'.$this->region_id.' as w ';
+		
+		if($this->searches)
+			$q .= " WHERE w.warecode ".$this->searches;
+			
+		$q .= " GROUP BY result
+			ORDER BY c DESC";
+		
+		if($this->action_val)
+			$q = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
+					FROM warez_'.$this->region_id." as w
+					WHERE w.warecode in (".implode(",", $this->action_val).")
+					$this->searches
+					GROUP BY result
+					ORDER BY c DESC";
+		
+		
+		//print "<!--\ ".$q." \-->";
+		$wwwarez =  Models\Warez::find_by_sql($q);
+		$res = $wwwarez;
+		$this->all_dirs($wwwarez);
+		#print $this->group_id;
+		//print_r(array_keys(self::$Groups[$this->dir_id]));
+		if($this->dir_id)
+		{
+			$this->parents->classid = "";
+			$this->parents->grid = "";
+			//var_dump($this->parents);
+			if(!$this->class_id)
+				return $this->productes();
+			return false;
+		}
+		else 
+		{
+			$this->createParrentLink($this->parent_name);
+		}
+		//foreach (array_keys(self::$Dirs) as $value) 
+		foreach ($res as $val) 
+		{
+			$value = $val->result;
+			$amount = 0;
+			if(in_array($value, array_keys(self::$Dirs)))
+			{
+				if(!in_array($value, $wwwarez))
+					continue;
+					
+					
+				if($this->action_val)
+					$q = 'SELECT distinct w.warecode 
+						FROM warez_'.$this->region_id." as w
+						WHERE w.warecode in (".implode(",", $this->action_val).")
+						$this->searches
+						AND w.DirID = ".$value;
+				else 
+					$q = 'SELECT distinct w.warecode  
+							FROM warez_'.$this->region_id." as w
+							WHERE w.DirID = ".$value."
+							$this->searches";
+					
+				$wwwcat =  Models\Warez::find_by_sql($q);
+				//print_r($wwwcat);
+				//$this->all_dirs($wwwcat);
+				if($wwwcat)
+					$amount = count($wwwcat);
+				
+				/*if($this->action_val)
+					if(!in_array($value, $wwwcat))
+						continue;*/
+						
+				if($amount == 0)
+					continue;
+						
+				$category = $this->categories->addChild("category");
+				$category->addChild("category_id", $this->ToDir($value));
+				$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
+				$category->addChild("amount", $amount); 
+				$icon = $category->addChild("category_icon", 
+					#"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
+					"http://www.mvideo.ru/mobile/public/img/".$this->ToDir($value).".jpg"
+				); 
+			#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
+				$icon->addAttribute("width", "180");
+				$icon->addAttribute("height", "180");
+			}
+		}
+		return False;
 	}
 	
 	/**
@@ -887,5 +788,119 @@ class ControllerCategory extends Template\Template{
 			}
 		}
 		
+	}
+	
+	protected function ToDir($d, $c = 0, $g = 0)
+	{
+		$d = $d*self::$Mult;
+		$c = $c*self::$MultC;
+		$g = $g*self::$MultG;
+		return $d+$c+$g;
+	}
+	protected function ToClass()
+	{
+		$this->dir_id = floor($this->category_id / self::$Mult);
+		$this->class_id = floor(($this->category_id % self::$Mult) / self::$MultC);
+		$this->group_id = floor((($this->category_id % self::$Mult) % self::$MultC) / self::$MultG);
+	}
+	
+	private function createParrentLink( $name )
+	{
+		$this->categories="";
+		$this->categories->addAttribute("category_id", $this->category_id);
+		$this->categories->addAttribute("category_name", $name );
+	}
+	
+	private function createParentNode($cat_parrent_id, $cat_parrent_name)
+	{
+		$this->parent_category="";
+		$this->parent_category->addChild("category_id", $cat_parrent_id);
+		$this->parent_category->addChild("category_name", $cat_parrent_name);
+	}
+	
+	/**
+	 * устанавливаем ноду parent_category
+	 * проверяем название и предыдущую категорию 
+	 * 
+	 * @param int $category_id
+	 * @param object $parents_m
+	 * @return array $options
+	 */
+	private function parentNode()
+	{
+		/*
+		 * ставим заголовки блока parents
+		 * если parent = 0 то ставим список всех категорий
+		 */
+		$cat_parrent_name = $this->parents->parent_name = "Список категорий";
+		$cat_parrent_id = $this->parents->parent_id = 0;
+		//если пустой category_id
+		if(!$this->category_id || $this->category_id<0 )
+		{
+			//$this->options = array('conditions' => "parent_id is null");
+			$cat_parrent_name = $this->parent_name = "Список категорий";
+			$cat_parrent_id = $this->parent_id = 0;
+			$this->category_id = 0;
+		}
+		//если не пустой category_id
+		else
+		{
+			//category_id меньше модификатора
+			if($this->category_id < self::$Mult)
+			{
+				$cat_parrent_name = $this->parent_name = "Список категорий";
+				$cat_parrent_id = $this->parent_id = 0;
+				
+			}
+			else
+			{
+				/*
+				 * проверяем parent текущей категории
+				 * и выставляем id и name у родительского нода
+				 */
+				$this->ToClass();
+				
+				$this->parents->dirid = $this->dir_id;
+				$this->parents->classid = $this->class_id;
+				$this->parents->grid = $this->group_id;
+				$this->parents->parent_name = ToUTF(self::$Dirs[$this->dir_id]);
+				
+				//если есть класс
+				if($this->class_id)
+				{
+					$this->parents->parent_id = $this->ToDir($this->dir_id, $this->class_id);
+					$this->parents->parent_name = ToUTF(self::$Classes[$this->dir_id][$this->class_id]);
+					$cat_parrent_id = $this->ToDir($this->dir_id);
+					$cat_parrent_name = ToUTF(self::$Dirs[$this->dir_id]);
+					//если еть группа
+					if($this->group_id)
+					{
+						$this->parents->parent_id = $this->ToDir($this->dir_id, $this->class_id, $this->group_id);
+						$this->parents->parent_name = ToUTF(self::$Groups[$this->dir_id][$this->class_id][$this->group_id]);
+						$cat_parrent_id = $this->ToDir($this->dir_id, $this->class_id);
+						$cat_parrent_name = ToUTF(self::$Classes[$this->dir_id][$this->class_id]);
+					}
+				}
+				//если нет класса проверяем родительские категории
+				else 
+				{
+					foreach (self::$GlobalConfig['smenu'] as $key => $value) 
+					{
+						if(in_array($this->parents->dirid, $value['dirs']))
+							{
+								$cat_parrent_id = $this->parents->parent_id = ToUTF($key);
+								$cat_parrent_name = $this->parents->parent_name = ToUTF($value['name']);
+								break;
+							}
+					}
+				}
+				
+				$this->parent_name = $this->parents->parent_name;
+				$this->parent_id = $this->parents->parent_id;
+			}
+		}
+		
+		$this->createParentNode($cat_parrent_id, $cat_parrent_name);
+		return false;//$this->options;
 	}
 }
