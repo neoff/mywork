@@ -146,7 +146,7 @@ class Warez extends ActiveRecord\Model
 		
 	}
 	
-	public function getRootCategoryChild( $region_id = 1 )
+	public static function getRootCategoryChild( $region_id = 1 )
 	{
 		$sql = 'SELECT distinct w.DirID as result 
 				FROM warez_'.$region_id." as w";
