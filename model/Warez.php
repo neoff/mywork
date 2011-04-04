@@ -151,7 +151,7 @@ class Warez extends ActiveRecord\Model
 		$sql = 'SELECT distinct w.DirID as result 
 				FROM warez_'.$region_id." as w";
 		
-		print $sql;
+		//print $sql;
 		return self::find_by_sql($sql);
 	}
 
