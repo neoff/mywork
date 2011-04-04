@@ -150,10 +150,10 @@ class ControllerCategory extends Template\Template{
 	private function rootCategories()
 	{
 		//$this->createParrentLink( $this->parent_name );
-		$this->categories="";
-		exit();
+		/*$this->categories="";
+		
 		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", "" );
+		$this->categories->addAttribute("category_name", "" );*/
 		if($this->action_val)
 		{
 			$q = 'SELECT distinct w.DirID as result 
