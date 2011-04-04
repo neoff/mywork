@@ -148,10 +148,11 @@ class Warez extends ActiveRecord\Model
 	
 	public function getRootCategoryChild( $region_id = 1 )
 	{
-		$q = 'SELECT distinct w.DirID as result 
+		$sql = 'SELECT distinct w.DirID as result 
 				FROM warez_'.$region_id." as w";
 		
-		print $q;
+		print $sql;
+		return self::find_by_sql($sql);
 	}
 
 }
