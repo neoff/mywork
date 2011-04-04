@@ -150,7 +150,7 @@ class Warez extends ActiveRecord\Model
 	{
 		$q = 'SELECT distinct w.DirID as result 
 				FROM warez_'.$region_id." as w";
-		var_dump($_)
+		var_dump($_);
 		if($searches)
 			$q .= " WHERE w.warecode ".$this->searches;
 		
