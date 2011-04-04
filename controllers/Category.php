@@ -751,7 +751,7 @@ class ControllerCategory extends Template\Template{
 			$this->parent_name = $this->parents->parent_name;
 			$this->parent_id = $this->parents->parent_id;
 		}
-		$this->createParrentLink($cat_parrent_name);
+		//$this->createParrentLink($cat_parrent_name);
 		
 		return $this->options;
 	}
