@@ -161,7 +161,7 @@ class ControllerCategory extends Template\Template{
 		if($this->searches)
 			$q .= " WHERE w.warecode ".$this->searches;
 		
-		$wwwarez =  Models\Warez::getRootCategoryChildAction($this->region_id, $searches = $this->searches);
+		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $searches = $this->searches);
 		$this->all_dirs($wwwarez);
 		
 		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
