@@ -194,5 +194,23 @@ class Link extends ActiveRecord\Model{
 			}
 		}
 	}
+	public function getRootCategoryChild( $region_id = 1, $_ )
+	{
+		$q = 'SELECT distinct w.DirID as result 
+				FROM warez_'.$region_id." as w";
+		
+		if($searches)
+			$q .= " WHERE w.warecode ".$this->searches;
+		
+		print $q;
+	}
+	public function getRootCategoryChildAction($region_id, $action_val, $searches)
+	{
+		$q = 'SELECT distinct w.DirID as result 
+				FROM warez_'.$region_id." as w
+				WHERE w.warecode in (".implode(",", $action_val).")
+				$searches ";
+		return self::find_by_sql($q);
+	}
 	
 }

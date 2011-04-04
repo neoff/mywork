@@ -145,18 +145,11 @@ class ControllerCategory extends Template\Template{
 	protected function rootCategories()
 	{
 		$this->createParrentLink( $this->parent_name );
-		/*$this->categories="";
-		
-		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", "" );*/
 		if($this->action_val)
 		{
-			$q = 'SELECT distinct w.DirID as result 
-				FROM warez_'.$this->region_id." as w
-				WHERE w.warecode in (".implode(",", $this->action_val).")
-				$this->searches ";
-			//print $q;
-			$actWarez =  Models\Warez::find_by_sql($q);
+			$actWarez =  Models\Warez::getRootCategoryChildAction($this->region_id, 
+															$this->action_val, 
+															$this->searches);
 			$this->all_dirs($actWarez);
 			#print_r($actWarez);
 			
@@ -168,7 +161,7 @@ class ControllerCategory extends Template\Template{
 		if($this->searches)
 			$q .= " WHERE w.warecode ".$this->searches;
 		
-		$wwwarez =  Models\Warez::find_by_sql($q);
+		$wwwarez =  Models\Warez::getRootCategoryChildAction($this->region_id, $searches = $this->searches);
 		$this->all_dirs($wwwarez);
 		
 		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
