@@ -146,7 +146,6 @@ class ControllerCategory extends Template\Template{
 	protected function rootCategories()
 	{
 		$this->createParrentLink( $this->parent_name );
-		
 		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id);
 		$this->all_dirs($wwwarez);
 		
@@ -157,22 +156,18 @@ class ControllerCategory extends Template\Template{
 			{
 				if(!in_array($v, $wwwarez))
 					continue 2;
-				
-				if($this->action_val)
-					if(!in_array($v, $actWarez))
-						continue;
+					
 				$amount++;
 				$one_key = $v;
 			}
 			$id = $key;
-			if($amount == 1 )
-			{
-				$key = $this->ToDir($one_key);
-				if($this->action_val)
-					$value['name'] = self::$Dirs[$one_key];
-			}
+			
 			if($amount == 0)
 				continue;
+				
+			$this-> getRootOneItem($amount, $one_key, $value);
+			
+			
 				
 			$this->createRootCategoryXml($key, $value, $amount, $id);
 			/*$category = $this->categories->addChild("category");
@@ -185,6 +180,15 @@ class ControllerCategory extends Template\Template{
 		}
 	}
 	
+	private function getRootOneItem($amount, $one_key, &$value)
+	{
+		if($amount == 1 )
+		{
+			$key = $this->ToDir($one_key);
+			if($this->action_val)
+				$value['name'] = self::$Dirs[$one_key];
+		}
+	}
 	private function createRootCategoryXml($key, $value, $amount, $id)
 	{
 		
