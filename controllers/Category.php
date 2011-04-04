@@ -146,30 +146,12 @@ class ControllerCategory extends Template\Template{
 	protected function rootCategories()
 	{
 		$this->createParrentLink( $this->parent_name );
-		/*if($this->action_val)
-		{
-			$actWarez =  Models\Warez::getRootCategoryChildAction($this->region_id, 
-															$this->action_val, 
-															$this->searches);
-			$this->all_dirs($actWarez);
-			#print_r($actWarez);
-			
-		}*/
 		
-		$q = 'SELECT distinct w.DirID as result 
-				FROM warez_'.$this->region_id." as w";
-		
-		/*if($this->searches)
-			$q .= " WHERE w.warecode ".$this->searches;*/
-		
-		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $searches = $this->searches);
+		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id);
 		$this->all_dirs($wwwarez);
 		
 		foreach (self::$GlobalConfig['smenu'] as $key => $value) 
 		{
-			//$am = Models\Category::find('all', array('conditions' => 
-			//						array('parent_id is null and dirid in (?)', $value['dirs'])
-			//						));
 			$amount = 0;
 			foreach ($value['dirs'] as $v) 
 			{
@@ -191,6 +173,21 @@ class ControllerCategory extends Template\Template{
 			}
 			if($amount == 0)
 				continue;
+				
+			$this->createRootCategoryXml($key, $value, $amount, $id);
+			/*$category = $this->categories->addChild("category");
+			$category->addChild("category_id", $key);
+			$category->addChild("category_name", ToUTF($value['name']));
+			$category->addChild("amount", $amount); 
+			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/s$id.jpg"); 
+			$icon->addAttribute("width", "180");
+			$icon->addAttribute("height", "180");*/
+		}
+	}
+	
+	private function createRootCategoryXml($key, $value, $amount, $id)
+	{
+		
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $key);
 			$category->addChild("category_name", ToUTF($value['name']));
@@ -198,10 +195,6 @@ class ControllerCategory extends Template\Template{
 			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/s$id.jpg"); 
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");
-		}
-		//exit();
-		return False;
-		
 	}
 	
 	/**
