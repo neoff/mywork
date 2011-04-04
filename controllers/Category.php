@@ -140,15 +140,16 @@ class ControllerCategory extends Template\Template{
 				$this->categories();
 	}
 	
-	private function rootCategories()
+	private function createParrentLink( $name )
 	{
-		
-		
 		$this->categories="";
 		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", $this->parent_name);
-		
-		
+		$this->categories->addAttribute("category_name", $name );
+	}
+	
+	private function rootCategories()
+	{
+		$this->createParrentLink( $this->parent_name );
 		if($this->action_val)
 		{
 			$q = 'SELECT distinct w.DirID as result 
@@ -185,31 +186,18 @@ class ControllerCategory extends Template\Template{
 				if($this->action_val)
 					if(!in_array($v, $actWarez))
 						continue;
-				
-				
 				$amount++;
 				$one_key = $v;
-				#print $key."-".$v."-".$amount."-".$one_key."\n";
-				
 			}
-			#print "--".$key."-".$amount."-".$one_key."\n";
-			#print "------".$key."---\n";
-			//$amount = count(self::$Groups[$v]);
 			$id = $key;
 			if($amount == 1 )
 			{
-				//$val = $am[0];
-				//$amount =  $this->recurseAmount($val);
 				$key = $this->ToDir($one_key);
 				if($this->action_val)
 					$value['name'] = self::$Dirs[$one_key];
-				//$value['name'] = $val->name;
 			}
 			if($amount == 0)
 				continue;
-			#print "------".$key."---\n";
-			//if($amount == 0 )
-			//	continue;
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $key);
 			$category->addChild("category_name", ToUTF($value['name']));
@@ -241,11 +229,7 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function Dirs()
 	{
-		
-		$this->categories="";
-		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['name']));
-		
+		$this->createParrentLink(ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['name']));
 		
 		$q = 'SELECT distinct w.DirID as result 
 			FROM warez_'.$this->region_id.' as w';
@@ -315,14 +299,10 @@ class ControllerCategory extends Template\Template{
 		}
 		return False;
 	}
+	
 	private function ActionDirs()
 	{
 		$this->parent_node();
-		
-		
-		
-		
-		
 		$q = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
 			FROM warez_'.$this->region_id.' as w ';
 		
@@ -358,9 +338,7 @@ class ControllerCategory extends Template\Template{
 		}
 		else 
 		{
-			$this->categories="";
-			$this->categories->addAttribute("category_id", $this->category_id);
-			$this->categories->addAttribute("category_name", $this->parent_name);
+			$this->createParrentLink($this->parent_name);
 		}
 		//foreach (array_keys(self::$Dirs) as $value) 
 		foreach ($res as $val) 
@@ -419,10 +397,7 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function Classes()
 	{
-		#print $this->category_id;
-		$this->categories="";
-		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", ToUTF(self::$Dirs[$this->dir_id]));
+		$this->createParrentLink(ToUTF(self::$Dirs[$this->dir_id]));
 		
 		$q = 'SELECT distinct w.ClassID as result 
 			FROM warez_'.$this->region_id." as w
@@ -515,10 +490,7 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function categories()
 	{
-		
-		$this->categories="";
-		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", $this->parent_name);
+		$this->createParrentLink($this->parent_name);
 		
 		$q = 'SELECT distinct w.GrID as result 
 			FROM warez_'.$this->region_id." as w
@@ -775,52 +747,9 @@ class ControllerCategory extends Template\Template{
 			$this->parent_name = $this->parents->parent_name;
 			$this->parent_id = $this->parents->parent_id;
 		}
-		$this->parent_category="";
-		$this->parent_category->addChild("category_id", $cat_parrent_id);
-		$this->parent_category->addChild("category_name", $cat_parrent_name);
+		$this->createParrentLink($cat_parrent_name);
 		
 		return $this->options;
-	}
-	
-	private function search()
-	{
-		/*$this->search = $this->searches; #XML тег search!!!! не удалять
-		$search = $this->searches;
-		
-		//if($search[0]!="%")
-		//{
-			//print $search;exit();
-			//$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
-			//$search = html_entity_decode($search,null,'UTF-8');
-			$search=iconv ("UTF-8",'CP1251', $search );*/
-		//}
-			
-		//$catid = " and c.parent_id is null ";
-		//$catid = " and c.parent_id is null ";
-		//if($this->parents)
-			//if($this->parents->grid)
-		//		$catid .= " and c.parent_id is not null and c.category_id = " . $this->category_id;
-		//if($this->category_id>0)		return array();
-		
-		//$category = Models\Category::findByNameCategory($this->region_id, $search, $catid);
-		//print $catid;
-		//var_dump($this->parents);
-		//print_r($category);
-		//exit();
-		//if(!$category)
-		//{
-			
-			//$this->products($region_id, $category_id, $parents, $array);
-		//	return array();
-		//}
-		//else
-		//{
-		//	if(count($category)==1)
-		//	{
-		//		return array();
-		//	}
-		//}
-		//return $category;
 	}
 	
 	private function action()
@@ -884,48 +813,15 @@ class ControllerCategory extends Template\Template{
 						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name' ");
 		//print $this->searches;
 		if($this->searches)
-			$options['conditions'] .= $this->searches;# AND"
-		/*{
-			$search = $this->searches;
-			//if($search[0]!="%")
-			//{
-				
-				//$search = preg_replace('/%([[:alnum:]]{2})/i', '&#x\1;',$search);
-				//$search = html_entity_decode($search,null,'UTF-8');
-				$search=iconv ("UTF-8",'CP1251', $search );
-			//}
-			// $options['joins'] = "";
-			$options['conditions'] = $options['conditions'].
-					" and (w.ware like \"%$search%\" or w.FullName like \"%$search%\")";
-		}*/
-		//print_r($options);
+			$options['conditions'] .= $this->searches;
 		$segment = Models\Segments::find('all', $options);
-		#$segment = Models\Segments::segmentDirs($this->region_id, $name);
-		//var_dump($segment);
-		#exit();
 		foreach ($segment as $val)
 		{
 			$this->action_val[] = $val->warecode;
 		}
-		//print $region_id. $array;
-		
-		/*if(!$this->category_id)
-		{
-			$condition = " and c.parent_id is null ";
-			//$this->parrent_id = 0;
-			//$this->parrent_name = $c_name = "Список категорий";
-			$categorys = Models\Category::getWarezAction($this->region_id, $this->action_val, $condition);
-			//print_r($categorys);
-		}
-		else
-		{
-			$categorys = array();
-		}*/
-		//print_r($this->action_val);
-		#if(!$this->searches)
-		#	$this->parent_node();
 		return False;
 	}
+	
 	/**
 	 * создает ноду с картинкой для акции
 	 * @param unknown_type $img
@@ -938,13 +834,12 @@ class ControllerCategory extends Template\Template{
 		//print $imgdir."/".$imgfile;
 		if(file_exists($imgdir."/".$img))
 		{
-			$imgsize = getimagesize ($imgdir."/".$img);
-			//print_r($imgsize);
+			$imgsize = getimagesize($imgdir."/".$img);
 		
 			//создаем картинку
 			$images = $this->action->addChild("image", $fimgs);
-			//задаем размеры
 			
+			//задаем размеры
 			$images->addAttribute("width", $imgsize[0]);
 			$images->addAttribute("height", $imgsize[1]);
 		}
@@ -981,85 +876,4 @@ class ControllerCategory extends Template\Template{
 		}
 		
 	}
-	
-	
-	/**
-	 * ф-я вычисляет колличество подкатегорий в категории
-	 */
-	/*private function amount($val)
-	{
-		if($val)
-		{
-			#var_dump($val);
-			#print $val->category_id;
-			$amount = Models\Category::count(array('conditions' => "parent_id = $val->category_id"));
-			
-			if(!$amount) 
-			{
-				$ids = new SetId($val->dirid, $val->classid, $val->grid);
-				$amount = count(Models\Warez::getWarez($this->region_id, $ids));
-			}
-			if($this->actions > 0)
-			{
-				$amount = Models\Warez::find_by_sql('select count(1) as amount, ware, DirID from `warez_' .$this->region_id . '` 
-								where warecode in ('.implode(",", $this->action_val).') and DirID = '.$val->dirid.' group by DirID'  );
-				
-				//print_r($amount);
-				$count = 0;
-				foreach($amount as $v)
-				{
-					$count = $v->amount;
-				}
-				$amount = $count;
-				
-			}
-			return $amount;
-		}
-	}
-	
-	private function recurseAmount($val)
-	{
-		$amount = $this->amount($val);
-		if($this->actions > 0)
-			return $amount;
-		if($amount == 1 )
-		{
-			$val = Models\Category::find('first',array('parent_id' => $val->category_id));
-			$amount = $this->recurseAmount($val);
-		}
-		
-		if($amount > 1 )
-		{
-			#print $val->category_id . " - id----cat - ".$val->name." ".$amount." \n";
-			$vCount = Models\Category::find('all',array('parent_id' => $val->category_id));
-			if($vCount)
-			{
-				$cc = 0;
-				foreach($vCount as $vk=>$vc)
-				{
-					#print ToUTF($vc->name)." - ".$vc->category_id." pod_category\n";
-					$cnt = $this->amount($vc);
-					#print $val->category_id." + ".$vc->category_id." + ".$vc->name." + ".$cnt." count + ".$cc." -pod_category\n";
-					if($cnt == 1 )
-					{
-						$vcc = Models\Category::find('first',array('parent_id' => $vc->category_id));
-						$cnt = $this->amount($vc);
-						#print $cnt." count if one ----------------------\n";
-					}
-					if($amount > 1 )
-					{
-						$cnt = $this->recurseAmount($vc);
-					}
-					if($cnt == 0 )
-						continue;
-					$cc++;
-					#print $val->category_id." - ".$vc->category_id." - ".$vc->name." - ".$cnt." - ".$cc." count after check\n";
-					#print $cc." --- final amount --- \n";
-				}
-				$amount = $cc;
-			}
-		}
-		return $amount;
-	}
-	*/
 }
