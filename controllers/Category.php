@@ -149,11 +149,11 @@ class ControllerCategory extends Template\Template{
 	
 	private function rootCategories()
 	{
-		//$this->createParrentLink( $this->parent_name );
-		$this->categories="";
+		$this->createParrentLink( $this->parent_name );
+		/*$this->categories="";
 		
 		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", "" );
+		$this->categories->addAttribute("category_name", "" );*/
 		if($this->action_val)
 		{
 			$q = 'SELECT distinct w.DirID as result 
@@ -688,12 +688,13 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function parent_node()
 	{
-		/**
+		/*
 		 * ставим заголовки блока parents
 		 * если parent = 0 то ставим список всех категорий
 		 */
 		$cat_parrent_name = $this->parents->parent_name = "Список категорий";
 		$cat_parrent_id = $this->parents->parent_id = 0;
+		//если пустой category_id
 		if(!$this->category_id || $this->category_id<0 )
 		{
 			//$this->options = array('conditions' => "parent_id is null");
@@ -701,58 +702,65 @@ class ControllerCategory extends Template\Template{
 			$cat_parrent_id = $this->parent_id = 0;
 			$this->category_id = 0;
 		}
-		elseif($this->category_id<self::$Mult)
-		{
-			//$cond = array('conditions' => "parent_id is null");
-			$cat_parrent_name = $this->parent_name = "Список категорий";
-			$cat_parrent_id = $this->parent_id = 0;
-			
-		}
+		//если не пустой category_id
 		else
 		{
-			/**
-			 * проверяем parent текущей категории
-			 * и выставляем id и name у родительского нода
-			 */
-			$this->ToClass();
-			
-			$this->parents->dirid = $this->dir_id;
-			$this->parents->classid = $this->class_id;
-			$this->parents->grid = $this->group_id;
-			$this->parents->parent_name = ToUTF(self::$Dirs[$this->dir_id]);
-			
-			if($this->class_id)
+			//category_id меньше модификатора
+			if($this->category_id < self::$Mult)
 			{
-				$this->parents->parent_id = $this->ToDir($this->dir_id, $this->class_id);
-				$this->parents->parent_name = ToUTF(self::$Classes[$this->dir_id][$this->class_id]);
-				$cat_parrent_id = $this->ToDir($this->dir_id);
-				$cat_parrent_name = ToUTF(self::$Dirs[$this->dir_id]);
-				if($this->group_id)
-				{
-					$this->parents->parent_id = $this->ToDir($this->dir_id, $this->class_id, $this->group_id);
-					$this->parents->parent_name = ToUTF(self::$Groups[$this->dir_id][$this->class_id][$this->group_id]);
-					$cat_parrent_id = $this->ToDir($this->dir_id, $this->class_id);
-					$cat_parrent_name = ToUTF(self::$Classes[$this->dir_id][$this->class_id]);
-				}
+				$cat_parrent_name = $this->parent_name = "Список категорий";
+				$cat_parrent_id = $this->parent_id = 0;
+				
 			}
-			else 
+			else
 			{
-				foreach (self::$GlobalConfig['smenu'] as $key => $value) 
+				/*
+				 * проверяем parent текущей категории
+				 * и выставляем id и name у родительского нода
+				 */
+				$this->ToClass();
+				
+				$this->parents->dirid = $this->dir_id;
+				$this->parents->classid = $this->class_id;
+				$this->parents->grid = $this->group_id;
+				$this->parents->parent_name = ToUTF(self::$Dirs[$this->dir_id]);
+				
+				//если есть класс
+				if($this->class_id)
 				{
-					if(in_array($this->parents->dirid, $value['dirs']))
-						{
-							$cat_parrent_id = $this->parents->parent_id = ToUTF($key);
-							$cat_parrent_name = $this->parents->parent_name = ToUTF($value['name']);
-							break;
-						}
+					$this->parents->parent_id = $this->ToDir($this->dir_id, $this->class_id);
+					$this->parents->parent_name = ToUTF(self::$Classes[$this->dir_id][$this->class_id]);
+					$cat_parrent_id = $this->ToDir($this->dir_id);
+					$cat_parrent_name = ToUTF(self::$Dirs[$this->dir_id]);
+					//если еть группа
+					if($this->group_id)
+					{
+						$this->parents->parent_id = $this->ToDir($this->dir_id, $this->class_id, $this->group_id);
+						$this->parents->parent_name = ToUTF(self::$Groups[$this->dir_id][$this->class_id][$this->group_id]);
+						$cat_parrent_id = $this->ToDir($this->dir_id, $this->class_id);
+						$cat_parrent_name = ToUTF(self::$Classes[$this->dir_id][$this->class_id]);
+					}
 				}
+				//если нет класса проверяем родительские категории
+				else 
+				{
+					foreach (self::$GlobalConfig['smenu'] as $key => $value) 
+					{
+						if(in_array($this->parents->dirid, $value['dirs']))
+							{
+								$cat_parrent_id = $this->parents->parent_id = ToUTF($key);
+								$cat_parrent_name = $this->parents->parent_name = ToUTF($value['name']);
+								break;
+							}
+					}
+				}
+				
+				$this->parent_name = $this->parents->parent_name;
+				$this->parent_id = $this->parents->parent_id;
 			}
-			
-			$this->parent_name = $this->parents->parent_name;
-			$this->parent_id = $this->parents->parent_id;
 		}
-		//$this->createParrentLink($cat_parrent_name);
 		
+		$this->createParrentLink($cat_parrent_name);
 		return $this->options;
 	}
 	
