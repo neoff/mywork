@@ -78,8 +78,8 @@ abstract class Template {
 		
 		
 		//print preg_replace("/></", ">\n<", $doc);
-		try
-		{
+		//try
+		//{
 			$dom = new \DOMDocument;
 			$dom->loadXML($doc, LIBXML_DTDLOAD|LIBXML_DTDATTR);
 			$myDoc = new MyDOMDocument($dom);
@@ -90,11 +90,11 @@ abstract class Template {
 			}*/
 			header('Content-type: text/xml; charset=utf-8');
 			echo preg_replace("/></", ">\n<", $doc);
-		}
+		/*}
 		catch(\MyException $e)
 		{
 			echo $e;
-		}
+		}*/
 	}
 	
 
