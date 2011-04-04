@@ -109,6 +109,7 @@ class ControllerCategory extends Template\Template{
 			$this->category = $this->createActionDirs();
 			
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
+		{
 			if($this->category_id == 0)
 				$this->category = $this->rootCategories();
 			//if($this->category_id >0)
@@ -125,7 +126,7 @@ class ControllerCategory extends Template\Template{
 						$this->category = $this->createClasses();
 				}
 			}
-		//}
+		}
 		
 			
 			
@@ -135,7 +136,7 @@ class ControllerCategory extends Template\Template{
 		//print_r($categoryssss);
 		if($this->class_id)
 			if($this->group_id || $this->actions > 0)
-				$this->productes();
+				$this->createProduct();
 			else
 				$this->createProduct();
 	}
@@ -145,7 +146,7 @@ class ControllerCategory extends Template\Template{
 	protected function rootCategories()
 	{
 		$this->createParrentLink( $this->parent_name );
-		if($this->action_val)
+		/*if($this->action_val)
 		{
 			$actWarez =  Models\Warez::getRootCategoryChildAction($this->region_id, 
 															$this->action_val, 
@@ -153,13 +154,13 @@ class ControllerCategory extends Template\Template{
 			$this->all_dirs($actWarez);
 			#print_r($actWarez);
 			
-		}
+		}*/
 		
 		$q = 'SELECT distinct w.DirID as result 
 				FROM warez_'.$this->region_id." as w";
 		
-		if($this->searches)
-			$q .= " WHERE w.warecode ".$this->searches;
+		/*if($this->searches)
+			$q .= " WHERE w.warecode ".$this->searches;*/
 		
 		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $searches = $this->searches);
 		$this->all_dirs($wwwarez);
@@ -297,7 +298,7 @@ class ControllerCategory extends Template\Template{
 			$q .= " AND w.warecode in (".implode(",", $this->action_val).")";
 			
 		if($this->searches)
-			return $this->productes();
+			return $this->createProduct();
 			
 		#print $q;
 		$wwwarez =  Models\Warez::find_by_sql($q);
