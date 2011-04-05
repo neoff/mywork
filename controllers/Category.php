@@ -188,6 +188,7 @@ class ControllerCategory extends Template\Template{
 				$value['name'] = self::$Dirs[$one_key];
 		}
 	}
+	
 	private static function addAmount(&$amount, &$v)
 	{
 		$amount++;
