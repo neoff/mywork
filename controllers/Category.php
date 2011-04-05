@@ -157,8 +157,7 @@ class ControllerCategory extends Template\Template{
 				if(!in_array($v, $wwwarez))
 					continue 2;
 					
-				$amount++;
-				$one_key = $v;
+				$one_key = self::addAmount($amount, $v);
 			}
 			$id = $key;
 			
@@ -169,7 +168,7 @@ class ControllerCategory extends Template\Template{
 			
 			
 				
-			$this->createRootCategoryXml($key, $value, $amount, $id);
+			$this->createRootCategory($key, $value, $amount, $id);
 			/*$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $key);
 			$category->addChild("category_name", ToUTF($value['name']));
@@ -189,7 +188,12 @@ class ControllerCategory extends Template\Template{
 				$value['name'] = self::$Dirs[$one_key];
 		}
 	}
-	private function createRootCategoryXml($key, $value, $amount, $id)
+	private static function addAmount(&$amount, &$v)
+	{
+		$amount++;
+		return $v;
+	}
+	private function createRootCategory($key, $value, $amount, $id)
 	{
 		
 			$category = $this->categories->addChild("category");
