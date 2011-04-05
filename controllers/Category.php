@@ -189,6 +189,7 @@ class ControllerCategory extends Template\Template{
 		}
 	}
 	
+	
 	private static function addAmount(&$amount, &$v)
 	{
 		$amount++;
