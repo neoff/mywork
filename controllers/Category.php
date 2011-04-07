@@ -834,6 +834,7 @@ private function createActionDirs()
 			{
 				$cat_parrent_name = $this->parent_name = "Список категорий";
 				$cat_parrent_id = $this->parent_id = 0;
+				$this->dir_id = $this->category_id;
 				
 			}
 			else
