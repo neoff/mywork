@@ -889,7 +889,7 @@ class ControllerCategory extends Template\Template{
 		$image->addAttribute("height", "180");
 	}
 	
-	private function displayProductNode()
+	private function displayProductNode( $name )
 	{
 		$this->products="";
 		$this->products->addAttribute("category_id", $this->category_id);
