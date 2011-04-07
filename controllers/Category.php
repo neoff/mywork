@@ -429,33 +429,22 @@ class ControllerCategory extends Template\Template{
 		if($this->parents)
 		{
 			#print "ads";
-			$page = $this->page;
-			if($this->page > 0)
-				$page = ($this->page -1)*20;
 			$productes_count = 0;
 			$productes_count = count(Models\Warez::getWarez($this->region_id, $this->parents, False));
-			$productes_m = Models\Warez::getWarez($this->region_id, $this->parents, $page);
-			//print_r($productes);
-			$c_name=$this->parent_name;
-			if(property_exists($this->parents, 'name'))
-				$c_name = ToUTF($this->parents->name);
-			
+			$productes_m = Models\Warez::getWarez($this->region_id, $this->parents, $this->page);
 			
 			//add params
-			$parm = $this->params="";
 			$grid=array();
 			$markid = array();
-			//var_dump($this->parents);
-			//print "<br>";
-			//$markid = array();
+			$this->params="";
 			
 			$param_m = $this->displayProductMark();
 			$param_g = $this->displayProductGroup();
 			
-			$this->displayProductNode($c_name);
+			$this->displayProductNode();
 			
 			if($this->page)
-				$this->displayPageNode();
+				$this->displayPageNode($productes_count);
 				
 			if($productes_m)
 			{
@@ -471,8 +460,8 @@ class ControllerCategory extends Template\Template{
 				}
 			}
 			
-			$this->displayProductMarkVal( $markid, &$param_m );
-			$this->displayProductGroupVal($grid, $param_g);
+			$this->getProductMarkVal( $markid, &$param_m );
+			$this->getProductGroupVal($grid, $param_g);
 			
 		}
 	}
@@ -889,8 +878,12 @@ class ControllerCategory extends Template\Template{
 		$image->addAttribute("height", "180");
 	}
 	
-	private function displayProductNode( $name )
+	private function displayProductNode()
 	{
+		$name = $this->parent_name;
+		if(property_exists($this->parents, 'name'))
+			$name = ToUTF($this->parents->name);
+				
 		$this->products="";
 		$this->products->addAttribute("category_id", $this->category_id);
 		$this->products->addAttribute("category_name", $name);
@@ -928,7 +921,7 @@ class ControllerCategory extends Template\Template{
 		$option->addAttribute("value", $val);
 	}
 	
-	private function displayPageNode()
+	private function displayPageNode($productes_count)
 	{
 		$this->pages="";
 		$this->pages->addChild("amount", $productes_count);
