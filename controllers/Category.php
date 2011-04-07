@@ -625,8 +625,8 @@ class ControllerCategory extends Template\Template{
 		*/
 		//print "<!--\ ".$q." \-->";
 		//$wwwarez =  Models\Warez::find_by_sql($q);
-		$dcg = array($this->dir_id);
-		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches, $dcg);
+		//$dcg = array($this->dir_id);
+		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches);
 		$res = $wwwarez;
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
@@ -655,7 +655,7 @@ class ControllerCategory extends Template\Template{
 					continue;
 					
 					
-				if($this->action_val)
+				/*if($this->action_val)
 					$q = 'SELECT distinct w.warecode 
 						FROM warez_'.$this->region_id." as w
 						WHERE w.warecode in (".implode(",", $this->action_val).")
@@ -665,9 +665,9 @@ class ControllerCategory extends Template\Template{
 					$q = 'SELECT distinct w.warecode  
 							FROM warez_'.$this->region_id." as w
 							WHERE w.DirID = ".$value."
-							$this->searches";
+							$this->searches";*/
 					
-				$wwwcat =  Models\Warez::find_by_sql($q);
+				$wwwcat =  Models\Warez::getWarezAction($this->region_id, $this->action_val, $this->searches);
 				//print_r($wwwcat);
 				//$this->all_dirs($wwwcat);
 				if($wwwcat)
@@ -680,7 +680,7 @@ class ControllerCategory extends Template\Template{
 				if($amount == 0)
 					continue;
 						
-				$category = $this->categories->addChild("category");
+				/*$category = $this->categories->addChild("category");
 				$category->addChild("category_id", $this->ToDir($value));
 				$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
 				$category->addChild("amount", $amount); 
@@ -690,12 +690,27 @@ class ControllerCategory extends Template\Template{
 				); 
 			#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
 				$icon->addAttribute("width", "180");
-				$icon->addAttribute("height", "180");
+				$icon->addAttribute("height", "180");*/
+				$this->createCategoryProduct($value);
 			}
 		}
 		return False;
 	}
 	
+	private function createCategoryProduct($value)
+	{
+		$category = $this->categories->addChild("category");
+		$category->addChild("category_id", $this->ToDir($value));
+		$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
+		$category->addChild("amount", $amount); 
+		$icon = $category->addChild("category_icon", 
+			#"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
+			"http://www.mvideo.ru/mobile/public/img/".$this->ToDir($value).".jpg"
+		); 
+		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
+		$icon->addAttribute("width", "180");
+		$icon->addAttribute("height", "180");
+	}
 	/**
 	 * собирает товары участвующие в акции
 	 * в массив $this->action_val

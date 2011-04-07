@@ -133,7 +133,7 @@ class Warez extends ActiveRecord\Model
 		
 	}
 	
-	public static function getWarezAction($region_id, $array, $condition = "")
+	/*public static function getWarezAction($region_id, $array, $condition = "")
 	{
 		if($array)
 		{
@@ -144,8 +144,20 @@ class Warez extends ActiveRecord\Model
 		else
 			return $array;
 		
+	}*/
+	public static function getWarezAction($region_id = 1, $action = "", $search = "", $dir)
+	{
+		$sql = 'SELECT distinct w.warecode 
+						FROM warez_'.$region_id." as w
+						WHERE w.DirID = ".$dir;
+		if($action)
+			$sql .= " AND w.warecode in (".implode(",", $action).") ";
+		
+		if($search)
+				$sql .= $search;
+		
+		return self::find_by_sql($sql);
 	}
-	
 	public static function getRootCategoryChild($region_id = 1, $action = "", $search = "", $dcg = array())
 	{
 		//print $sql;
