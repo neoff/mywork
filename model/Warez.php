@@ -182,7 +182,7 @@ class Warez extends ActiveRecord\Model
 				$sql .= $search;
 			
 			if($dir)
-				$sql .= " w.DirID = ".$dir;
+				$sql .= " AND w.DirID = ".$dir;
 		
 		}
 		$sql .= $groups;
