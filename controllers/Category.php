@@ -691,13 +691,13 @@ class ControllerCategory extends Template\Template{
 			#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
 				$icon->addAttribute("width", "180");
 				$icon->addAttribute("height", "180");*/
-				$this->createCategoryProduct($value);
+				$this->createCategoryProduct($value, $amount);
 			}
 		}
 		return False;
 	}
 	
-	private function createCategoryProduct($value)
+	private function createCategoryProduct($value, $amount)
 	{
 		$category = $this->categories->addChild("category");
 		$category->addChild("category_id", $this->ToDir($value));
