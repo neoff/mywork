@@ -146,11 +146,22 @@ class Warez extends ActiveRecord\Model
 		
 	}
 	
-	public static function getRootCategoryChild( $region_id = 1 )
+	public static function getRootCategoryChild($region_id = 1, $action = "", $search = "")
 	{
 		$sql = 'SELECT distinct w.DirID as result 
 				FROM warez_'.$region_id." as w";
 		
+		if($search || $action)
+			$sql .= " WHERE ";
+			
+		if($search && !$action)
+			$sql .= " w.warecode ";
+			
+		if($action)
+			$sql .= " w.warecode in (".implode(",", $action).") ";
+		
+		if($search)
+			$sql .= $search
 		//print $sql;
 		return self::find_by_sql($sql);
 	}

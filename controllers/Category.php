@@ -112,8 +112,6 @@ class ControllerCategory extends Template\Template{
 		{
 			if($this->category_id == 0)
 				$this->category = $this->rootCategories();
-			//if($this->category_id >0)
-			//	$this->category = Models\Category::find('all', $this->options);
 			else 
 			{
 				if($this->category_id < self::$Mult)
@@ -128,12 +126,6 @@ class ControllerCategory extends Template\Template{
 			}
 		}
 		
-			
-			
-		//print_r($this->category);
-		//$condition = "";
-		//$categoryssss = Models\Category::getWarezAction($this->region_id, $this->action_val, $condition);
-		//print_r($categoryssss);
 		if($this->class_id)
 			if($this->group_id || $this->actions > 0)
 				$this->createProduct();
@@ -169,13 +161,6 @@ class ControllerCategory extends Template\Template{
 			
 				
 			$this->createRootCategory($key, $value, $amount, $id);
-			/*$category = $this->categories->addChild("category");
-			$category->addChild("category_id", $key);
-			$category->addChild("category_name", ToUTF($value['name']));
-			$category->addChild("amount", $amount); 
-			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/s$id.jpg"); 
-			$icon->addAttribute("width", "180");
-			$icon->addAttribute("height", "180");*/
 		}
 	}
 	
@@ -214,7 +199,7 @@ class ControllerCategory extends Template\Template{
 	protected function createDir()
 	{
 		$this->createParrentLink(ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['name']));
-		
+		/*
 		$q = 'SELECT distinct w.DirID as result 
 			FROM warez_'.$this->region_id.' as w';
 		
@@ -226,9 +211,9 @@ class ControllerCategory extends Template\Template{
 					FROM warez_'.$this->region_id." as w
 					WHERE w.warecode in (".implode(",", $this->action_val).")
 					$this->searches";
-					
+					*/
 		//print $q;
-		$wwwarez =  Models\Warez::find_by_sql($q);
+		$wwwarez =  Models\Warez::getRootCategoryChild($this->category_id, $this->action_val, $this->searches);
 		$this->all_dirs($wwwarez);
 		
 		
