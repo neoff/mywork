@@ -636,195 +636,6 @@ class ControllerCategory extends Template\Template{
 		return False;
 	}
 	
-	private function getActions()
-	{
-		switch ((int)$this->actions)
-		{
-			case 1:
-				$action = 6;
-				break;
-			case 3:
-				$action = 0;
-				return $this->localActions();
-				break;
-			case 4:
-				$action = 24;
-				break;
-			case 5:
-				$action = 25;
-				break;
-			case 6:
-				$action = 29;
-				break;
-			case 7:
-				$action = 28;
-				break;
-			default:
-				$action = $this->actions;
-				break;
-		}
-		//print $action;
-		$act = Models\Actions::first(array("segment_id"=>$action, "hidden"=>0));
-		//print_r($act);
-		if($act)
-			return $this->displayCategoryAction( $act );
-	}
-	private function displayCategoryAction( $act )
-	{
-		$url = str_replace("/", "", $act->segment_name);//link
-		$imgfile = "imgs/action/header_$url.jpg";
-		
-		$this->action = "";
-		$this->actionImage($imgfile);
-		
-		$this->action->addChild("description", ToUTF($act->segment_info));
-		$this->action->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $act->segment_name)
-															."/?ref=left_bat_". $act->segment_name);
-		$this->action->addChild("link", "http://www.mvideo.ru/".$url."/");
-		$categorys = $this->getActionsVal($act->segment_name);
-		return $categorys;
-	}
-	
-	private function displayCategoryRoot($key, $value, $amount, $id)
-	{
-			$category = $this->categories->addChild("category");
-			$category->addChild("category_id", $key);
-			$category->addChild("category_name", ToUTF($value['name']));
-			$this->displayCategotyIcon($category, $id, $amount);
-	}
-	
-	private function displayCategoryDir($id, $value, $amount)
-	{
-		$name = ToUTF(self::$Dirs[$value]);
-		$this->displayCategorySection($name, $id, $amount);
-	}
-	
-	private function displayCategoryClass($id, $value, $amount)
-	{
-		$name = ToUTF(self::$Classes[$this->dir_id][$value]);
-		$this->displayCategorySection($name, $id, $amount);
-	}
-	
-	private function displayCategoryGroup($id, $value, $amount)
-	{
-		$name = ToUTF(self::$Groups[$this->dir_id][$this->class_id][$value]);
-		$this->displayCategorySection($name, $id, $amount);
-	}
-	
-	private function displayCategorySection($name, $id, $amount)
-	{
-		$category = $this->categories->addChild("category");
-		$category->addChild("category_id", $id);
-		$category->addChild("category_name", $name);
-		$this->displayCategotyIcon($category, $id, $amount);
-	}
-	
-	private function displayCategotyIcon(&$category, $id, $amount)
-	{
-		$category->addChild("amount", $amount); 
-		$icon = $category->addChild("category_icon", 
-			#"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
-			"http://www.mvideo.ru/mobile/public/img/".$id.".jpg"
-		); 
-		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
-		$icon->addAttribute("width", "180");
-		$icon->addAttribute("height", "180");
-	}
-	
-	/**
-	 * собирает товары участвующие в акции
-	 * в массив $this->action_val
-	 * @param unknown_type $name
-	 */
-	private function getActionsVal($name)
-	{
-		
-		$options = array('select' => 'w.warecode',
-						'from' => 'segment_cache sc',
-						'joins'=>" join warez_$this->region_id w on (sc.warecode=w.warecode)",
-						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name' ");
-		//print $this->searches;
-		if($this->searches)
-			$options['conditions'] .= $this->searches;
-		$segment = Models\Segments::find('all', $options);
-		foreach ($segment as $val)
-		{
-			$this->action_val[] = $val->warecode;
-		}
-		return False;
-	}
-	
-	/**
-	 * создает ноду с картинкой для акции
-	 * @param unknown_type $img
-	 */
-	private function actionImage($img)
-	{
-		$imgdir = dirname(dirname($_SERVER["SCRIPT_FILENAME"]));
-		
-		$fimgs = "http://www.mvideo.ru/$img";
-		//print $imgdir."/".$imgfile;
-		if(file_exists($imgdir."/".$img))
-		{
-			$imgsize = getimagesize($imgdir."/".$img);
-		
-			//создаем картинку
-			$images = $this->action->addChild("image", $fimgs);
-			
-			//задаем размеры
-			$images->addAttribute("width", $imgsize[0]);
-			$images->addAttribute("height", $imgsize[1]);
-		}
-	}
-	/**
-	 * текущая федеральная акция
-	 */
-	private function localActions()
-	{
-		$time = time();
-		
-		//$keys = array_keys(self::$GlobalConfig['fed_act']);
-		foreach (self::$GlobalConfig['fed_act'] as $key => $val) 
-		{
-			
-			if($key < $time)
-			{
-				if($val['end_date']>=$time)
-				{
-					//print 1;
-					$url = str_replace("/", "", $val['link']);//link
-					$imgfile = "imgs/action/main/$url.jpg";
-					$this->action = "";
-					$this->actionImage($imgfile);
-					
-					$this->action->addChild("description", ToUTF($val['name']));//descr
-					
-					$this->action->addChild("url", "http://www.mvideo.ru/".$url."-cond/");
-					$this->action->addChild("link", "http://www.mvideo.ru/".$url."/");
-					//print $url;
-					return $this->putActions($url);
-				}
-			}
-		}
-		
-	}
-	
-	
-	
-	private function displayCategoryNode( $name )
-	{
-		$this->categories="";
-		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", $name );
-	}
-	
-	private function displayCategoryParentNode($cat_parrent_id, $cat_parrent_name)
-	{
-		$this->parent_category="";
-		$this->parent_category->addChild("category_id", $cat_parrent_id);
-		$this->parent_category->addChild("category_name", $cat_parrent_name);
-	}
-	
 	/**
 	 * устанавливаем ноду parent_category
 	 * проверяем название и предыдущую категорию 
@@ -833,7 +644,7 @@ class ControllerCategory extends Template\Template{
 	 * @param object $parents_m
 	 * @return array $options
 	 */
-	private function parentNode()
+	private function createParent()
 	{
 		/*
 		 * ставим заголовки блока parents
@@ -912,6 +723,200 @@ class ControllerCategory extends Template\Template{
 		$this->displayCategoryParentNode($cat_parrent_id, $cat_parrent_name);
 		return false;//$this->options;
 	}
+	
+	private function getActions()
+	{
+		switch ((int)$this->actions)
+		{
+			case 1:
+				$action = 6;
+				break;
+			case 3:
+				$action = 0;
+				return $this->getActionFederal();
+				break;
+			case 4:
+				$action = 24;
+				break;
+			case 5:
+				$action = 25;
+				break;
+			case 6:
+				$action = 29;
+				break;
+			case 7:
+				$action = 28;
+				break;
+			default:
+				$action = $this->actions;
+				break;
+		}
+		//print $action;
+		$act = Models\Actions::first(array("segment_id"=>$action, "hidden"=>0));
+		//print_r($act);
+		if($act)
+			return $this->displayCategoryAction( $act );
+	}
+	/**
+	 * текущая федеральная акция
+	 */
+	private function getActionFederal()
+	{
+		$time = time();
+		
+		//$keys = array_keys(self::$GlobalConfig['fed_act']);
+		foreach (self::$GlobalConfig['fed_act'] as $key => $val) 
+		{
+			
+			if($key < $time)
+			{
+				if($val['end_date']>=$time)
+				{
+					//print 1;
+					$url = str_replace("/", "", $val['link']);//link
+					$imgfile = "imgs/action/main/$url.jpg";
+					$this->action = "";
+					$this->displayActionImage($imgfile);
+					
+					$this->action->addChild("description", ToUTF($val['name']));//descr
+					
+					$this->action->addChild("url", "http://www.mvideo.ru/".$url."-cond/");
+					$this->action->addChild("link", "http://www.mvideo.ru/".$url."/");
+					//print $url;
+					return $this->putActions($url);
+				}
+			}
+		}
+		
+	}
+	/**
+	 * собирает товары участвующие в акции
+	 * в массив $this->action_val
+	 * @param unknown_type $name
+	 */
+	private function getActionsVal($name)
+	{
+		
+		$options = array('select' => 'w.warecode',
+						'from' => 'segment_cache sc',
+						'joins'=>" join warez_$this->region_id w on (sc.warecode=w.warecode)",
+						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name' ");
+		//print $this->searches;
+		if($this->searches)
+			$options['conditions'] .= $this->searches;
+		$segment = Models\Segments::find('all', $options);
+		foreach ($segment as $val)
+		{
+			$this->action_val[] = $val->warecode;
+		}
+		return False;
+	}
+	
+	private function displayCategoryAction( $act )
+	{
+		$url = str_replace("/", "", $act->segment_name);//link
+		$imgfile = "imgs/action/header_$url.jpg";
+		
+		$this->action = "";
+		$this->displayActionImage($imgfile);
+		
+		$this->action->addChild("description", ToUTF($act->segment_info));
+		$this->action->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $act->segment_name)
+															."/?ref=left_bat_". $act->segment_name);
+		$this->action->addChild("link", "http://www.mvideo.ru/".$url."/");
+		$categorys = $this->getActionsVal($act->segment_name);
+		return $categorys;
+	}
+	
+	private function displayCategoryRoot($key, $value, $amount, $id)
+	{
+			$category = $this->categories->addChild("category");
+			$category->addChild("category_id", $key);
+			$category->addChild("category_name", ToUTF($value['name']));
+			$this->displayCategotyIcon($category, $id, $amount);
+	}
+	
+	private function displayCategoryDir($id, $value, $amount)
+	{
+		$name = ToUTF(self::$Dirs[$value]);
+		$this->displayCategorySection($name, $id, $amount);
+	}
+	
+	private function displayCategoryClass($id, $value, $amount)
+	{
+		$name = ToUTF(self::$Classes[$this->dir_id][$value]);
+		$this->displayCategorySection($name, $id, $amount);
+	}
+	
+	private function displayCategoryGroup($id, $value, $amount)
+	{
+		$name = ToUTF(self::$Groups[$this->dir_id][$this->class_id][$value]);
+		$this->displayCategorySection($name, $id, $amount);
+	}
+	
+	private function displayCategorySection($name, $id, $amount)
+	{
+		$category = $this->categories->addChild("category");
+		$category->addChild("category_id", $id);
+		$category->addChild("category_name", $name);
+		$this->displayCategotyIcon($category, $id, $amount);
+	}
+	
+	private function displayCategotyIcon(&$category, $id, $amount)
+	{
+		$category->addChild("amount", $amount); 
+		$icon = $category->addChild("category_icon", 
+			#"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
+			"http://www.mvideo.ru/mobile/public/img/".$id.".jpg"
+		); 
+		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
+		$icon->addAttribute("width", "180");
+		$icon->addAttribute("height", "180");
+	}
+	
+	
+	
+	/**
+	 * создает ноду с картинкой для акции
+	 * @param unknown_type $img
+	 */
+	private function displayActionImage($img)
+	{
+		$imgdir = dirname(dirname($_SERVER["SCRIPT_FILENAME"]));
+		
+		$fimgs = "http://www.mvideo.ru/$img";
+		//print $imgdir."/".$imgfile;
+		if(file_exists($imgdir."/".$img))
+		{
+			$imgsize = getimagesize($imgdir."/".$img);
+		
+			//создаем картинку
+			$images = $this->action->addChild("image", $fimgs);
+			
+			//задаем размеры
+			$images->addAttribute("width", $imgsize[0]);
+			$images->addAttribute("height", $imgsize[1]);
+		}
+	}
+	
+	
+	
+	
+	private function displayCategoryNode( $name )
+	{
+		$this->categories="";
+		$this->categories->addAttribute("category_id", $this->category_id);
+		$this->categories->addAttribute("category_name", $name );
+	}
+	
+	private function displayCategoryParentNode($cat_parrent_id, $cat_parrent_name)
+	{
+		$this->parent_category="";
+		$this->parent_category->addChild("category_id", $cat_parrent_id);
+		$this->parent_category->addChild("category_name", $cat_parrent_name);
+	}
+	
+	
 	
 	protected static function ToDir($d, $c = 0, $g = 0)
 	{
