@@ -452,7 +452,7 @@ class ControllerCategory extends Template\Template{
 			$param_m = $this->displayProductMark();
 			$param_g = $this->displayProductGroup();
 			
-			$this->displayProductNode();
+			$this->displayProductNode($c_name);
 			
 			if($this->page)
 				$this->displayPageNode();
@@ -893,7 +893,7 @@ class ControllerCategory extends Template\Template{
 	{
 		$this->products="";
 		$this->products->addAttribute("category_id", $this->category_id);
-		$this->products->addAttribute("category_name", $c_name);
+		$this->products->addAttribute("category_name", $name);
 	}
 	
 	private function displayProductMark()
