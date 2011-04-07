@@ -605,7 +605,7 @@ class ControllerCategory extends Template\Template{
 private function createActionDirs()
 	{
 		$this->parentNode();
-		$q = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
+		/*$q = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
 			FROM warez_'.$this->region_id.' as w ';
 		
 		if($this->searches)
@@ -622,9 +622,10 @@ private function createActionDirs()
 					GROUP BY result
 					ORDER BY c DESC";
 		
-		
+		*/
 		//print "<!--\ ".$q." \-->";
-		$wwwarez =  Models\Warez::find_by_sql($q);
+		//$wwwarez =  Models\Warez::find_by_sql($q);
+		$wwwarez =  Models\Warez::getRootCategoryChild($this->category_id, $this->action_val, $this->searches);
 		$res = $wwwarez;
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
@@ -635,7 +636,7 @@ private function createActionDirs()
 			$this->parents->grid = "";
 			//var_dump($this->parents);
 			if(!$this->class_id)
-				return $this->productes();
+				return $this->createProduct();
 			return false;
 		}
 		else 
