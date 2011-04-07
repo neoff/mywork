@@ -97,7 +97,7 @@ class ControllerCategory extends Template\Template{
 		}
 			
 		if($this->actions > 0)
-			$this->category = $this->action();
+			$this->category = $this->getActions();
 		
 		
 		
@@ -106,7 +106,7 @@ class ControllerCategory extends Template\Template{
 			$this->parentNode();
 		}
 		else*/if($this->category_id >=0 && ($this->searches || $this->actions > 0))
-			$this->category = $this->createActionDirs();
+			$this->category = $this->createDirAction();
 			
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
 		{
@@ -137,9 +137,9 @@ class ControllerCategory extends Template\Template{
 	
 	
 	
-	protected function rootCategories()
+	protected function createRoot()
 	{
-		$this->createParrentLink( $this->parent_name );
+		$this->displayCategoryNode( $this->parent_name );
 		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id);
 		$this->all_dirs($wwwarez);
 		
@@ -150,49 +150,29 @@ class ControllerCategory extends Template\Template{
 			{
 				if(!in_array($v, $wwwarez))
 					continue 2;
-					
-				$one_key = self::addAmount($amount, $v);
+				
+				$amount++;
+				$one_key = $v;
 			}
 			$id = $key;
 			
 			if($amount == 0)
 				continue;
 				
-			$this-> getRootOneItem($amount, $one_key, $value);
+			if($amount == 1 )
+			{
+				$key = self::ToDir($one_key);
+				if($this->action_val)
+					$value['name'] = self::$Dirs[$one_key];
+				return $key;
+			}
 			
 			
 				
-			$this->createRootCategory($key, $value, $amount, $id);
+			$this->displayCategoryRoot($key, $value, $amount, $id);
 		}
 	}
 	
-	private function getRootOneItem($amount, $one_key, &$value)
-	{
-		if($amount == 1 )
-		{
-			$key = $this->ToDir($one_key);
-			if($this->action_val)
-				$value['name'] = self::$Dirs[$one_key];
-		}
-	}
-	
-	private static function addAmount(&$amount, &$v)
-	{
-		$amount++;
-		return $v;
-	}
-	
-	private function createRootCategory($key, $value, $amount, $id)
-	{
-		
-			$category = $this->categories->addChild("category");
-			$category->addChild("category_id", $key);
-			$category->addChild("category_name", ToUTF($value['name']));
-			$category->addChild("amount", $amount); 
-			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/s$id.jpg"); 
-			$icon->addAttribute("width", "180");
-			$icon->addAttribute("height", "180");
-	}
 	
 	/**
 	 * ф-я выводит диры в рутовой категории
@@ -200,7 +180,7 @@ class ControllerCategory extends Template\Template{
 	 */
 	protected function createDir()
 	{
-		$this->createParrentLink(ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['name']));
+		$this->displayCategoryNode(ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['name']));
 		/*
 		$q = 'SELECT distinct w.DirID as result 
 			FROM warez_'.$this->region_id.' as w';
@@ -227,7 +207,7 @@ class ControllerCategory extends Template\Template{
 				continue;
 
 				
-			$id = $this->ToDir($value);
+			$id = self::ToDir($value);
 			/*if($this->action_val)
 				$q = 'SELECT distinct w.ClassID as result, w.warecode
 					FROM warez_'.$this->region_id." as w
@@ -252,7 +232,7 @@ class ControllerCategory extends Template\Template{
 					continue;*/
 						
 			if($amount == 1)
-				$id = $this->ToDir($value, $wwwcat[0]->result);
+				$id = self::ToDir($value, $wwwcat[0]->result);
 			
 			if($amount == 0)
 				continue;
@@ -269,7 +249,7 @@ class ControllerCategory extends Template\Template{
 	 */
 	protected function createClasses()
 	{
-		$this->createParrentLink(ToUTF(self::$Dirs[$this->dir_id]));
+		$this->displayCategoryNode(ToUTF(self::$Dirs[$this->dir_id]));
 		
 		/*$q = 'SELECT distinct w.ClassID as result 
 			FROM warez_'.$this->region_id." as w
@@ -318,7 +298,7 @@ class ControllerCategory extends Template\Template{
 			/*if($this->action_val)
 				if(!in_array($value, $wwwcat))
 					continue;*/
-			$id = $this->ToDir($this->dir_id, $value);
+			$id = self::ToDir($this->dir_id, $value);
 			if($amount == 1)
 			{
 				/*if($this->action_val)
@@ -338,7 +318,7 @@ class ControllerCategory extends Template\Template{
 							AND w.GrID = ".$wwwcat[0]->result." group by result order by w.hit DESC, w.price DESC ";
 						*/
 				//print $q;
-				$id = $this->ToDir($this->dir_id, $value, $wwwcat[0]->result);
+				$id = self::ToDir($this->dir_id, $value, $wwwcat[0]->result);
 				//$wwwcats =  Models\Warez::find_by_sql($q);
 				$wwwcat =  Models\Warez::getWaresId($this->dir_id, $value, $wwwcat[0]->result,
 													$this->region_id, $this->action_val, $this->searches);
@@ -368,7 +348,7 @@ class ControllerCategory extends Template\Template{
 	 */
 	protected function createGroup()
 	{
-		$this->createParrentLink($this->parent_name);
+		$this->displayCategoryNode($this->parent_name);
 		
 		/*$q = 'SELECT distinct w.GrID as result 
 			FROM warez_'.$this->region_id." as w
@@ -419,17 +399,17 @@ class ControllerCategory extends Template\Template{
 				continue;
 					
 			/*$category = $this->categories->addChild("category");
-			$category->addChild("category_id", $this->ToDir($this->dir_id, $this->class_id, $value));
+			$category->addChild("category_id", self::ToDir($this->dir_id, $this->class_id, $value));
 			$category->addChild("category_name", ToUTF(self::$Groups[$this->dir_id][$this->class_id][$value]));
 			$category->addChild("amount", $amount); 
 			$icon = $category->addChild("category_icon", 
 				#"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg" 
-				"http://www.mvideo.ru/mobile/public/img/".$this->ToDir($this->dir_id, $this->class_id, $value).".jpg"
+				"http://www.mvideo.ru/mobile/public/img/".self::ToDir($this->dir_id, $this->class_id, $value).".jpg"
 			); 
 		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
 			$icon->addAttribute("width", "180");
 			$icon->addAttribute("height", "180");*/
-			$id = $this->ToDir($this->dir_id, $this->class_id, $value);
+			$id = self::ToDir($this->dir_id, $this->class_id, $value);
 			$this->displayCategoryGroup($id, $value, $amount);
 		}
 		return False;
@@ -558,54 +538,9 @@ class ControllerCategory extends Template\Template{
 	
 	
 	
-	private function action()
-	{
-		switch ((int)$this->actions)
-		{
-			case 1:
-				$action = 6;
-				break;
-			case 3:
-				$action = 0;
-				return $this->localActions();
-				break;
-			case 4:
-				$action = 24;
-				break;
-			case 5:
-				$action = 25;
-				break;
-			case 6:
-				$action = 29;
-				break;
-			case 7:
-				$action = 28;
-				break;
-			default:
-				$action = $this->actions;
-				break;
-		}
-		//print $action;
-		$act = Models\Actions::first(array("segment_id"=>$action, "hidden"=>0));
-		//print_r($act);
-		if($act)
-		{
-			$url = str_replace("/", "", $act->segment_name);//link
-			$imgfile = "imgs/action/header_$url.jpg";
-			
-			$this->action = "";
-			$this->actionImage($imgfile);
-			
-			$this->action->addChild("description", ToUTF($act->segment_info));
-			$this->action->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $act->segment_name)
-																."/?ref=left_bat_". $act->segment_name);
-			$this->action->addChild("link", "http://www.mvideo.ru/".$url."/");
-			$categorys = $this->putActions($act->segment_name);
-			return $categorys;
-		}
-	}
 	
-	private function createActionDirs()
+	
+	private function createDirAction()
 	{
 		$this->parentNode();
 		/*$q = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
@@ -645,7 +580,7 @@ class ControllerCategory extends Template\Template{
 		}
 		else 
 		{
-			$this->createParrentLink($this->parent_name);
+			$this->displayCategoryNode($this->parent_name);
 		}
 		//foreach (array_keys(self::$Dirs) as $value) 
 		foreach ($res as $val) 
@@ -684,44 +619,103 @@ class ControllerCategory extends Template\Template{
 					continue;
 						
 				/*$category = $this->categories->addChild("category");
-				$category->addChild("category_id", $this->ToDir($value));
+				$category->addChild("category_id", self::ToDir($value));
 				$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
 				$category->addChild("amount", $amount); 
 				$icon = $category->addChild("category_icon", 
 					#"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
-					"http://www.mvideo.ru/mobile/public/img/".$this->ToDir($value).".jpg"
+					"http://www.mvideo.ru/mobile/public/img/".self::ToDir($value).".jpg"
 				); 
 			#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
 				$icon->addAttribute("width", "180");
 				$icon->addAttribute("height", "180");*/
-				$id = $this->ToDir($value);
+				$id = self::ToDir($value);
 				$this->displayCategoryDir($id, $value, $amount);
 			}
 		}
 		return False;
 	}
 	
-	private function displayCategoryGroup($id, $value, $amount)
+	private function getActions()
 	{
-		$category = $this->categories->addChild("category");
-		$category->addChild("category_id", $this->ToDir($this->dir_id, $this->class_id, $value));
-		$category->addChild("category_name", ToUTF(self::$Groups[$this->dir_id][$this->class_id][$value]));
-		$this->displayCategotyIcon($category, $id, $amount);
+		switch ((int)$this->actions)
+		{
+			case 1:
+				$action = 6;
+				break;
+			case 3:
+				$action = 0;
+				return $this->localActions();
+				break;
+			case 4:
+				$action = 24;
+				break;
+			case 5:
+				$action = 25;
+				break;
+			case 6:
+				$action = 29;
+				break;
+			case 7:
+				$action = 28;
+				break;
+			default:
+				$action = $this->actions;
+				break;
+		}
+		//print $action;
+		$act = Models\Actions::first(array("segment_id"=>$action, "hidden"=>0));
+		//print_r($act);
+		if($act)
+			return $this->displayCategoryAction( $act );
+	}
+	private function displayCategoryAction( $act )
+	{
+		$url = str_replace("/", "", $act->segment_name);//link
+		$imgfile = "imgs/action/header_$url.jpg";
+		
+		$this->action = "";
+		$this->actionImage($imgfile);
+		
+		$this->action->addChild("description", ToUTF($act->segment_info));
+		$this->action->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $act->segment_name)
+															."/?ref=left_bat_". $act->segment_name);
+		$this->action->addChild("link", "http://www.mvideo.ru/".$url."/");
+		$categorys = $this->getActionsVal($act->segment_name);
+		return $categorys;
 	}
 	
-	private function displayCategoryClass($id, $value, $amount)
+	private function displayCategoryRoot($key, $value, $amount, $id)
 	{
-		$category = $this->categories->addChild("category");
-		$category->addChild("category_id", $id);
-		$category->addChild("category_name", ToUTF(self::$Classes[$this->dir_id][$value]));
-		$this->displayCategotyIcon($category, $id, $amount);
+			$category = $this->categories->addChild("category");
+			$category->addChild("category_id", $key);
+			$category->addChild("category_name", ToUTF($value['name']));
+			$this->displayCategotyIcon($category, $id, $amount);
 	}
 	
 	private function displayCategoryDir($id, $value, $amount)
 	{
+		$name = ToUTF(self::$Dirs[$value]);
+		$this->displayCategorySection($name, $id, $amount);
+	}
+	
+	private function displayCategoryClass($id, $value, $amount)
+	{
+		$name = ToUTF(self::$Classes[$this->dir_id][$value]);
+		$this->displayCategorySection($name, $id, $amount);
+	}
+	
+	private function displayCategoryGroup($id, $value, $amount)
+	{
+		$name = ToUTF(self::$Groups[$this->dir_id][$this->class_id][$value]);
+		$this->displayCategorySection($name, $id, $amount);
+	}
+	
+	private function displayCategorySection($name, $id, $amount)
+	{
 		$category = $this->categories->addChild("category");
 		$category->addChild("category_id", $id);
-		$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
+		$category->addChild("category_name", $name);
 		$this->displayCategotyIcon($category, $id, $amount);
 	}
 	
@@ -742,7 +736,7 @@ class ControllerCategory extends Template\Template{
 	 * в массив $this->action_val
 	 * @param unknown_type $name
 	 */
-	private function putActions($name)
+	private function getActionsVal($name)
 	{
 		
 		$options = array('select' => 'w.warecode',
@@ -815,28 +809,16 @@ class ControllerCategory extends Template\Template{
 		
 	}
 	
-	protected function ToDir($d, $c = 0, $g = 0)
-	{
-		$d = $d*self::$Mult;
-		$c = $c*self::$MultC;
-		$g = $g*self::$MultG;
-		return $d+$c+$g;
-	}
-	protected function ToClass()
-	{
-		$this->dir_id = floor($this->category_id / self::$Mult);
-		$this->class_id = floor(($this->category_id % self::$Mult) / self::$MultC);
-		$this->group_id = floor((($this->category_id % self::$Mult) % self::$MultC) / self::$MultG);
-	}
 	
-	private function createParrentLink( $name )
+	
+	private function displayCategoryNode( $name )
 	{
 		$this->categories="";
 		$this->categories->addAttribute("category_id", $this->category_id);
 		$this->categories->addAttribute("category_name", $name );
 	}
 	
-	private function createParentNode($cat_parrent_id, $cat_parrent_name)
+	private function displayCategoryParentNode($cat_parrent_id, $cat_parrent_name)
 	{
 		$this->parent_category="";
 		$this->parent_category->addChild("category_id", $cat_parrent_id);
@@ -895,16 +877,16 @@ class ControllerCategory extends Template\Template{
 				//если есть класс
 				if($this->class_id)
 				{
-					$this->parents->parent_id = $this->ToDir($this->dir_id, $this->class_id);
+					$this->parents->parent_id = self::ToDir($this->dir_id, $this->class_id);
 					$this->parents->parent_name = ToUTF(self::$Classes[$this->dir_id][$this->class_id]);
-					$cat_parrent_id = $this->ToDir($this->dir_id);
+					$cat_parrent_id = self::ToDir($this->dir_id);
 					$cat_parrent_name = ToUTF(self::$Dirs[$this->dir_id]);
 					//если еть группа
 					if($this->group_id)
 					{
-						$this->parents->parent_id = $this->ToDir($this->dir_id, $this->class_id, $this->group_id);
+						$this->parents->parent_id = self::ToDir($this->dir_id, $this->class_id, $this->group_id);
 						$this->parents->parent_name = ToUTF(self::$Groups[$this->dir_id][$this->class_id][$this->group_id]);
-						$cat_parrent_id = $this->ToDir($this->dir_id, $this->class_id);
+						$cat_parrent_id = self::ToDir($this->dir_id, $this->class_id);
 						$cat_parrent_name = ToUTF(self::$Classes[$this->dir_id][$this->class_id]);
 					}
 				}
@@ -927,7 +909,22 @@ class ControllerCategory extends Template\Template{
 			}
 		}
 		
-		$this->createParentNode($cat_parrent_id, $cat_parrent_name);
+		$this->displayCategoryParentNode($cat_parrent_id, $cat_parrent_name);
 		return false;//$this->options;
+	}
+	
+	protected static function ToDir($d, $c = 0, $g = 0)
+	{
+		$d = $d*self::$Mult;
+		$c = $c*self::$MultC;
+		$g = $g*self::$MultG;
+		return $d+$c+$g;
+	}
+	
+	protected function ToClass()
+	{
+		$this->dir_id = floor($this->category_id / self::$Mult);
+		$this->class_id = floor(($this->category_id % self::$Mult) / self::$MultC);
+		$this->group_id = floor((($this->category_id % self::$Mult) % self::$MultC) / self::$MultG);
 	}
 }
