@@ -226,7 +226,7 @@ class ControllerCategory extends Template\Template{
 
 				
 			$id = $this->ToDir($value);
-			if($this->action_val)
+			/*if($this->action_val)
 				$q = 'SELECT distinct w.ClassID as result, w.warecode
 					FROM warez_'.$this->region_id." as w
 					WHERE w.warecode in (".implode(",", $this->action_val).")
@@ -236,9 +236,9 @@ class ControllerCategory extends Template\Template{
 				$q = 'SELECT distinct ClassID as result, w.warecode 
 					FROM warez_'.$this->region_id." as w
 					
-					WHERE DirID = ".$value.$this->searches." group by result order by w.hit DESC, w.price DESC ";
+					WHERE DirID = ".$value.$this->searches." group by result order by w.hit DESC, w.price DESC ";*/
 				
-			$wwwcat =  Models\Warez::find_by_sql($q);
+			$wwwcat =  Models\Warez::getClassId($value, $this->region_id, $this->action_val, $this->searches);
 			//print_r($wwwcat);
 			//$this->all_dirs($wwwcat);
 			//print_r($wwwcat);
@@ -255,16 +255,7 @@ class ControllerCategory extends Template\Template{
 			if($amount == 0)
 				continue;
 				
-			$category = $this->categories->addChild("category");
-			$category->addChild("category_id", $id);
-			$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
-			$category->addChild("amount", $amount); 
-			$icon = $category->addChild("category_icon", 
-			#"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
-			"http://www.mvideo.ru/mobile/public/img/$id.jpg"
-			); 
-			$icon->addAttribute("width", "180");
-			$icon->addAttribute("height", "180");
+			$this->createCategoryProduct($id, $value, $amount);
 		}
 		return False;
 	}
@@ -691,21 +682,21 @@ class ControllerCategory extends Template\Template{
 			#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
 				$icon->addAttribute("width", "180");
 				$icon->addAttribute("height", "180");*/
-				$this->createCategoryProduct($value, $amount);
+				$id = $this->ToDir($value);
+				$this->createCategoryProduct($id, $value, $amount);
 			}
 		}
 		return False;
 	}
-	
-	private function createCategoryProduct($value, $amount)
+	private function createCategoryProduct($id, $value, $amount)
 	{
 		$category = $this->categories->addChild("category");
-		$category->addChild("category_id", $this->ToDir($value));
+		$category->addChild("category_id", id);
 		$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
 		$category->addChild("amount", $amount); 
 		$icon = $category->addChild("category_icon", 
 			#"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
-			"http://www.mvideo.ru/mobile/public/img/".$this->ToDir($value).".jpg"
+			"http://www.mvideo.ru/mobile/public/img/".$id.".jpg"
 		); 
 		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
 		$icon->addAttribute("width", "180");

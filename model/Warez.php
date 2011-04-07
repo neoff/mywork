@@ -201,6 +201,22 @@ class Warez extends ActiveRecord\Model
 		//print $sql;
 		return self::find_by_sql($sql);
 	}
+	
+	public static function getClassId($dir, $region_id = 1, $action = "", $search = "")
+	{
+		$sql = 'SELECT distinct ClassID as result, w.warecode 
+				FROM warez_'.$region_id." as w
+				WHERE w.DirID = ".$dir;
+		if($action)
+			$sql .= " AND w.warecode in (".implode(",", $action).") ";
+		
+		if($search)
+			$sql .= $search;
+			
+		$sql .= " GROUP BY result ORDER BY w.hit DESC, w.price DESC ";
+		
+		return self::find_by_sql($sql);
+	}
 
 }
 
