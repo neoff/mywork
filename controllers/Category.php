@@ -863,7 +863,7 @@ class ControllerCategory extends Template\Template{
 				$cat_parrent_name = $this->parent_name = "Список категорий";
 				$cat_parrent_id = $this->parent_id = 0;
 				//$this->dir_id = $this->category_id;
-				print 1111111111;
+				
 				
 			}
 			else
@@ -873,6 +873,7 @@ class ControllerCategory extends Template\Template{
 				 * и выставляем id и name у родительского нода
 				 */
 				$this->ToClass();
+				print 1111111111;
 				
 				$this->parents->dirid = $this->dir_id;
 				$this->parents->classid = $this->class_id;
