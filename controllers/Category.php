@@ -267,7 +267,7 @@ class ControllerCategory extends Template\Template{
 	 */
 	protected function createClasses()
 	{
-		var_dump(self::$Dirs);
+		var_dump($this->dir_id);
 		$this->createParrentLink(ToUTF(self::$Dirs[$this->dir_id]));
 		
 		/*$q = 'SELECT distinct w.ClassID as result 
