@@ -156,7 +156,7 @@ class Warez extends ActiveRecord\Model
 			if($count < 3)
 			{
 				$d = array_fill($count+1, 3-$count, 0);
-				$dcg = array_merge($dcg, $d);
+				//$dcg = array_merge($dcg, $d);
 			}
 			list($dir, $class, $group) = $dcg;
 		}
