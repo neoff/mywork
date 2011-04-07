@@ -284,7 +284,6 @@ class ControllerCategory extends Template\Template{
 			
 		#print $q;
 		//$wwwarez =  Models\Warez::find_by_sql($q);
-		var_dump($this->action_val);
 		$wwwarez =  Models\Warez::getClassId($this->dir_id, $this->region_id, $this->action_val);
 		$this->all_dirs($wwwarez);
 		//print $this->dir_id;
