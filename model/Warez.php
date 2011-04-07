@@ -181,7 +181,7 @@ class Warez extends ActiveRecord\Model
 			if($search)
 				$sql .= $search;
 			
-			print $dir;
+			print $sql;
 			if($dir)
 				$sql .= " w.DirID = ".$dir;
 		
