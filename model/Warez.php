@@ -164,11 +164,11 @@ class Warez extends ActiveRecord\Model
 		$sql = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
 				FROM warez_'.$region_id." as w";
 		
-		$groups = "";
+		$groups = " GROUP BY result ";
 		if($search || $action)
 		{
 			$sql .= " WHERE ";
-			$group = " GROUP BY result ORDER BY c DESC ";
+			$groups .= " ORDER BY c DESC ";
 		}
 		if($search && !$action)
 			$sql .= " w.warecode ";
