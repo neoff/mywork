@@ -148,8 +148,8 @@ class ControllerCategory extends Template\Template{
 			$amount = 0;
 			foreach ($value['dirs'] as $v) 
 			{
-				//if(!in_array($v, $wwwarez))
-				//	continue 2;
+				if(!in_array($v, $wwwarez))
+					continue 2;
 				
 				$amount++;
 				$one_key = $v;
@@ -164,7 +164,6 @@ class ControllerCategory extends Template\Template{
 				$key = self::ToDir($one_key);
 				if($this->action_val)
 					$value['name'] = self::$Dirs[$one_key];
-				return $key;
 			}
 			
 			
