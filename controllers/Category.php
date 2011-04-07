@@ -625,7 +625,7 @@ private function createActionDirs()
 		*/
 		//print "<!--\ ".$q." \-->";
 		//$wwwarez =  Models\Warez::find_by_sql($q);
-		$dcg = array($this->category_id);
+		$dcg = array($this->dir_id);
 		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches, $dcg);
 		$res = $wwwarez;
 		$this->all_dirs($wwwarez);
