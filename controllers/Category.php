@@ -691,7 +691,7 @@ class ControllerCategory extends Template\Template{
 	private function createCategoryProduct($id, $value, $amount)
 	{
 		$category = $this->categories->addChild("category");
-		$category->addChild("category_id", id);
+		$category->addChild("category_id", $id);
 		$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
 		$category->addChild("amount", $amount); 
 		$icon = $category->addChild("category_icon", 
