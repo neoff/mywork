@@ -156,12 +156,11 @@ class Warez extends ActiveRecord\Model
 			if($count < 3)
 			{
 				$d = array_fill($count+1, 3-$count, 0);
-				var_dump($dcg);
 				$dcg = array_merge($dcg, $d);
 			}
 			list($dir, $class, $group) = $dcg;
 		}
-		var_dump($dcg);
+		
 		$sql = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
 				FROM warez_'.$region_id." as w";
 		
