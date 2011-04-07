@@ -236,7 +236,7 @@ class ControllerCategory extends Template\Template{
 			if($amount == 0)
 				continue;
 				
-			$this->createCategoryProduct($id, $value, $amount);
+			$this->displayCategoryDir($id, $value, $amount);
 		}
 		return False;
 	}
