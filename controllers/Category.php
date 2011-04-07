@@ -667,7 +667,7 @@ class ControllerCategory extends Template\Template{
 							WHERE w.DirID = ".$value."
 							$this->searches";*/
 					
-				$wwwcat =  Models\Warez::getWarezAction($this->region_id, $this->action_val, $this->searches);
+				$wwwcat =  Models\Warez::getWarezAction($value, $this->region_id, $this->action_val, $this->searches);
 				//print_r($wwwcat);
 				//$this->all_dirs($wwwcat);
 				if($wwwcat)
