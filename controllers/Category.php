@@ -284,7 +284,6 @@ class ControllerCategory extends Template\Template{
 			
 		#print $q;
 		//$wwwarez =  Models\Warez::find_by_sql($q);
-		var_dump($this->action_val);
 		$wwwarez =  Models\Warez::getClassId($this->dir_id, $this->region_id, $this->action_val);
 		$this->all_dirs($wwwarez);
 		//print $this->dir_id;
@@ -310,7 +309,7 @@ class ControllerCategory extends Template\Template{
 						AND w.ClassID = ".$value." group by result order by w.hit DESC, w.price DESC ";
 				
 			$wwwcat =  Models\Warez::find_by_sql($q);*/
-			$wwwcat =  Models\Warez::getClassId($this->dir_id, $value, $this->region_id, $this->action_val, $this->searches);
+			$wwwcat =  Models\Warez::getGroupId($this->dir_id, $value, $this->region_id, $this->action_val, $this->searches);
 			//print_r($wwwcat);
 			//$this->all_dirs($wwwcat);
 			if($wwwcat)

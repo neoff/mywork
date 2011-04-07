@@ -203,7 +203,7 @@ class Warez extends ActiveRecord\Model
 		$sql = 'SELECT distinct ClassID as result, w.warecode 
 				FROM warez_'.$region_id." as w
 				WHERE w.DirID = ".$dir;
-		var_dump($action);
+		
 		if($action)
 			$sql .= " AND w.warecode in (".implode(",", $action).") ";
 		
