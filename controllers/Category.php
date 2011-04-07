@@ -418,7 +418,7 @@ class ControllerCategory extends Template\Template{
 	/**
 	 * функция рисует на странице информацию о продуктах в категории 
 	 */
-	protected function createProduct()
+	private function createProduct()
 	{
 		//print 4;
 		//var_dump($this->parents);
@@ -429,8 +429,9 @@ class ControllerCategory extends Template\Template{
 		if($this->parents)
 		{
 			#print "ads";
+			$productes_all = Models\Warez::getWarez($this->region_id, $this->parents, False);
 			$productes_count = 0;
-			$productes_count = count(Models\Warez::getWarez($this->region_id, $this->parents, False));
+			$productes_count = count($productes_all);
 			$productes_m = Models\Warez::getWarez($this->region_id, $this->parents, $this->page);
 			
 			//add params
