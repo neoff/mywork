@@ -160,7 +160,7 @@ class Warez extends ActiveRecord\Model
 			}
 			list($dir, $class, $group) = $dcg;
 		}
-		
+		var_dump($dcg);
 		$sql = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
 				FROM warez_'.$region_id." as w";
 		
@@ -181,7 +181,6 @@ class Warez extends ActiveRecord\Model
 			if($search)
 				$sql .= $search;
 			
-			print $sql;
 			if($dir)
 				$sql .= " w.DirID = ".$dir;
 		
