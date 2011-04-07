@@ -706,7 +706,7 @@ class ControllerCategory extends Template\Template{
 		$category = $this->categories->addChild("category");
 		$category->addChild("category_id", $this->ToDir($this->dir_id, $this->class_id, $value));
 		$category->addChild("category_name", ToUTF(self::$Groups[$this->dir_id][$this->class_id][$value]));
-		$this->createCategotyIcon($category, $id, $amount);
+		$this->displayCategotyIcon($category, $id, $amount);
 	}
 	
 	private function displayCategoryClass($id, $value, $amount)
@@ -714,7 +714,7 @@ class ControllerCategory extends Template\Template{
 		$category = $this->categories->addChild("category");
 		$category->addChild("category_id", $id);
 		$category->addChild("category_name", ToUTF(self::$Classes[$this->dir_id][$value]));
-		$this->createCategotyIcon($category, $id, $amount);
+		$this->displayCategotyIcon($category, $id, $amount);
 	}
 	
 	private function displayCategoryDir($id, $value, $amount)
@@ -722,7 +722,7 @@ class ControllerCategory extends Template\Template{
 		$category = $this->categories->addChild("category");
 		$category->addChild("category_id", $id);
 		$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
-		$this->createCategotyIcon($category, $id, $amount);
+		$this->displayCategotyIcon($category, $id, $amount);
 	}
 	
 	private function displayCategotyIcon(&$category, $id, $amount)
