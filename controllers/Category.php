@@ -113,7 +113,7 @@ class ControllerCategory extends Template\Template{
 			$this->parentNode();
 			
 			if($this->category_id == 0)
-				$this->category = $this->rootCategories();
+				$this->category = $this->createRoot();
 			else 
 			{
 				if($this->category_id < self::$Mult)
