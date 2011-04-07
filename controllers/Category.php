@@ -602,10 +602,10 @@ class ControllerCategory extends Template\Template{
 		}
 	}
 	
-private function createActionDirs()
+	private function createActionDirs()
 	{
 		$this->parentNode();
-		/*$q = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
+		$q = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
 			FROM warez_'.$this->region_id.' as w ';
 		
 		if($this->searches)
@@ -622,11 +622,11 @@ private function createActionDirs()
 					GROUP BY result
 					ORDER BY c DESC";
 		
-		*/
+		
 		//print "<!--\ ".$q." \-->";
-		//$wwwarez =  Models\Warez::find_by_sql($q);
+		$wwwarez =  Models\Warez::find_by_sql($q);
 		$dcg = array($this->dir_id);
-		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches, $dcg);
+		//$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches, $dcg);
 		$res = $wwwarez;
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
