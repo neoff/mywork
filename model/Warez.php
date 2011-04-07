@@ -192,13 +192,9 @@ class Warez extends ActiveRecord\Model
 			
 			if($search)
 				$sql .= $search;
-			
-			//if($dir)
-			//	$sql .= " AND w.DirID = ".$dir;
-		
 		}
+		
 		$sql .= $groups;
-		//print $sql;
 		return self::find_by_sql($sql);
 	}
 	
@@ -207,6 +203,41 @@ class Warez extends ActiveRecord\Model
 		$sql = 'SELECT distinct ClassID as result, w.warecode 
 				FROM warez_'.$region_id." as w
 				WHERE w.DirID = ".$dir;
+		
+		if($action)
+			$sql .= " AND w.warecode in (".implode(",", $action).") ";
+		
+		if($search)
+			$sql .= $search;
+			
+		$sql .= " GROUP BY result ORDER BY w.hit DESC, w.price DESC ";
+		
+		return self::find_by_sql($sql);
+	}
+	
+	public static function getGroupId($dir, $classid, $region_id = 1, $action = "", $search = "")
+	{
+		$sql = 'SELECT distinct w.GrID as result, w.warecode 
+				FROM warez_'.$region_id." as w
+				WHERE w.DirID = ".$dir." AND w.ClassID = ".$classid;
+		
+		if($action)
+			$sql .= " AND w.warecode in (".implode(",", $action).") ";
+		
+		if($search)
+			$sql .= $search;
+			
+		$sql .= " GROUP BY result ORDER BY w.hit DESC, w.price DESC ";
+		
+		return self::find_by_sql($sql);
+	}
+	
+	public static function getWaresId($dir, $classid, $groupid, $region_id = 1, $action = "", $search = "")
+	{
+		$sql = 'SELECT distinct w.warecode as result, w.warecode 
+				FROM warez_'.$region_id." as w
+				WHERE w.DirID = ".$dir." AND w.ClassID = ".$classid." AND w.GrID = ".$groupid;
+		
 		if($action)
 			$sql .= " AND w.warecode in (".implode(",", $action).") ";
 		

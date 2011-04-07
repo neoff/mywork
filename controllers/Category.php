@@ -269,18 +269,20 @@ class ControllerCategory extends Template\Template{
 	{
 		$this->createParrentLink(ToUTF(self::$Dirs[$this->dir_id]));
 		
-		$q = 'SELECT distinct w.ClassID as result 
+		/*$q = 'SELECT distinct w.ClassID as result 
 			FROM warez_'.$this->region_id." as w
 			WHERE w.DirID = ".$this->dir_id;
 		
 		if($this->action_val)
 			$q .= " AND w.warecode in (".implode(",", $this->action_val).")";
-			
+		*/
+		
 		if($this->searches)
 			return $this->createProduct();
 			
 		#print $q;
-		$wwwarez =  Models\Warez::find_by_sql($q);
+		//$wwwarez =  Models\Warez::find_by_sql($q);
+		$wwwarez =  Models\Warez::getClassId($this->dir_id, $this->region_id, $this->action_val);
 		$this->all_dirs($wwwarez);
 		//print $this->dir_id;
 		//print_r(array_keys(self::$Groups[$this->dir_id]));
@@ -290,7 +292,7 @@ class ControllerCategory extends Template\Template{
 			if(!in_array($value, $wwwarez))
 				continue;
 			
-			if($this->action_val)
+			/*if($this->action_val)
 				$q = 'SELECT distinct w.GrID as result, w.warecode 
 					FROM warez_'.$this->region_id." as w
 					WHERE w.warecode in (".implode(",", $this->action_val).")
@@ -304,7 +306,8 @@ class ControllerCategory extends Template\Template{
 						$this->searches
 						AND w.ClassID = ".$value." group by result order by w.hit DESC, w.price DESC ";
 				
-			$wwwcat =  Models\Warez::find_by_sql($q);
+			$wwwcat =  Models\Warez::find_by_sql($q);*/
+			$wwwcat =  Models\Warez::getClassId($this->dir_id, $value, $this->region_id, $this->action_val, $this->searches);
 			//print_r($wwwcat);
 			//$this->all_dirs($wwwcat);
 			if($wwwcat)
@@ -316,7 +319,7 @@ class ControllerCategory extends Template\Template{
 			$id = $this->ToDir($this->dir_id, $value);
 			if($amount == 1)
 			{
-				if($this->action_val)
+				/*if($this->action_val)
 					$q = 'SELECT distinct w.warecode as result, w.warecode 
 						FROM warez_'.$this->region_id." as w
 						WHERE w.warecode in (".implode(",", $this->action_val).")
@@ -331,17 +334,19 @@ class ControllerCategory extends Template\Template{
 							$this->searches
 							AND w.ClassID = ".$value."
 							AND w.GrID = ".$wwwcat[0]->result." group by result order by w.hit DESC, w.price DESC ";
-						
+						*/
 				//print $q;
 				$id = $this->ToDir($this->dir_id, $value, $wwwcat[0]->result);
-				$wwwcats =  Models\Warez::find_by_sql($q);
+				//$wwwcats =  Models\Warez::find_by_sql($q);
+				$wwwcat =  Models\Warez::getWaresId($this->dir_id, $value, $wwwcat[0]->result,
+													$this->region_id, $this->action_val, $this->searches);
 				if($wwwcat)
-					$amount = count($wwwcats);
+					$amount = count($wwwcat);
 			}
 			if($amount == 0)
 				continue;
 			//print_r($wwwcats);
-			$category = $this->categories->addChild("category");
+			/*$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $id);
 			$category->addChild("category_name", ToUTF(self::$Classes[$this->dir_id][$value]));
 			$category->addChild("amount", $amount); 
@@ -351,7 +356,8 @@ class ControllerCategory extends Template\Template{
 			); 
 		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
 			$icon->addAttribute("width", "180");
-			$icon->addAttribute("height", "180");
+			$icon->addAttribute("height", "180");*/
+				$this->createGroupProduct($id, $value, $amount);
 		}
 		return False;
 	}
@@ -688,11 +694,25 @@ class ControllerCategory extends Template\Template{
 		}
 		return False;
 	}
+	
+	private function createGroupProduct($id, $value, $amount)
+	{
+		$category = $this->categories->addChild("category");
+			$category->addChild("category_id", $id);
+			$category->addChild("category_name", ToUTF(self::$Classes[$this->dir_id][$value]));
+			$this->createCategotyIcon($category, $id, $amount);
+	}
+	
 	private function createCategoryProduct($id, $value, $amount)
 	{
 		$category = $this->categories->addChild("category");
 		$category->addChild("category_id", $id);
 		$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
+		$this->createCategotyIcon($category, $id, $amount);
+	}
+	
+	private function createCategotyIcon(&$category, $id, $amount)
+	{
 		$category->addChild("amount", $amount); 
 		$icon = $category->addChild("category_icon", 
 			#"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
@@ -702,6 +722,7 @@ class ControllerCategory extends Template\Template{
 		$icon->addAttribute("width", "180");
 		$icon->addAttribute("height", "180");
 	}
+	
 	/**
 	 * собирает товары участвующие в акции
 	 * в массив $this->action_val
