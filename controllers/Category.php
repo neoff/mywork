@@ -875,7 +875,6 @@ class ControllerCategory extends Template\Template{
 				 * и выставляем id и name у родительского нода
 				 */
 				$this->ToClass();
-				print 1111111111;
 				
 				$this->parents->dirid = $this->dir_id;
 				$this->parents->classid = $this->class_id;
