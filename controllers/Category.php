@@ -101,15 +101,17 @@ class ControllerCategory extends Template\Template{
 		
 		
 		
-		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
+		/*if($this->category_id >=0 && !$this->searches && $this->actions < 0)
 		{
-			//$this->parentNode();
+			$this->parentNode();
 		}
-		elseif($this->category_id >=0 && ($this->searches || $this->actions > 0))
+		else*/if($this->category_id >=0 && ($this->searches || $this->actions > 0))
 			$this->category = $this->createActionDirs();
 			
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
 		{
+			$this->parentNode();
+			
 			if($this->category_id == 0)
 				$this->category = $this->rootCategories();
 			else 
