@@ -213,7 +213,7 @@ class ControllerCategory extends Template\Template{
 					$this->searches";
 					*/
 		//print $q;
-		$wwwarez =  Models\Warez::getRootCategoryChild($this->category_id, $this->action_val, $this->searches);
+		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches);
 		$this->all_dirs($wwwarez);
 		
 		
@@ -623,9 +623,9 @@ private function createActionDirs()
 					ORDER BY c DESC";
 		
 		*/
-		//print "<!--\ ".$q." \-->";
+		//print "<!--\ ".$q." \-->";$this->category_id
 		//$wwwarez =  Models\Warez::find_by_sql($q);
-		$wwwarez =  Models\Warez::getRootCategoryChild($this->category_id, $this->action_val, $this->searches);
+		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches);
 		$res = $wwwarez;
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
