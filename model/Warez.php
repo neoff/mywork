@@ -181,12 +181,12 @@ class Warez extends ActiveRecord\Model
 			if($search)
 				$sql .= $search;
 			
-			if($dir)
-				$sql .= " AND w.DirID = ".$dir;
+			//if($dir)
+			//	$sql .= " AND w.DirID = ".$dir;
 		
 		}
 		$sql .= $groups;
-		print $sql;
+		//print $sql;
 		return self::find_by_sql($sql);
 	}
 
