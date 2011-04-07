@@ -168,6 +168,9 @@ class Warez extends ActiveRecord\Model
 		if($search || $action)
 		{
 			$sql .= " WHERE ";
+			if($dir)
+				$sql = " w.DirID = ".$dir;
+				
 			$groups .= " ORDER BY c DESC ";
 		}
 		if($search && !$action)
