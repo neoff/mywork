@@ -159,6 +159,7 @@ class Warez extends ActiveRecord\Model
 				$d = array_fill($count+1, 3-$count, 0);
 				$dcg = array_merge($dcg, $d);
 			}
+			var_dump($dcg);
 		}
 		$group = "";
 		if($search || $action)
