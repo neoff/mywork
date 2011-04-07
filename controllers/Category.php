@@ -14,7 +14,7 @@
 	use Models;
 	use Template;
 	
-	
+/*	
 class SetId{
 	public $search;
 	
@@ -28,7 +28,7 @@ class SetId{
 		
 		list($this->dirid, $this->classid, $this->grid) = array($dirid, $classid, $grid);
 	}
-}
+}*/
 
 class ControllerCategory extends Template\Template{
 	
