@@ -145,7 +145,7 @@ class Warez extends ActiveRecord\Model
 			return $array;
 		
 	}*/
-	public static function getWarezAction($region_id = 1, $action = "", $search = "", $dir)
+	public static function getWarezAction($region_id = 1, $action = "", $search = "")
 	{
 		$sql = 'SELECT distinct w.warecode 
 						FROM warez_'.$region_id." as w
