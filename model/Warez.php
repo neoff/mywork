@@ -165,11 +165,11 @@ class Warez extends ActiveRecord\Model
 				FROM warez_'.$region_id." as w";
 		
 		$groups = " GROUP BY result ";
-		if($search || $action)
+		if($search || $action || $dir)
 		{
 			$sql .= " WHERE ";
 			if($dir)
-				$sql = " w.DirID = ".$dir;
+				$sql .= " w.DirID = ".$dir;
 				
 			$groups .= " ORDER BY c DESC ";
 		}
