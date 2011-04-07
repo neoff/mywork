@@ -110,7 +110,7 @@ class ControllerCategory extends Template\Template{
 			
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
 		{
-			$this->parentNode();
+			$this->createParent();
 			
 			if($this->category_id == 0)
 				$this->category = $this->createRoot();
@@ -542,7 +542,7 @@ class ControllerCategory extends Template\Template{
 	
 	private function createDirAction()
 	{
-		$this->parentNode();
+		$this->createParent();
 		/*$q = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
 			FROM warez_'.$this->region_id.' as w ';
 		
