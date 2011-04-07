@@ -161,7 +161,7 @@ class Warez extends ActiveRecord\Model
 			$sql .= " w.warecode in (".implode(",", $action).") ";
 		
 		if($search)
-			$sql .= $search
+			$sql .= $search;
 		//print $sql;
 		return self::find_by_sql($sql);
 	}
