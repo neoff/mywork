@@ -449,33 +449,14 @@ class ControllerCategory extends Template\Template{
 			//print "<br>";
 			//$markid = array();
 			
-			$param_m = $this->params->addChild("param"); 
-			$param_m->addAttribute("param_name", "mark");
-			$param_m->addAttribute("title", "Производители");
-			$param_m->addAttribute("current_value", "0");
-			$option_m = $param_m->addChild("option", "Все производители");
-			$option_m->addAttribute("value", "0");
+			$param_m = $this->displayProductMark();
+			$param_g = $this->displayProductGroup();
 			
-			//2
-			$param_g = $this->params->addChild("param"); 
-			$param_g->addAttribute("param_name", "grid");
-			$param_g->addAttribute("title", "Группы");
-			$param_g->addAttribute("current_value", "0");
-			$option_g = $param_g->addChild("option", "Все группы");
-			$option_g->addAttribute("value", "0");
+			$this->displayProductNode();
 			
-			$this->products="";
-			$this->products->addAttribute("category_id", $this->category_id);
-			$this->products->addAttribute("category_name", $c_name);
 			if($this->page)
-			{
-				$this->pages="";
-				$this->pages->addChild("amount", $productes_count);
-				$this->pages->addChild("onpage", "20");
-				$this->pages->addChild("page", $this->page);
-			}
-			//var_dump($productes_m);
-			//exit();
+				$this->displayPageNode();
+				
 			if($productes_m)
 			{
 				foreach ($productes_m as $key => $val)
@@ -485,53 +466,14 @@ class ControllerCategory extends Template\Template{
 					if (!in_array($val->mark, $markid))
 						$markid[]=$val->mark;
 					//add products
-	
-					$product = $this->products->addChild("product");
-					$product->addChild("product_id", ToUTF($val->warecode));
-					$product->addChild("title", StripTags($val->name));
-					$val->getDesctiptions();
-					$product->addChild("description", StripTags($val->description));
-					//$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 'conditions' => array('warecode = ?', $val->warecode)));
-					$val->getRatingRev();
-					$product->addChild("rating", $val->rating);
-					$product->addChild("reviews_num", $val->reviews);
-					$product->addChild("inet_price", $val->inetprice);
+					$this->displayProduct( $val );
 					
-					$dic = $val->getInetDiscountStatus($val->warecode, $this->region_id);
-					$product->addChild("card_discount", $dic);
-					
-					if($val->oldprice)
-						$old_price = $val->oldprice;
-					else
-						$old_price = $val->price;
-						
-					$product->addChild("old_price", $old_price);
-					
-					$product->addChild("price", $val->price);
-					$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); 
-					$image->addAttribute("width", "180");
-					$image->addAttribute("height", "180");
 				}
 			}
 			
-			foreach($grid as $val)
-			{
-				$m_group = Models\Groups::find('first', array("grid"=>$val));
-				if($m_group){
-					//print ToUTF($m_marks->markname);
-					$option_g = $param_g->addChild("option", ToUTF($m_group->grname));
-					$option_g->addAttribute("value", $val);
-				}
-			}
-			foreach($markid as $val)
-			{
-				$m_marks = Models\Marks::find('first', array("markid"=>$val));
-				if($m_marks){
-					//print ToUTF($m_marks->markname);
-					$option_m = $param_m->addChild("option", StripTags($m_marks->markname));
-					$option_m->addAttribute("value", $val);
-				}
-			}
+			$this->displayProductMarkVal( $markid, &$param_m );
+			$this->displayProductGroupVal($grid, $param_g);
+			
 		}
 	}
 	
@@ -811,6 +753,30 @@ class ControllerCategory extends Template\Template{
 		return False;
 	}
 	
+	private function getProductMarkVal( $markid, &$param )
+	{
+		foreach($markid as $val)
+		{
+			$group = Models\Marks::find('first', array("markid"=>$val));
+			if($group)
+			{
+				$this->displayProductGroupOption(&$param, StripTags($group->markname), $val);
+			}
+		}
+	}
+	
+	private function getProductGroupVal( $grid, &$param )
+	{
+		foreach($grid as $val)
+		{
+			$group = Models\Groups::find('first', array("grid"=>$val));
+			if($group)
+			{
+				$this->displayProductGroupOption(&$param, ToUTF($group->grname), $val);
+			}
+		}
+	}
+	
 	private function displayCategoryAction( $act )
 	{
 		$url = str_replace("/", "", $act->segment_name);//link
@@ -875,6 +841,100 @@ class ControllerCategory extends Template\Template{
 	
 	
 	
+	
+	
+	
+	
+	
+	private function displayCategoryNode( $name )
+	{
+		$this->categories="";
+		$this->categories->addAttribute("category_id", $this->category_id);
+		$this->categories->addAttribute("category_name", $name );
+	}
+	
+	private function displayCategoryParentNode($cat_parrent_id, $cat_parrent_name)
+	{
+		$this->parent_category="";
+		$this->parent_category->addChild("category_id", $cat_parrent_id);
+		$this->parent_category->addChild("category_name", $cat_parrent_name);
+	}
+	
+	private function displayProduct( $val )
+	{
+		$product = $this->products->addChild("product");
+		$product->addChild("product_id", ToUTF($val->warecode));
+		$product->addChild("title", StripTags($val->name));
+		$val->getDesctiptions();
+		$product->addChild("description", StripTags($val->description));
+		//$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 'conditions' => array('warecode = ?', $val->warecode)));
+		$val->getRatingRev();
+		$product->addChild("rating", $val->rating);
+		$product->addChild("reviews_num", $val->reviews);
+		$product->addChild("inet_price", $val->inetprice);
+		
+		$dic = $val->getInetDiscountStatus($val->warecode, $this->region_id);
+		$product->addChild("card_discount", $dic);
+		
+		if($val->oldprice)
+			$old_price = $val->oldprice;
+		else
+			$old_price = $val->price;
+			
+		$product->addChild("old_price", $old_price);
+		
+		$product->addChild("price", $val->price);
+		$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); 
+		$image->addAttribute("width", "180");
+		$image->addAttribute("height", "180");
+	}
+	
+	private function displayProductNode()
+	{
+		$this->products="";
+		$this->products->addAttribute("category_id", $this->category_id);
+		$this->products->addAttribute("category_name", $c_name);
+	}
+	
+	private function displayProductMark()
+	{
+		$param = $this->params->addChild("param"); 
+		$param->addAttribute("param_name", "mark");
+		$param->addAttribute("title", "Производители");
+		$param->addAttribute("current_value", "0");
+		$option = $param->addChild("option", "Все производители");
+		$option->addAttribute("value", "0");
+		return $param;
+	}
+	
+	
+	private function displayProductGroup()
+	{
+		$param = $this->params->addChild("param"); 
+		$param->addAttribute("param_name", "grid");
+		$param->addAttribute("title", "Группы");
+		$param->addAttribute("current_value", "0");
+		$option = $param->addChild("option", "Все группы");
+		$option->addAttribute("value", "0");
+		
+		return $param;
+	}
+	
+	
+	
+	private function displayProductGroupOption(&$param, $name, $val)
+	{
+		$option = $param->addChild("option", ToUTF($group->grname));
+		$option->addAttribute("value", $val);
+	}
+	
+	private function displayPageNode()
+	{
+		$this->pages="";
+		$this->pages->addChild("amount", $productes_count);
+		$this->pages->addChild("onpage", "20");
+		$this->pages->addChild("page", $this->page);
+	}
 	/**
 	 * создает ноду с картинкой для акции
 	 * @param unknown_type $img
@@ -897,24 +957,6 @@ class ControllerCategory extends Template\Template{
 			$images->addAttribute("height", $imgsize[1]);
 		}
 	}
-	
-	
-	
-	
-	private function displayCategoryNode( $name )
-	{
-		$this->categories="";
-		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", $name );
-	}
-	
-	private function displayCategoryParentNode($cat_parrent_id, $cat_parrent_name)
-	{
-		$this->parent_category="";
-		$this->parent_category->addChild("category_id", $cat_parrent_id);
-		$this->parent_category->addChild("category_name", $cat_parrent_name);
-	}
-	
 	
 	
 	protected static function ToDir($d, $c = 0, $g = 0)
