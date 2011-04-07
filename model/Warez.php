@@ -183,7 +183,7 @@ class Warez extends ActiveRecord\Model
 			$sql .= $search;
 			
 		$sql .= $groups;
-		//print $sql;
+		print $sql;
 		return self::find_by_sql($sql);
 	}
 
