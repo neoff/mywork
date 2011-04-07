@@ -148,9 +148,8 @@ class Warez extends ActiveRecord\Model
 	
 	public static function getRootCategoryChild($region_id = 1, $action = "", $search = "", $dcg = array())
 	{
-		$sql = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
-				FROM warez_'.$region_id." as w";
 		//print $sql;
+		$dir = $class = $group = 0;
 		if( $dcg )
 		{
 			$count = count($dcg);
@@ -159,9 +158,13 @@ class Warez extends ActiveRecord\Model
 				$d = array_fill($count+1, 3-$count, 0);
 				$dcg = array_merge($dcg, $d);
 			}
-			var_dump($dcg);
+			list($dir, $class, $group) = $dcg;
 		}
-		$group = "";
+		
+		$sql = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
+				FROM warez_'.$region_id." as w";
+		
+		$groups = "";
 		if($search || $action)
 		{
 			$sql .= " WHERE ";
@@ -176,7 +179,7 @@ class Warez extends ActiveRecord\Model
 		if($search)
 			$sql .= $search;
 			
-		$sql .= $group;
+		$sql .= $groups;
 		//print $sql;
 		return self::find_by_sql($sql);
 	}

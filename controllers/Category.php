@@ -103,7 +103,7 @@ class ControllerCategory extends Template\Template{
 		
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
 		{
-			$this->parentNode();
+			//$this->parentNode();
 		}
 		elseif($this->category_id >=0 && ($this->searches || $this->actions > 0))
 			$this->category = $this->createActionDirs();
@@ -130,7 +130,7 @@ class ControllerCategory extends Template\Template{
 			if($this->group_id || $this->actions > 0)
 				$this->createProduct();
 			else
-				$this->createProduct();
+				$this->createClasses();
 	}
 	
 	
