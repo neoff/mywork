@@ -623,9 +623,10 @@ private function createActionDirs()
 					ORDER BY c DESC";
 		
 		*/
-		//print "<!--\ ".$q." \-->";$this->category_id
+		//print "<!--\ ".$q." \-->";
 		//$wwwarez =  Models\Warez::find_by_sql($q);
-		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches);
+		$dcg = array($this->category_id);
+		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches, $dcg);
 		$res = $wwwarez;
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
