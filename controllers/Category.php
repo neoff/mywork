@@ -917,7 +917,7 @@ class ControllerCategory extends Template\Template{
 	
 	private function displayProductGroupOption(&$param, $name, $val)
 	{
-		$option = $param->addChild("option", ToUTF($group->grname));
+		$option = $param->addChild("option", $name);
 		$option->addAttribute("value", $val);
 	}
 	
