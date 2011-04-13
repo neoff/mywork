@@ -63,7 +63,6 @@ abstract class Template {
 		//print preg_replace("/></", ">\n<", $doc);
 		//try
 		//{
-		print 111;
 			$dom = new \DOMDocument;
 			$dom->loadXML($doc, LIBXML_DTDLOAD|LIBXML_DTDATTR);
 			$myDoc = new MyDOMDocument($dom);

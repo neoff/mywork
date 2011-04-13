@@ -68,7 +68,7 @@ class Singleton {
 	
 }
 	
-	
+/*	
 class MyDomException extends Exception{
 	public function __construct($e)
 	{
@@ -122,9 +122,9 @@ class MyDomException extends Exception{
 		
 	}
 }
+*/
 
-
-class MyException extends Exception {
+class MyException extends Exception implements Template\Template {
 	public function __construct($errno, $errstr, $errfile, $errline) {
 		parent::__construct($errstr, $errno);
 		//print $this->getMessage();
