@@ -14,22 +14,6 @@
 	use Models;
 	use Template;
 	
-/*	
-class SetId{
-	public $search;
-	
-	public function __set($name, $val)
-	{
-		$this->$name = $val;
-	}
-	
-	public function __construct($dirid, $classid, $grid)
-	{
-		
-		list($this->dirid, $this->classid, $this->grid) = array($dirid, $classid, $grid);
-	}
-}*/
-
 class ControllerCategory extends Template\Template{
 	
 	private $parent_name;
@@ -58,21 +42,15 @@ class ControllerCategory extends Template\Template{
 	protected $class_id;
 	protected $group_id;
 	
-	protected function all_dirs(&$a)
-	{
-		//SELECT distinct DirID, ClassID, GrID from warez_1;
-		foreach ($a as $value) {
-			self::$TmpDir[] = $value->result;
-		}
-		$a=self::$TmpDir;
-		return $a;
-	}
+	
 	public function index( $array )
 	{
 		
 		
 		if($array)
-			list($this->region_id, $this->category_id, $this->actions, $this->searches, $this->page)=$array;
+		{
+			$this->setVar();
+		}
 		
 		$GlobalConfig=array();
 		$rfile = dirname(dirname(dirname($_SERVER["SCRIPT_FILENAME"])));
@@ -952,7 +930,39 @@ class ControllerCategory extends Template\Template{
 		}
 	}
 	
+	/**
+	 * собирает уникальные ID директорий из БД
+	 * @param object $a
+	 */
+	protected function all_dirs(&$a)
+	{
+		//SELECT distinct DirID, ClassID, GrID from warez_1;
+		foreach ($a as $value) {
+			self::$TmpDir[] = $value->result;
+		}
+		$a=self::$TmpDir;
+		return $a;
+	}
 	
+	/**
+	 * устанавливает основные переменные из $_GET запроса
+	 */
+	private function setVar()
+	{
+		$this->region_id = get_key('region_id', 0);
+		$this->category_id = get_key('category_id', -1);
+		$this->actions = get_key('action', -1);
+		$this->searches = get_key('search');
+		$this->page = get_key('page', 0);
+	}
+	
+	/**
+	 * собирает ID категории
+	 * @param int $d
+	 * @param int $c
+	 * @param int $g
+	 * @return long
+	 */
 	protected static function ToDir($d, $c = 0, $g = 0)
 	{
 		$d = $d*self::$Mult;
@@ -961,6 +971,10 @@ class ControllerCategory extends Template\Template{
 		return $d+$c+$g;
 	}
 	
+	/**
+	 * разбирает ID категории превращая их в DirID, ClassID, GrID из БД
+	 * и назначает основные переменные
+	 */
 	protected function ToClass()
 	{
 		$this->dir_id = floor($this->category_id / self::$Mult);
