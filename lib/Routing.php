@@ -23,7 +23,7 @@
 		$path = Routing\Config::instance()->get_controller_directory();
 		$root = realpath(isset($path) ? $path : '.');
 	
-		if (($namespaces = ActiveRecord\get_namespaces($class_name)))
+		if (($namespaces = get_namespaces($class_name)))
 		{
 			//print_r($namespaces);
 			$class_name = array_pop($namespaces);
