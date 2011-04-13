@@ -124,7 +124,7 @@ class MyDomException extends Exception{
 }
 */
 
-class MyException extends Exception implements Template\Template {
+class MyException extends Exception{
 	public function __construct($errno, $errstr, $errfile, $errline)
 	{
 		global $except;
