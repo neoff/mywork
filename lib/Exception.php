@@ -125,7 +125,10 @@ class MyDomException extends Exception{
 */
 
 class MyException extends Exception implements Template\Template {
-	public function __construct($errno, $errstr, $errfile, $errline) {
+	public function __construct($errno, $errstr, $errfile, $errline)
+	{
+		global $except;
+		$except = 1;
 		parent::__construct($errstr, $errno);
 		//print $this->getMessage();
 		//print_r($this->getTrace());

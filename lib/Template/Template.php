@@ -23,6 +23,12 @@ abstract class Template {
 	public $xml;
 	
 	/**
+	 * ошибки
+	 * @var bool
+	 */
+	private $except;
+	
+	/**
 	 * переназначаем сетер для создания ноды xml 
 	 * @param string $name
 	 * @param string $value
@@ -40,6 +46,9 @@ abstract class Template {
 	 */
 	public function __construct($data = "")
 	{
+		global $except;
+		
+		$this->except = $except;
 		$child = get_called_class();
 		
 		$dtd = preg_replace("/Controllers\\C/", "", $child);
@@ -63,6 +72,7 @@ abstract class Template {
 		//print preg_replace("/></", ">\n<", $doc);
 		//try
 		//{
+		print $this->except;
 			$dom = new \DOMDocument;
 			$dom->loadXML($doc, LIBXML_DTDLOAD|LIBXML_DTDATTR);
 			$myDoc = new MyDOMDocument($dom);

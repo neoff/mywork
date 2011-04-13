@@ -17,6 +17,7 @@
 		ini_set('display_errors', True);
 		error_reporting(E_ALL);
 	}
+	$except = false;
 	require_once ROOT_PATH . '/lib/Exception.php';
 	require_once ROOT_PATH . '/lib/Utils.php';
 	
