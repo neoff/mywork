@@ -30,4 +30,4 @@
 	
 	//require_once ROOT_PATH . '/model/__init__.php';
 	
-	$routing = new Routing();
+	$routing = new Routing\Routing();
