@@ -68,13 +68,14 @@ abstract class Template {
 	 */
 	public function __destruct()
 	{
+		global $except;
 		$doc=$this->xml->asXML();
 		
 		
 		//print preg_replace("/></", ">\n<", $doc);
 		//try
 		//{
-		print $this->except;
+		print $except;
 		print 333;
 			$dom = new \DOMDocument;
 			$dom->loadXML($doc, LIBXML_DTDLOAD|LIBXML_DTDATTR);
