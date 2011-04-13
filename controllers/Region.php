@@ -16,7 +16,7 @@
 	use Models;
 	use Template;
 	
-class ControllerRegion extends Template{
+class ControllerRegion extends Template\Template{
 	
 	/**
 	 * выбирает регион из БД

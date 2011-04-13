@@ -1,63 +1,43 @@
 <?php
 /**  
- * 
+ * шаблонизатор для вывода ml файлов
  * 
  * @package    library
  * @subpackage Template
  * @since      18.10.2010 16:14:54
  * @author     enesterov
  * @category   none
+ * 
+ * @global Template - клас шаблонов
+ * 
  */
 
 	namespace Template;
 	
-class MyDOMDocument {
-		private $_delegate;
-		private $_validationErrors;
-
-		public function __construct (\DOMDocument $pDocument) {
-			$this->_delegate = $pDocument;
-			$this->_validationErrors = array();
-		}
-
-		public function __call ($pMethodName, $pArgs) {
-			if ($pMethodName == "validate") {
-				$eh = set_error_handler(array($this, "onValidateError"));
-				$rv = $this->_delegate->validate();
-				if ($eh) {
-					set_error_handler($eh);
-				}
-				return $rv;
-			}
-			else {
-				return call_user_func_array(array($this->_delegate, $pMethodName), $pArgs);
-			}
-		}
-		public function __get ($pMemberName) {
-			if ($pMemberName == "errors") {
-				return $this->_validationErrors;
-			}
-			else {
-				return $this->_delegate->$pMemberName;
-			}
-		}
-		public function __set ($pMemberName, $pValue) {
-			$this->_delegate->$pMemberName = $pValue;
-		}
-		public function onValidateError ($pNo, $pString, $pFile = null, $pLine = null, $pContext = null) {
-			$this->_validationErrors[] = preg_replace("/^.+: */", "", $pString);
-		}
-	}
-
 abstract class Template {
+	
+	/**
+	 * DOM объекты
+	 * @var object
+	 */
 	public $xml;
 	
+	/**
+	 * переназначаем сетер для создания ноды xml 
+	 * @param string $name
+	 * @param string $value
+	 */
 	function __set($name="", $value = "")
 	{
 		//print $value;
 		return $this->$name = $this->xml->addChild( $name, $value );
 	}
 	
+	/**
+	 * конструктор создает заголовок xml файла 
+	 * в зависимости от того, из какого класа он вызван 
+	 * @param string $data
+	 */
 	public function __construct($data = "")
 	{
 		$child = get_called_class();
@@ -72,6 +52,9 @@ abstract class Template {
 		
 	}
 	
+	/**
+	 * выводит собраный документ на страницу
+	 */
 	public function __destruct()
 	{
 		$doc=$this->xml->asXML();
