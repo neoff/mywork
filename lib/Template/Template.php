@@ -75,6 +75,7 @@ abstract class Template {
 		//try
 		//{
 		print $this->except;
+		print 333;
 			$dom = new \DOMDocument;
 			$dom->loadXML($doc, LIBXML_DTDLOAD|LIBXML_DTDATTR);
 			$myDoc = new MyDOMDocument($dom);
