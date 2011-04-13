@@ -11,8 +11,8 @@
 		die('PHP Routing requires PHP 5.3 or higher');
 
 	require_once 'ActiveRecord/Singleton.php';
-	require_once 'routing/Config.php';
-	require_once 'routing/Connection.php';
+	require_once 'Routing/Config.php';
+	require_once 'Routing/Connection.php';
 
 
 	spl_autoload_register('routing_autoload');
