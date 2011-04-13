@@ -23,12 +23,6 @@ abstract class Template {
 	public $xml;
 	
 	/**
-	 * ошибки
-	 * @var bool
-	 */
-	private $except;
-	
-	/**
 	 * переназначаем сетер для создания ноды xml 
 	 * @param string $name
 	 * @param string $value
@@ -46,11 +40,6 @@ abstract class Template {
 	 */
 	public function __construct($data = "")
 	{
-		global $except;
-		
-		print 222;
-		
-		$this->except = $except;
 		$child = get_called_class();
 		
 		$dtd = preg_replace("/Controllers\\C/", "", $child);
@@ -73,25 +62,26 @@ abstract class Template {
 		
 		
 		//print preg_replace("/></", ">\n<", $doc);
-		//try
-		//{
-		print $except;
-		print 333;
-			$dom = new \DOMDocument;
-			$dom->loadXML($doc, LIBXML_DTDLOAD|LIBXML_DTDATTR);
-			$myDoc = new MyDOMDocument($dom);
-			$isValid = $myDoc->validate();
-			/*if (!$isValid) 
-			{
-				throw new \MyDomException($myDoc->errors);
-			}*/
-			header('Content-type: text/xml; charset=utf-8');
-			echo preg_replace("/></", ">\n<", $doc);
-		/*}
-		catch(\MyException $e)
+		if(!$except)
 		{
-			echo $e;
-		}*/
+			//try
+			//{
+				$dom = new \DOMDocument;
+				$dom->loadXML($doc, LIBXML_DTDLOAD|LIBXML_DTDATTR);
+				$myDoc = new MyDOMDocument($dom);
+				$isValid = $myDoc->validate();
+				/*if (!$isValid) 
+				{
+					throw new \MyDomException($myDoc->errors);
+				}*/
+				header('Content-type: text/xml; charset=utf-8');
+				echo preg_replace("/></", ">\n<", $doc);
+			/*}
+			catch(\MyException $e)
+			{
+				echo $e;
+			}*/
+		}
 	}
 	
 

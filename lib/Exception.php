@@ -128,7 +128,8 @@ class MyException extends Exception{
 	public function __construct($errno, $errstr, $errfile, $errline)
 	{
 		global $except;
-		$except = 1;
+		
+		$except = true;
 		parent::__construct($errstr, $errno);
 		//print $this->getMessage();
 		//print_r($this->getTrace());
