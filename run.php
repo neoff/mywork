@@ -1,5 +1,5 @@
 <?php
-	phpinfo();
+	//phpinfo();
 	//print_r($_SERVER);
 	date_default_timezone_set( 'Europe/Moscow' );
 	define( "ROOT_PATH", dirname(__FILE__) );
@@ -30,4 +30,4 @@
 	
 	//require_once ROOT_PATH . '/model/__init__.php';
 	
-	$routing = new Routing\Routing();
+	$routing = new Routing();
