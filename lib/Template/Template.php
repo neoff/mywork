@@ -48,6 +48,8 @@ abstract class Template {
 	{
 		global $except;
 		
+		print 222;
+		
 		$this->except = $except;
 		$child = get_called_class();
 		
