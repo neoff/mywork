@@ -10,7 +10,7 @@
 if (!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 50300)
 	die('PHP Routing requires PHP 5.3 or higher');
 
-	require_once 'ar/Singleton.php';
+	require_once 'ActiveRecord/Singleton.php';
 	require_once 'routing/Config.php';
 	require_once 'routing/Connection.php';
 
