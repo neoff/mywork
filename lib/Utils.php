@@ -38,7 +38,7 @@
 	 */
 	function get_key($key, $returns = false)
 	{
-		return (!array_key_exists($key, $_GET))?$returns:$_GET['product_id'];
+		return (!array_key_exists($key, $_GET))?$returns:$_GET[$key];
 	}
 	
 	/**
