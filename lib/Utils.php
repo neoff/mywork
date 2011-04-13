@@ -3,11 +3,70 @@
 	define ( 'LOWERCASE', 3 );
 	define ( 'UPPERCASE', 1 );
 	
+	spl_autoload_register('lib_autoload');
+	
+	function lib_autoload($class_name)
+	{
+		$path = LIB_PATH;
+		$root = realpath(isset($path) ? $path : '.');
+		$namespaces = get_namespaces($class_name);
+		if ($namespaces)
+		{
+			$class_name = array_pop($namespaces);
+			$directories = array();
+	
+			foreach ($namespaces as $directory)
+			{
+				$directories[] = $directory;
+			}
+			
+			$root .= "/" . implode( $directories, "/" );
+		}
+	
+		$file = "$root/$class_name.php";
+	
+		if (file_exists($file))
+			require_once $file;
+	}
+	
+	/**
+	 * возвращает значение глобальной переменной $_GET или значение $returns 
+	 * @param string $key
+	 * @param (string|bool) $returns
+	 */
+	function get_key($key, $returns = false)
+	{
+		return (!array_key_exists($key, $_GET))?$returns:$_GET['product_id'];
+	}
+	
+	/**
+	 * возвращает массив из класса и namespace
+	 * 
+	 * @param string $class_name
+	 * @return multitype:|NULL
+	 * @access public
+	 */
+	function get_namespaces($class_name)
+	{
+		
+		if (has_namespace($class_name))
+			return explode('\\', $class_name);
+		return null;
+	}
+	
+	/**
+	 * переводит строку из cp1251 в utf-8
+	 * @param string $string
+	 */
 	function ToUTF($string) {
 		//$encode =  detect_cyr_charset($string);
 		return iconv ( 'CP1251', "UTF-8", $string );
 	}
 	
+	/**
+	 * переводит строку и срезает лишние теги
+	 * @param unknown_type $string
+	 */
 	function StripTags($string) {
 		$patterns = array ("/<br\s*?\/?>/", "/&nbsp;/", "/(&laquo;|&raquo;)/", "/&/", "/(<|>)/" );
 		$replacements = array ("\n", " ", '"', " and ", "" );
@@ -19,81 +78,4 @@
 	}
 	
 	
-	function detect_cyr_charset($str) {
-		
-		$charsets = Array (
 	
-		'KOI8-R' => 0, 
-	
-		'CP1251' => 0, 
-	
-		'CP866' => 0, 
-	
-		'UTF-8' => 0, 
-	
-		'mac-cyrillic-2000' => 0 )
-	
-		;
-		
-		for($i = 0, $length = strlen ( $str ); $i < $length; $i ++) {
-			
-			$char = ord ( $str [$i] );
-			
-			//non-russian characters
-			
-	
-			if ($char < 128 || $char > 256)
-				continue;
-			
-			//CP866
-			
-	
-			if (($char > 159 && $char < 176) || ($char > 223 && $char < 242))
-				
-				$charsets ['CP866'] += LOWERCASE;
-			
-			if (($char > 127 && $char < 160))
-				$charsets ['CP866'] += UPPERCASE;
-			
-			//KOI8-R
-			
-	
-			if (($char > 191 && $char < 223))
-				$charsets ['KOI8-R'] += LOWERCASE;
-			
-			if (($char > 222 && $char < 256))
-				$charsets ['KOI8-R'] += UPPERCASE;
-			
-			//CP1251
-			
-	
-			if ($char > 223 && $char < 256)
-				$charsets ['CP1251'] += LOWERCASE;
-			
-			if ($char > 191 && $char < 224)
-				$charsets ['CP1251'] += UPPERCASE;
-			
-			//MAC
-			
-//	
-//			if ($char > 221 && $char < 255)
-//				$charsets ['mac-cyrillic-2000'] += LOWERCASE;
-//			
-//			if ($char > 127 && $char < 160)
-//				$charsets ['mac-cyrillic-2000'] += UPPERCASE;
-//			
-			//ISO-8859-5
-			
-	
-			if ($char > 207 && $char < 240)
-				$charsets ['UTF-8'] += LOWERCASE;
-			
-			if ($char > 175 && $char < 208)
-				$charsets ['UTF-8'] += UPPERCASE;
-		
-		}
-		
-		arsort ( $charsets );
-		
-		return key ( $charsets );
-	}
