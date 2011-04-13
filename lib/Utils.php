@@ -55,6 +55,18 @@
 	}
 	
 	/**
+	 * проверяет наличие namespace в названии класса
+	 * @param string $class_name
+	 * @return bool
+	 */
+	function has_namespace($class_name)
+	{
+		if (strpos($class_name, '\\') !== false)
+			return true;
+		return false;
+	}
+	
+	/**
 	 * переводит строку из cp1251 в utf-8
 	 * @param string $string
 	 */
