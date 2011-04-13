@@ -9,10 +9,10 @@
  * @category   models
  */
 
-	namespace Models;
-	use ActiveRecord;
+	namespace ActiveRecord;
+	//use ActiveRecord;
 
-class Warez extends ActiveRecord\Model
+class Warez extends Model
 {
 	private $where;
 	static $finder=array();

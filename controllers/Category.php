@@ -12,6 +12,7 @@
 
 	namespace Controllers;
 	use Models;
+	use ActiveRecord;
 	use Template;
 	
 class ControllerCategory extends Template\Template{
@@ -70,7 +71,7 @@ class ControllerCategory extends Template\Template{
 		if($this->searches)
 		{
 			$this->search = $this->searches; #XML тег search!!!! не удалять
-			$search = iconv ("UTF-8",'CP1251', $this->searches);
+			$search = iconv("UTF-8",'CP1251', $this->searches);
 			$this->searches = " AND (UPPER(w.ware) like \"%".strtoupper($search)."%\" or UPPER(w.FullName) like \"%".strtoupper($search)."%\")";
 		}
 			
@@ -473,7 +474,7 @@ class ControllerCategory extends Template\Template{
 		//print "<!--\ ".$q." \-->";
 		//$wwwarez =  Models\Warez::find_by_sql($q);
 		//$dcg = array($this->dir_id);
-		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches);
+		$wwwarez =  ActiveRecord\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches);
 		$res = $wwwarez;
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
