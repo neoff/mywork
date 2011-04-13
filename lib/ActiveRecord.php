@@ -24,7 +24,7 @@
 	{
 		$path = ActiveRecord\Config::instance()->get_model_directory();
 		$root = realpath(isset($path) ? $path : '.');
-	
+		var_dump($root);
 		if (($namespaces = ActiveRecord\get_namespaces($class_name)))
 		{
 			$class_name = array_pop($namespaces);
