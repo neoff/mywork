@@ -37,7 +37,7 @@
 		}
 	
 		$file = "$root/$class_name.php";
-	
+		var_dump($file);
 		if (file_exists($file))
 			require_once $file;
 	}
