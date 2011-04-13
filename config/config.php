@@ -43,7 +43,7 @@
 		}
 		
 		
-		$cfg->Map("^\/$prefix\/(\?region_id=0)?$", $controler="Region", $action="index", $_GET);
+		$cfg->Map("^\/$prefix\/(\?region_id=0)?$", $controler="Region", $action="index");
 		$cfg->Map("^\/$prefix\/shop\/?$", $controler="Shops", $action="index", $_GET);
 		$cfg->Map("^\/$prefix\/category\/?$", $controler="Category", $action="index", $_GET);
 		$cfg->Map("^\/$prefix\/product\/?$", $controler="Product", $action="index", $_GET);
