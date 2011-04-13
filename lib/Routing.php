@@ -12,7 +12,7 @@
 
 	require_once 'ActiveRecord/Singleton.php';
 	require_once 'Routing/Config.php';
-	require_once 'Routing/Connection.php';
+	require_once 'Routing/Routing.php';
 
 
 	spl_autoload_register('routing_autoload');
