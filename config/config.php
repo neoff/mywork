@@ -14,7 +14,7 @@
 		$cfg->set_model_directory('.');
 		$cfg->set_connections(array(
 			'test' => 'mysql://root:123456@localhost/test',
-			'develop' => 'mysql://baseadmin:C0ffeAmerikan0@192.168.1.226:33306/mvideo',
+			'develop' => 'mysql://baseadmin:C0ffeAmerikan0@diablopeerslave:33306/mvideo',
 			'deploy' => 'mysql://baseadmin:C0ffeAmerikan0@diablopeerslave:33306/mvideo',
 			'develop_test' => 'mysql://baseadmin:C0ffeAmerikan0@localhost:33306/mvideo',
 		));
