@@ -34,7 +34,7 @@ class Routing extends Config{
 	private static function init() 
 	{
 		$item = false;
-		$arrKey;
+		$arrKey = "";
 		while (list($key, $value) = each(self::$route)) {
 			preg_match("@" . $key . "@i", $_SERVER['REQUEST_URI'], $matches);
 			if ($matches)
@@ -44,6 +44,7 @@ class Routing extends Config{
 				break;
 			}
 		}
+		
 		if(array_key_exists($arrKey, self::$route)) {
 			//print_r(self::$route);
 			$ins = new self::$route[$arrKey][0];

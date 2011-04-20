@@ -1,12 +1,12 @@
 <?php
 /**  
- * 
+ * таблица описания товаров
  * 
  * @package    model
- * @subpackage Desclist
+ * @subpackage ActiveRecord
  * @since      13.10.2010 17:58:37
  * @author     enesterov
- * @category   none
+ * @category   model
  */
 
 	namespace Models;

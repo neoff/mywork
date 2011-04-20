@@ -2,8 +2,8 @@
 /**  
  * 
  * 
- * @package    controllers
- * @subpackage Category
+ * @package    Category
+ * @subpackage Template
  * @since      08.10.2010 14:00:27
  * @author     enesterov
  * @category   controller
@@ -54,7 +54,7 @@ class ControllerCategory extends Template\Template{
 		}
 		
 		$GlobalConfig=array();
-		$rfile = dirname(dirname(dirname($_SERVER["SCRIPT_FILENAME"])));
+		$rfile = MVIDEO_PATH;
 		
 		$GlobalConfig['RegionID']=$this->region_id;
 		require_once $rfile . '/lib/federal_info.lib.php';

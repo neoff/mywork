@@ -18,21 +18,32 @@ class ControllerProduct extends Template\Template{
 	private static $Mult = 1000000000;
 	private static $MultC = 100000;
 	private static $MultG = 1;
+	private $region_id;
+	private $product_id;
+	private $ask = "";
+	private $reviews = "";
+	private $page = 0;
+	
+	
 	public function index( $array )
 	{
 		//print_r($array);
-		list($region_id, $product_id, $ask, $reviews, $page)=$array;
+		if($array)
+		{
+			$this->setVar();
+		}
+		//list($region_id, $product_id, $ask, $reviews, $page)=$array;
 		
-		$options = array("_warecode"=>$product_id);
-		list($where, $array) = Models\Warez::SetParam($region_id, $options);
-		$productes = Models\Warez::sql($region_id, $where, $array);
+		$options = array("_warecode"=>$this->product_id);
+		list($where, $array) = Models\Warez::SetParam($this->region_id, $options);
+		$productes = Models\Warez::sql($this->region_id, $where, $array);
 		if($productes)
 		{
 			$productes = $productes[0];
 			
 			
-			$rfile = dirname(dirname(dirname($_SERVER["SCRIPT_FILENAME"])));
-			require_once $rfile . '/www/classifier_'.$region_id.'.inc.php';
+			$rfile = MVIDEO_PATH;
+			require_once $rfile . '/www/classifier_'.$this->region_id.'.inc.php';
 			$d = $productes->dirid*self::$Mult;
 			$c = $productes->classid*self::$MultC;
 			$g = $productes->grid*self::$MultG;
@@ -46,21 +57,21 @@ class ControllerProduct extends Template\Template{
 			if($productes->inetqty>0)
 				$this->product->addAttribute("inetSale", 1);
 			
-			$dic = $productes->getInetDiscountStatus($productes->warecode, $region_id);
+			$dic = $productes->getInetDiscountStatus($productes->warecode, $this->region_id);
 			$this->product->addAttribute("card_discount", $dic);
 			
-			$this->product->addChild("product_id", $product_id);
-			$this->product->addChild("region_id", $region_id);
+			$this->product->addChild("product_id", $this->product_id);
+			$this->product->addChild("region_id", $this->region_id);
 			$this->product->addChild("title", StripTags($productes->ware));
 			
 			$imgs = $this->product->addChild("images");
-			$img = $imgs->addChild("img", "http://www.mvideo.ru/Pdb/$product_id.jpg");
+			$img = $imgs->addChild("img", "http://www.mvideo.ru/Pdb/$this->product_id.jpg");
 			$img->addAttribute("width", "180");
 			$img->addAttribute("height", "180");
 			$img->addAttribute("main", "1");
 			
 			$mov = $this->product->addChild("movies");
-			//$mov->addChild("video", "http://www.mvideo.ru/Pdb/$product_id.jpg");
+			//$mov->addChild("video", "http://www.mvideo.ru/Pdb/$this->product_id.jpg");
 			
 			$this->product->addChild("inet_price", $productes->inetprice);
 			if($productes->oldprice)
@@ -77,10 +88,10 @@ class ControllerProduct extends Template\Template{
 			$productes->getDesctiptions();
 			$this->product->addChild("description", StripTags($productes->description));
 			
-			//if(!$ask && !$reviews)
+			//if(!$this->ask && !$reviews)
 			//{
 				$options = $this->product->addChild("options");
-				$options_m=Models\Optionlist::all(array('warecode'=>$product_id));
+				$options_m=Models\Optionlist::all(array('warecode'=>$this->product_id));
 				foreach ($options_m as $key => $val)
 				{
 					$option = $options->addChild("option");
@@ -88,15 +99,15 @@ class ControllerProduct extends Template\Template{
 					$option->addChild("value", StripTags($val->prval));
 				}
 			//}
-			if($ask)
+			if($this->ask)
 			{
 				$limit = true;
-				if($ask==2)
+				if($this->ask==2)
 					$limit = false;
 				$ask = $this->product->addChild("aks");
 				//$ask_m=array();
 				
-				$ask_m=Models\Link::getAccess($region_id, $product_id, $limit);
+				$ask_m=Models\Link::getAccess($this->region_id, $this->product_id, $limit);
 				//print_r($ask_m);
 				$group = "";
 				foreach ($ask_m as $key => $val)
@@ -134,10 +145,10 @@ class ControllerProduct extends Template\Template{
 					$image->addAttribute("height", "180");
 				}
 			}
-			if($reviews)
+			if($this->reviews)
 			{
 				$reviews = $this->product->addChild("reviews");
-				$reviews_m=Models\Reviews::all(array('warecode'=>$product_id, "approved"=>1));
+				$reviews_m=Models\Reviews::all(array('warecode'=>$this->product_id, "approved"=>1));
 				foreach ($reviews_m as $key => $val)
 				{
 					$review = $reviews->addChild("review");
@@ -153,5 +164,17 @@ class ControllerProduct extends Template\Template{
 				}
 			}
 		}
+	}
+	
+	/**
+	 * устанавливает основные переменные из $_GET запроса
+	 */
+	private function setVar()
+	{
+		$this->region_id = get_key('region_id', 0);
+		$this->product_id = get_key('product_id');
+		$this->ask = get_key('aks');
+		$this->reviews = get_key('reviews');
+		$this->page = get_key('page', 0);
 	}
 }

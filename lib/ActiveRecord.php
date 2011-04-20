@@ -24,8 +24,9 @@
 	{
 		$path = ActiveRecord\Config::instance()->get_model_directory();
 		$root = realpath(isset($path) ? $path : '.');
-		var_dump($root);
-		if (($namespaces = ActiveRecord\get_namespaces($class_name)))
+		#var_dump($root);
+		$namespaces = get_namespaces($class_name);
+		if ($namespaces)
 		{
 			$class_name = array_pop($namespaces);
 			$directories = array();
@@ -33,11 +34,18 @@
 			foreach ($namespaces as $directory)
 				$directories[] = $directory;
 	
-			$root .= DIRECTORY_SEPARATOR . implode($directories, DIRECTORY_SEPARATOR);
+			#$root .= DIRECTORY_SEPARATOR . implode($directories, DIRECTORY_SEPARATOR);
 		}
 	
 		$file = "$root/$class_name.php";
-		var_dump($file);
+		#var_dump($file);
 		if (file_exists($file))
 			require_once $file;
 	}
+	
+/**
+ * клас заглушка
+ * @author enesterov
+ *
+ */
+class ActiveRecord{}

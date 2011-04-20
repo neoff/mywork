@@ -5,6 +5,10 @@
 	
 	spl_autoload_register('lib_autoload');
 	
+	/**
+	 * автолоад для библиотек
+	 * @param string $class_name
+	 */
 	function lib_autoload($class_name)
 	{
 		$path = LIB_PATH;
@@ -29,6 +33,12 @@
 		//var_dump($file);
 		if (file_exists($file))
 			require_once $file;
+	}
+	
+	
+	function makeUrl($url)
+	{
+		return implode($url, "/");
 	}
 	
 	/**

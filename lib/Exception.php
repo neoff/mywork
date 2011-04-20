@@ -153,13 +153,17 @@ class MyException extends Exception{
 		foreach ($this->getTrace() as $key => $val)
 		{
 			$args = "";
-			foreach ($val['args'] as $vals)
+			//var_dump($val);
+			if(in_array('args', $val))
 			{
-				//var_dump($vals);
-				if($vals=="" or $vals===false) 
-					$vals="false";
-				if (is_string ($vals))
-					$args .=" ".$vals;
+				foreach ($val['args'] as $vals)
+				{
+					//var_dump($vals);
+					if($vals=="" or $vals===false) 
+						$vals="false";
+					if (is_string ($vals))
+						$args .=" ".$vals;
+				}
 			}
 			$file = (array_key_exists("file", $val))?$val['file']:__FILE__;
 			$stack = $stacks->addChild("stack", $file);
