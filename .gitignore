@@ -18,3 +18,4 @@
 *.lock
 *.cache
 *config.ini
+*omg/*.jpg
