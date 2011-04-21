@@ -319,7 +319,7 @@ class ControllerCategory extends Template\Template{
 		{
 			$this->parents->classid = "";
 			$this->parents->grid = "";
-			
+			print $this->class_id;
 			if(!$this->class_id)
 				return $this->createProduct();
 			return false;
@@ -556,16 +556,22 @@ class ControllerCategory extends Template\Template{
 	private function displayCategoryAction($name, $description, $imgfile = "")
 	{
 		$url = str_replace("/", "", $name);//link
+		$name = "http://www.mvideo.ru/".$url."-cond/";
 		if(!$imgfile)
+		{
 			$imgfile = "imgs/action/header_$url.jpg";
+			$name = "http://www.mvideo.ru/"
+					.str_replace("_", "-", $name)
+					."/?ref=left_bat_"
+					. $name;
+		}
 		
 		$this->action = "";
+		//print $imgfile;
 		$this->displayActionImage($imgfile);
 		
 		$this->action->addChild("description", ToUTF($description));
-		$this->action->addChild("url", "http://www.mvideo.ru/"
-									.str_replace("_", "-", $name)
-									."/?ref=left_bat_". $name);
+		$this->action->addChild("url", $name);
 		$this->action->addChild("link", "http://www.mvideo.ru/".$url."/");
 		$categorys = $this->getActionsVal($name);
 		return $categorys;
@@ -713,13 +719,12 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function displayActionImage($img)
 	{
-		$imgdir = dirname(dirname($_SERVER["SCRIPT_FILENAME"]));
-		
+		$imgdir = MVIDEO_PATH;
 		$fimgs = "http://www.mvideo.ru/$img";
 		
-		if(file_exists($imgdir."/".$img))
+		if(file_exists($imgdir."/www/".$img))
 		{
-			$imgsize = getimagesize($imgdir."/".$img);
+			$imgsize = getimagesize($imgdir."/www/".$img);
 		
 			//создаем картинку
 			$images = $this->action->addChild("image", $fimgs);
