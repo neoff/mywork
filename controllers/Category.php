@@ -202,7 +202,7 @@ class ControllerCategory extends Template\Template{
 				//$amount =  $this->recurseAmount($val);
 				$key = $this->ToDir($one_key);
 				if($this->action_val)
-					$value['name'] = self::$Dirs[$one_key];
+					$value['catalogname'] = self::$Dirs[$one_key];
 				//$value['name'] = $val->name;
 			}
 			if($amount == 0)
@@ -212,7 +212,7 @@ class ControllerCategory extends Template\Template{
 			//	continue;
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $key);
-			$category->addChild("category_name", ToUTF($value['name']));
+			$category->addChild("category_name", ToUTF($value['catalogname']));
 			$category->addChild("amount", $amount); 
 			$icon = $category->addChild("category_icon", "http://www.mvideo.ru/mobile/public/img/s$id.jpg"); 
 			$icon->addAttribute("width", "180");
@@ -244,7 +244,7 @@ class ControllerCategory extends Template\Template{
 		
 		$this->categories="";
 		$this->categories->addAttribute("category_id", $this->category_id);
-		$this->categories->addAttribute("category_name", ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['name']));
+		$this->categories->addAttribute("category_name", ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['catalogname']));
 		
 		
 		$q = 'SELECT distinct w.DirID as result 
