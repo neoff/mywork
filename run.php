@@ -9,7 +9,7 @@
 	$conn = new config(FILE);
 	define( "DEBUG", ($conn->debug)?$conn->debug:True );
 	define( 'CONNECTION', ($conn->base)?$conn->base:'develop' );
-	define('MVIDEO_PATH', '/www/sites/newmvideo')
+	define('MVIDEO_PATH', '/www/sites/newmvideo');
 
 	if(DEBUG)
 	{
