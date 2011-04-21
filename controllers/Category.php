@@ -484,10 +484,10 @@ class ControllerCategory extends Template\Template{
 		foreach (self::$GlobalConfig['fed_act'] as $key => $val) 
 		{
 			
-			/*if($key < $time)
+			if($key < $time)
 			{
 				if($val['end_date']>=$time)
-				{*/
+				{
 					$url = str_replace("/", "", $val['link']);//link
 					$imgfile = "imgs/action/main/$url.jpg";
 					return $this->displayCategoryAction($val['link'], $val['name'], $imgfile);
@@ -501,8 +501,8 @@ class ControllerCategory extends Template\Template{
 					$this->action->addChild("link", "http://www.mvideo.ru/".$url."/");
 					
 					return $this->putActions($url);*/
-				/*}
-			}*/
+				}
+			}
 		}
 		
 	}
