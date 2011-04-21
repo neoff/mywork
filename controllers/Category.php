@@ -475,7 +475,7 @@ class ControllerCategory extends Template\Template{
 		//print "<!--\ ".$q." \-->";
 		//$wwwarez =  Models\Warez::find_by_sql($q);
 		//$dcg = array($this->dir_id);
-		$wwwarez =  ActiveRecord\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches);
+		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches);
 		$res = $wwwarez;
 		$this->all_dirs($wwwarez);
 		#print $this->group_id;
