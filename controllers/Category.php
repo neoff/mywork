@@ -160,20 +160,6 @@ class ControllerCategory extends Template\Template{
 	protected function createDir()
 	{
 		$this->displayCategoryNode(ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['name']));
-		/*
-		$q = 'SELECT distinct w.DirID as result 
-			FROM warez_'.$this->region_id.' as w';
-		
-		if($this->searches)
-			$q .= " WHERE w.warecode ".$this->searches;
-			
-		if($this->action_val)
-			$q = 'SELECT distinct w.DirID as result 
-					FROM warez_'.$this->region_id." as w
-					WHERE w.warecode in (".implode(",", $this->action_val).")
-					$this->searches";
-					*/
-		//print $q;
 		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches);
 		$this->all_dirs($wwwarez);
 		
@@ -184,32 +170,12 @@ class ControllerCategory extends Template\Template{
 			$amount = 0;
 			if(!in_array($value, $wwwarez))
 				continue;
-
 				
 			$id = self::ToDir($value);
-			/*if($this->action_val)
-				$q = 'SELECT distinct w.ClassID as result, w.warecode
-					FROM warez_'.$this->region_id." as w
-					WHERE w.warecode in (".implode(",", $this->action_val).")
-					$this->searches
-					AND w.DirID = ".$value." group by result order by w.hit DESC, w.price DESC ";
-			else 
-				$q = 'SELECT distinct ClassID as result, w.warecode 
-					FROM warez_'.$this->region_id." as w
-					
-					WHERE DirID = ".$value.$this->searches." group by result order by w.hit DESC, w.price DESC ";*/
-				
 			$wwwcat =  Models\Warez::getClassId($value, $this->region_id, $this->action_val, $this->searches);
-			//print_r($wwwcat);
-			//$this->all_dirs($wwwcat);
-			//print_r($wwwcat);
 			if($wwwcat)
 				$amount = count($wwwcat);
 			
-			/*if($this->action_val)
-				if(!in_array($value, $wwwcat))
-					continue;*/
-						
 			if($amount == 1)
 				$id = self::ToDir($value, $wwwcat[0]->result);
 			
@@ -230,75 +196,24 @@ class ControllerCategory extends Template\Template{
 	{
 		$this->displayCategoryNode(ToUTF(self::$Dirs[$this->dir_id]));
 		
-		/*$q = 'SELECT distinct w.ClassID as result 
-			FROM warez_'.$this->region_id." as w
-			WHERE w.DirID = ".$this->dir_id;
-		
-		if($this->action_val)
-			$q .= " AND w.warecode in (".implode(",", $this->action_val).")";
-		*/
-		
 		if($this->searches)
 			return $this->createProduct();
-			
-		#print $q;
-		//$wwwarez =  Models\Warez::find_by_sql($q);
+		
 		$wwwarez =  Models\Warez::getClassId($this->dir_id, $this->region_id, $this->action_val);
 		$this->all_dirs($wwwarez);
-		//print $this->dir_id;
-		//print_r(array_keys(self::$Groups[$this->dir_id]));
 		foreach (array_keys(self::$Groups[$this->dir_id]) as $value) 
 		{
 			$amount = 0;
 			if(!in_array($value, $wwwarez))
 				continue;
 			
-			/*if($this->action_val)
-				$q = 'SELECT distinct w.GrID as result, w.warecode 
-					FROM warez_'.$this->region_id." as w
-					WHERE w.warecode in (".implode(",", $this->action_val).")
-					$this->searches
-					AND w.DirID = ".$this->dir_id."
-					AND w.ClassID = ".$value." group by result order by w.hit DESC, w.price DESC ";
-			else 
-				$q = 'SELECT distinct w.GrID as result, w.warecode 
-						FROM warez_'.$this->region_id." as w
-						WHERE w.DirID = ".$this->dir_id."
-						$this->searches
-						AND w.ClassID = ".$value." group by result order by w.hit DESC, w.price DESC ";
-				
-			$wwwcat =  Models\Warez::find_by_sql($q);*/
-			$wwwcat =  Models\Warez::getGroupId($this->dir_id, $value, $this->region_id, $this->action_val, $this->searches);
-			//print_r($wwwcat);
-			//$this->all_dirs($wwwcat);
 			if($wwwcat)
 				$amount = count($wwwcat);
 			
-			/*if($this->action_val)
-				if(!in_array($value, $wwwcat))
-					continue;*/
 			$id = self::ToDir($this->dir_id, $value);
 			if($amount == 1)
 			{
-				/*if($this->action_val)
-					$q = 'SELECT distinct w.warecode as result, w.warecode 
-						FROM warez_'.$this->region_id." as w
-						WHERE w.warecode in (".implode(",", $this->action_val).")
-						$this->searches
-						AND w.DirID = ".$this->dir_id."
-						AND w.ClassID = ".$value."
-						AND w.GrID = ".$wwwcat[0]->result." group by result order by w.hit DESC, w.price DESC ";
-				else 
-					$q = 'SELECT distinct w.warecode as result, w.warecode 
-							FROM warez_'.$this->region_id." as w
-							WHERE w.DirID = ".$this->dir_id."
-							$this->searches
-							AND w.ClassID = ".$value."
-							AND w.GrID = ".$wwwcat[0]->result." group by result order by w.hit DESC, w.price DESC ";
-						*/
-				//print $q;
 				$id = self::ToDir($this->dir_id, $value, $wwwcat[0]->result);
-				//$wwwcats =  Models\Warez::find_by_sql($q);
 				$wwwcat =  Models\Warez::getWaresId($this->dir_id, $value, $wwwcat[0]->result,
 													$this->region_id, $this->action_val, $this->searches);
 				if($wwwcat)
@@ -306,19 +221,8 @@ class ControllerCategory extends Template\Template{
 			}
 			if($amount == 0)
 				continue;
-			//print_r($wwwcats);
-			/*$category = $this->categories->addChild("category");
-			$category->addChild("category_id", $id);
-			$category->addChild("category_name", ToUTF(self::$Classes[$this->dir_id][$value]));
-			$category->addChild("amount", $amount); 
-			$icon = $category->addChild("category_icon", 
-				#"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
-				"http://www.mvideo.ru/mobile/public/img/".$id.".jpg"
-			); 
-		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
-			$icon->addAttribute("width", "180");
-			$icon->addAttribute("height", "180");*/
-				$this->displayCategoryClass($id, $value, $amount);
+			
+			$this->displayCategoryClass($id, $value, $amount);
 		}
 		return False;
 	}
@@ -328,66 +232,22 @@ class ControllerCategory extends Template\Template{
 	protected function createGroup()
 	{
 		$this->displayCategoryNode($this->parent_name);
-		
-		/*$q = 'SELECT distinct w.GrID as result 
-			FROM warez_'.$this->region_id." as w
-			WHERE w.DirID = ".$this->dir_id."
-			$this->searches
-			AND w.ClassID = ".$this->class_id;*/
 		$wwwarez =  Models\Warez::getGroupId($this->dir_id, $this->class_id, $this->region_id, $this->action_val, $this->searches);
-		//$wwwarez =  Models\Warez::find_by_sql($q);
 		$this->all_dirs($wwwarez);
-		#print $this->group_id;
-		//print_r(array_keys(self::$Groups[$this->dir_id]));
 		foreach (array_keys(self::$Groups[$this->dir_id][$this->class_id]) as $value) 
 		{
 			$amount = 0;
 			if(!in_array($value, $wwwarez))
 				continue;
 				
-				
-			/*if($this->action_val)
-				$q = 'SELECT distinct w.warecode as result, w.warecode 
-					FROM warez_'.$this->region_id." as w
-					WHERE w.warecode in (".implode(",", $this->action_val).")
-					$this->searches
-					AND w.DirID = ".$this->dir_id."
-					AND w.ClassID = ".$this->class_id."
-					AND w.GrID = ".$value." group by result order by w.hit DESC, w.price DESC ";
-			else 
-				$q = 'SELECT distinct w.warecode as result, w.warecode 
-						FROM warez_'.$this->region_id." as w
-						WHERE w.DirID = ".$this->dir_id."
-						$this->searches
-						AND w.ClassID = ".$this->class_id."
-						AND w.GrID = ".$value." group by result order by w.hit DESC, w.price ASC ";*/
-				
-			//$wwwcat =  Models\Warez::find_by_sql($q);
 			$wwwcat =  Models\Warez::getWaresId($this->dir_id, $this->class_id, $value,
 													$this->region_id, $this->action_val, $this->searches);
-			//print_r($wwwcat);
-			//$this->all_dirs($wwwcat);
 			if($wwwcat)
 				$amount = count($wwwcat);
 			
-			/*if($this->action_val)
-				if(!in_array($value, $wwwcat))
-					continue;*/
-					
 			if($amount == 0)
 				continue;
 					
-			/*$category = $this->categories->addChild("category");
-			$category->addChild("category_id", self::ToDir($this->dir_id, $this->class_id, $value));
-			$category->addChild("category_name", ToUTF(self::$Groups[$this->dir_id][$this->class_id][$value]));
-			$category->addChild("amount", $amount); 
-			$icon = $category->addChild("category_icon", 
-				#"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg" 
-				"http://www.mvideo.ru/mobile/public/img/".self::ToDir($this->dir_id, $this->class_id, $value).".jpg"
-			); 
-		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
-			$icon->addAttribute("width", "180");
-			$icon->addAttribute("height", "180");*/
 			$id = self::ToDir($this->dir_id, $this->class_id, $value);
 			$this->displayCategoryGroup($id, $value, $amount);
 		}
@@ -435,9 +295,7 @@ class ControllerCategory extends Template\Template{
 						$grid[]=$val->grid;
 					if (!in_array($val->mark, $markid))
 						$markid[]=$val->mark;
-					//add products
 					$this->displayProduct( $val );
-					
 				}
 			}
 			
@@ -453,38 +311,15 @@ class ControllerCategory extends Template\Template{
 	
 	private function createDirAction()
 	{
-		$this->createParent();
-		/*$q = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
-			FROM warez_'.$this->region_id.' as w ';
-		
-		if($this->searches)
-			$q .= " WHERE w.warecode ".$this->searches;
-			
-		$q .= " GROUP BY result
-			ORDER BY c DESC";
-		
-		if($this->action_val)
-			$q = 'SELECT distinct w.DirID as result, COUNT(w.warecode) as c 
-					FROM warez_'.$this->region_id." as w
-					WHERE w.warecode in (".implode(",", $this->action_val).")
-					$this->searches
-					GROUP BY result
-					ORDER BY c DESC";
-		
-		*/
-		//print "<!--\ ".$q." \-->";
-		//$wwwarez =  Models\Warez::find_by_sql($q);
-		//$dcg = array($this->dir_id);
+		//$this->createParent();
 		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches);
 		$res = $wwwarez;
 		$this->all_dirs($wwwarez);
-		#print $this->group_id;
-		//print_r(array_keys(self::$Groups[$this->dir_id]));
 		if($this->dir_id)
 		{
 			$this->parents->classid = "";
 			$this->parents->grid = "";
-			//var_dump($this->parents);
+			
 			if(!$this->class_id)
 				return $this->createProduct();
 			return false;
@@ -493,7 +328,7 @@ class ControllerCategory extends Template\Template{
 		{
 			$this->displayCategoryNode($this->parent_name);
 		}
-		//foreach (array_keys(self::$Dirs) as $value) 
+		
 		foreach ($res as $val) 
 		{
 			$value = $val->result;
@@ -503,43 +338,14 @@ class ControllerCategory extends Template\Template{
 				if(!in_array($value, $wwwarez))
 					continue;
 					
-					
-				/*if($this->action_val)
-					$q = 'SELECT distinct w.warecode 
-						FROM warez_'.$this->region_id." as w
-						WHERE w.warecode in (".implode(",", $this->action_val).")
-						$this->searches
-						AND w.DirID = ".$value;
-				else 
-					$q = 'SELECT distinct w.warecode  
-							FROM warez_'.$this->region_id." as w
-							WHERE w.DirID = ".$value."
-							$this->searches";*/
-					
 				$wwwcat =  Models\Warez::getWarezAction($value, $this->region_id, $this->action_val, $this->searches);
-				//print_r($wwwcat);
-				//$this->all_dirs($wwwcat);
+				
 				if($wwwcat)
 					$amount = count($wwwcat);
 				
-				/*if($this->action_val)
-					if(!in_array($value, $wwwcat))
-						continue;*/
-						
 				if($amount == 0)
 					continue;
-						
-				/*$category = $this->categories->addChild("category");
-				$category->addChild("category_id", self::ToDir($value));
-				$category->addChild("category_name", ToUTF(self::$Dirs[$value]));
-				$category->addChild("amount", $amount); 
-				$icon = $category->addChild("category_icon", 
-					#"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
-					"http://www.mvideo.ru/mobile/public/img/".self::ToDir($value).".jpg"
-				); 
-			#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
-				$icon->addAttribute("width", "180");
-				$icon->addAttribute("height", "180");*/
+					
 				$id = self::ToDir($value);
 				$this->displayCategoryDir($id, $value, $amount);
 			}
@@ -662,12 +468,12 @@ class ControllerCategory extends Template\Template{
 				$action = $this->actions;
 				break;
 		}
-		//print $action;
 		$act = Models\Actions::first(array("segment_id"=>$action, "hidden"=>0));
-		//print_r($act);
+		
 		if($act)
-			return $this->displayCategoryAction( $act );
+			return $this->displayCategoryAction($act->segment_name, $act->segment_info);
 	}
+	
 	/**
 	 * текущая федеральная акция
 	 */
@@ -675,17 +481,17 @@ class ControllerCategory extends Template\Template{
 	{
 		$time = time();
 		
-		//$keys = array_keys(self::$GlobalConfig['fed_act']);
 		foreach (self::$GlobalConfig['fed_act'] as $key => $val) 
 		{
 			
-			if($key < $time)
+			/*if($key < $time)
 			{
 				if($val['end_date']>=$time)
-				{
-					//print 1;
+				{*/
 					$url = str_replace("/", "", $val['link']);//link
 					$imgfile = "imgs/action/main/$url.jpg";
+					return $this->displayCategoryAction($val['link'], $val['name'], $imgfile);
+					/*
 					$this->action = "";
 					$this->displayActionImage($imgfile);
 					
@@ -693,10 +499,10 @@ class ControllerCategory extends Template\Template{
 					
 					$this->action->addChild("url", "http://www.mvideo.ru/".$url."-cond/");
 					$this->action->addChild("link", "http://www.mvideo.ru/".$url."/");
-					//print $url;
-					return $this->putActions($url);
-				}
-			}
+					
+					return $this->putActions($url);*/
+				/*}
+			}*/
 		}
 		
 	}
@@ -712,7 +518,7 @@ class ControllerCategory extends Template\Template{
 						'from' => 'segment_cache sc',
 						'joins'=>" join warez_$this->region_id w on (sc.warecode=w.warecode)",
 						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name' ");
-		//print $this->searches;
+		
 		if($this->searches)
 			$options['conditions'] .= $this->searches;
 		$segment = Models\Segments::find('all', $options);
@@ -747,19 +553,21 @@ class ControllerCategory extends Template\Template{
 		}
 	}
 	
-	private function displayCategoryAction( $act )
+	private function displayCategoryAction($name, $description, $imgfile = "")
 	{
-		$url = str_replace("/", "", $act->segment_name);//link
-		$imgfile = "imgs/action/header_$url.jpg";
+		$url = str_replace("/", "", $name);//link
+		if(!$imgfile)
+			$imgfile = "imgs/action/header_$url.jpg";
 		
 		$this->action = "";
 		$this->displayActionImage($imgfile);
 		
-		$this->action->addChild("description", ToUTF($act->segment_info));
-		$this->action->addChild("url", "http://www.mvideo.ru/".str_replace("_", "-", $act->segment_name)
-															."/?ref=left_bat_". $act->segment_name);
+		$this->action->addChild("description", ToUTF($description));
+		$this->action->addChild("url", "http://www.mvideo.ru/"
+									.str_replace("_", "-", $name)
+									."/?ref=left_bat_". $name);
 		$this->action->addChild("link", "http://www.mvideo.ru/".$url."/");
-		$categorys = $this->getActionsVal($act->segment_name);
+		$categorys = $this->getActionsVal($name);
 		return $categorys;
 	}
 	
@@ -801,20 +609,11 @@ class ControllerCategory extends Template\Template{
 	{
 		$category->addChild("amount", $amount); 
 		$icon = $category->addChild("category_icon", 
-			#"http://www.mvideo.ru/Pdb/".$wwwcat[0]->warecode.".jpg"
 			"http://www.mvideo.ru/mobile/public/img/".$id.".jpg"
 		); 
-		#"http://www.mvideo.ru/mobile/public/img/".$val->dirid."_".$val->classid."_".$val->grid.".jpg");
 		$icon->addAttribute("width", "180");
 		$icon->addAttribute("height", "180");
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 	private function displayCategoryNode( $name )
 	{
@@ -837,7 +636,6 @@ class ControllerCategory extends Template\Template{
 		$product->addChild("title", StripTags($val->name));
 		$val->getDesctiptions();
 		$product->addChild("description", StripTags($val->description));
-		//$rewiews = Models\Reviews::first(array('select' => 'count(rating) c, sum(rating) s', 'conditions' => array('warecode = ?', $val->warecode)));
 		$val->getRatingRev();
 		$product->addChild("rating", $val->rating);
 		$product->addChild("reviews_num", $val->reviews);
@@ -918,7 +716,7 @@ class ControllerCategory extends Template\Template{
 		$imgdir = dirname(dirname($_SERVER["SCRIPT_FILENAME"]));
 		
 		$fimgs = "http://www.mvideo.ru/$img";
-		//print $imgdir."/".$imgfile;
+		
 		if(file_exists($imgdir."/".$img))
 		{
 			$imgsize = getimagesize($imgdir."/".$img);
@@ -938,7 +736,6 @@ class ControllerCategory extends Template\Template{
 	 */
 	protected function all_dirs(&$a)
 	{
-		//SELECT distinct DirID, ClassID, GrID from warez_1;
 		foreach ($a as $value) {
 			self::$TmpDir[] = $value->result;
 		}
