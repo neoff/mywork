@@ -16,6 +16,7 @@
 	use Template;
 	use Closure;
 	
+
 class ControllerCategory extends Template\Template{
 	
 	private $parent_name;
@@ -43,7 +44,6 @@ class ControllerCategory extends Template\Template{
 	protected $dir_id;
 	protected $class_id;
 	protected $group_id;
-	
 	
 	public function index( $array )
 	{
@@ -790,3 +790,4 @@ class ControllerCategory extends Template\Template{
 	{
 		return (!array_key_exists($key, $_GET))?$returns:$_GET[$key];
 	}
+
