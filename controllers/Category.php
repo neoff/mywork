@@ -14,6 +14,7 @@
 	use Models;
 	use ActiveRecord;
 	use Template;
+	use Closure;
 	
 class ControllerCategory extends Template\Template{
 	
@@ -950,11 +951,11 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function setVar()
 	{
-		$this->region_id = get_key('region_id', 0);
-		$this->category_id = get_key('category_id', -1);
-		$this->actions = get_key('action', -1);
-		$this->searches = get_key('search');
-		$this->page = get_key('page', 0);
+		$this->region_id = \get_key('region_id', 0);
+		$this->category_id = \get_key('category_id', -1);
+		$this->actions = \get_key('action', -1);
+		$this->searches = \get_key('search');
+		$this->page = \get_key('page', 0);
 	}
 	
 	/**
