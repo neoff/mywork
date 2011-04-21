@@ -18,15 +18,6 @@
 		return ToUTF ( $string );
 	}
 	
-	/**
-	 * возвращает значение глобальной переменной $_GET или значение $returns
-	 * @param string $key
-	 * @param (string|bool) $returns
-	 */
-	function get_key($key, $returns = false)
-	{
-		return (!array_key_exists($key, $_GET))?$returns:$_GET[$key];
-	}
 	
 	function detect_cyr_charset($str) {
 		

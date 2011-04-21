@@ -951,11 +951,11 @@ class ControllerCategory extends Template\Template{
 	 */
 	private function setVar()
 	{
-		$this->region_id = \get_key('region_id', 0);
-		$this->category_id = \get_key('category_id', -1);
-		$this->actions = \get_key('action', -1);
-		$this->searches = \get_key('search');
-		$this->page = \get_key('page', 0);
+		$this->region_id = get_key('region_id', 0);
+		$this->category_id = get_key('category_id', -1);
+		$this->actions = get_key('action', -1);
+		$this->searches = get_key('search');
+		$this->page = get_key('page', 0);
 	}
 	
 	/**
@@ -984,3 +984,12 @@ class ControllerCategory extends Template\Template{
 		$this->group_id = floor((($this->category_id % self::$Mult) % self::$MultC) / self::$MultG);
 	}
 }
+	/**
+	 * возвращает значение глобальной переменной $_GET или значение $returns
+	 * @param string $key
+	 * @param (string|bool) $returns
+	 */
+	function get_key($key, $returns = false)
+	{
+		return (!array_key_exists($key, $_GET))?$returns:$_GET[$key];
+	}
