@@ -311,7 +311,7 @@ class ControllerCategory extends Template\Template{
 	
 	private function createDirAction()
 	{
-		//$this->createParent();
+		$this->createParent();
 		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches);
 		$res = $wwwarez;
 		$this->all_dirs($wwwarez);
@@ -319,7 +319,6 @@ class ControllerCategory extends Template\Template{
 		{
 			$this->parents->classid = "";
 			$this->parents->grid = "";
-			print $this->class_id;
 			if(!$this->class_id)
 				return $this->createProduct();
 			return false;
@@ -556,14 +555,12 @@ class ControllerCategory extends Template\Template{
 	private function displayCategoryAction($name, $description, $imgfile = "")
 	{
 		$url = str_replace("/", "", $name);//link
-		$name = "http://www.mvideo.ru/".$url."-cond/";
+		$url_name = "http://www.mvideo.ru/".$url."-cond/";
+		
 		if(!$imgfile)
 		{
 			$imgfile = "imgs/action/header_$url.jpg";
-			$name = "http://www.mvideo.ru/"
-					.str_replace("_", "-", $name)
-					."/?ref=left_bat_"
-					. $name;
+			$url_name = "http://www.mvideo.ru/".str_replace("_", "-", $url)."/?ref=left_bat_".$name;
 		}
 		
 		$this->action = "";
@@ -571,9 +568,9 @@ class ControllerCategory extends Template\Template{
 		$this->displayActionImage($imgfile);
 		
 		$this->action->addChild("description", ToUTF($description));
-		$this->action->addChild("url", $name);
+		$this->action->addChild("url", $url_name);
 		$this->action->addChild("link", "http://www.mvideo.ru/".$url."/");
-		$categorys = $this->getActionsVal($name);
+		$categorys = $this->getActionsVal($url);
 		return $categorys;
 	}
 	
