@@ -207,6 +207,7 @@ class ControllerCategory extends Template\Template{
 			if(!in_array($value, $wwwarez))
 				continue;
 			
+			$wwwcat =  Models\Warez::getGroupId($this->dir_id, $value, $this->region_id, $this->action_val, $this->searches);
 			if($wwwcat)
 				$amount = count($wwwcat);
 			
