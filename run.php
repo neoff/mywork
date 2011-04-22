@@ -7,12 +7,12 @@
 	require_once ROOT_PATH . '/conf_parse.php';
 	
 	$conn = new config(FILE);
-	define( "DEBUG", ($conn->debug)? $conn->debug: True );
-	define( 'CONNECTION', ($conn->base)? $conn->base: 'develop' );
-	define( 'LIB_PATH', ($conn->lib)? $conn->lib: ROOT_PATH.'/lib' );
+
+	define( "DEBUG", ($conn->debug)? $conn->debug: True);
+	define( 'CONNECTION', ($conn->base)? $conn->base: 'develop');
+	define( 'LIB_PATH', ($conn->lib)? $conn->lib: ROOT_PATH.'/lib');
 	define( 'MVIDEO_PATH', ($conn->mvideo)? $conn->mvideo: dirname(ROOT_PATH) . "/mvideo");
 	
-	//var_dump(MVIDEO_PATH);
 	if(DEBUG)
 	{
 		ini_set('display_errors', True);

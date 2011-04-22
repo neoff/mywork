@@ -18,3 +18,8 @@
 *.lock
 *.cache
 *config.ini
+<<<<<<< HEAD
+*omg/*.jpg
+=======
+*img/*.jpg
+>>>>>>> origin/freezed-r02
