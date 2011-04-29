@@ -43,4 +43,22 @@ class Segments extends ActiveRecord\Model
 		print $sql;
 		return self::find_by_sql($sql);
 	}
+	
+	public static function freeDelivery($warecode, $region_id, $inetprice)
+	{
+		$delivery = 0;
+		if((int)$region_id == 1)
+		{
+			$options = array('conditions' => "segment_name = \"free_delivery\" and warecode = $warecode" );
+			$delivery = self::count($options);
+			if(!$delivery)
+			{
+				if(Warez::getBigPrice($inetprice))
+					$delivery = 1;
+			}
+			else
+				$delivery = 1;
+		}
+		return $delivery;
+	}
 }

@@ -1,16 +1,22 @@
 <?php
 /**  
- * 
+ * иодуль который достает категории товаров, проверяет акции и поиск, формирует 
+ * вывод категорий на экран, формирует вывод листинга товаров в категории
  * 
  * @package    Category
  * @subpackage Template
  * @since      08.10.2010 14:00:27
  * @author     enesterov
  * @category   controller
+ * 
+ * @global ControllerCategory
+ * @method index - точка входа, проверяет параметры гет запросов
  */
 
 
 	namespace Controllers;
+	use ActiveRecord\Model;
+
 	use Models;
 	use ActiveRecord;
 	use Template;
@@ -18,74 +24,121 @@
 	
 	
 class ControllerCategory extends Template\Template{
-	
+	/**
+	 * имя предыдущей категории
+	 * @var string
+	 */
 	private $parent_name;
+	
+	/**
+	 * номер предыдущей категории
+	 * @var int
+	 */
 	private $parent_id;
-	protected $region_id;
-	protected $category_id;
-	private $actions;
+	
+	/**
+	 * массив продуктов в акции
+	 * @var array
+	 */
 	private $action_val = array();
-	private $searches;
+	
+	
+	
+	/**
+	 * объекты элемента parrent_category
+	 * @var obj
+	 */
 	private $parents;
+	
+	/**
+	 * текущая категория
+	 * @var obj
+	 */
 	private $category;
+	
+	/**
+	 * сужающиеся списки
+	 * @var obj
+	 */
 	private $options;
-	private $page;
 	
+	
+	/**
+	 * массив с сайта mvideo массив всех  DIR
+	 * @var array
+	 */
 	protected static $TmpDir = array();
-	protected static $GlobalConfig = array();
-	protected static $Brands = array();
-	protected static $Dirs = array();
-	protected static $Classes = array();
-	protected static $Groups = array();
-	protected static $Mult = 1000000000;
-	protected static $MultC = 100000;
-	protected static $MultG = 1;
 	
+	/**
+	 * массив с сайта mvideo глобальных настроек
+	 * @var array
+	 */
+	protected static $GlobalConfig = array();
+	
+	/**
+	 * массив с сайта mvideo производителей товаров
+	 * @var array
+	 */
+	protected static $Brands = array();
+	
+	/**
+	 * массив с сайта mvideo используемых DIR
+	 * @var array
+	 */
+	protected static $Dirs = array();
+	
+	/**
+	 * массив с сайта mvideo используемых CLASS
+	 * @var array
+	 */
+	protected static $Classes = array();
+	
+	/**
+	 * массив с сайта mvideo используюемых GROUP
+	 * @var array
+	 */
+	protected static $Groups = array();
+	
+	
+	/**
+	 * текущий ID DIR без модификатора
+	 * @var int
+	 */
 	protected $dir_id;
+	
+	/**
+	 * текущий ID CLASS без модификатора
+	 * @var int
+	 */
 	protected $class_id;
+	
+	/**
+	 * текущий ID GROUP без модификатора
+	 * @var int
+	 */
 	protected $group_id;
 	
+	
+	/**
+	 * точка входа, обеспечивает ветвление
+	 * принимает во входящие параметры массив $_GET запроса
+	 * подключает хардкод файлы с сайта mvideo
+	 * @param array $array
+	 */
 	public function index( $array )
 	{
-		
-		
 		if($array)
-		{
 			$this->setVar();
-		}
 		
-		$GlobalConfig=array();
-		$rfile = MVIDEO_PATH;
-		
-		$GlobalConfig['RegionID']=$this->region_id;
-		require_once $rfile . '/lib/federal_info.lib.php';
-		require_once $rfile . '/lib/sdirs.lib.php';
-		require_once $rfile . '/www/classifier_'.$this->region_id.'.inc.php';
-		
-		self::$GlobalConfig = $GlobalConfig;
-		self::$Brands = $Brands;
-		self::$Dirs = $Dirs;
-		self::$Classes = $Classes;
-		self::$Groups = $Groups;
-		
+		$this->includeFiles();
 		
 		if($this->searches)
-		{
-			$this->search = $this->searches; #XML тег search!!!! не удалять
-			$search = iconv("UTF-8",'CP1251', $this->searches);
-			$this->searches = " AND (UPPER(w.ware) like \"%".strtoupper($search)."%\" or UPPER(w.FullName) like \"%".strtoupper($search)."%\")";
-		}
+			$this->getSearch();
 			
 		if($this->actions > 0)
 			$this->category = $this->getActions();
 		
-		
-		
-		/*if($this->category_id >=0 && !$this->searches && $this->actions < 0)
-		{
-			$this->parentNode();
-		}
-		else*/if($this->category_id >=0 && ($this->searches || $this->actions > 0))
+		if($this->category_id >=0 && ($this->searches || $this->actions > 0))
 			$this->category = $this->createDirAction();
 			
 		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
@@ -100,8 +153,6 @@ class ControllerCategory extends Template\Template{
 					$this->category = $this->createDir();
 				else
 				{
-					
-					//print $this->class_id;
 					if(!$this->class_id)
 						$this->category = $this->createClasses();
 				}
@@ -109,14 +160,18 @@ class ControllerCategory extends Template\Template{
 		}
 		
 		if($this->class_id)
+		{
 			if($this->group_id || $this->actions > 0)
 				$this->createProduct();
 			else
 				$this->createGroup();
+		}
 	}
 	
 	
-	
+	/**
+	 * выбирает на страницу все DIR из SDIR в которых есть товар
+	 */
 	protected function createRoot()
 	{
 		$this->displayCategoryNode( $this->parent_name );
@@ -146,25 +201,18 @@ class ControllerCategory extends Template\Template{
 					$value['name'] = self::$Dirs[$one_key];
 			}
 			
-			
-				
 			$this->displayCategoryRoot($key, $value, $amount, $id);
 		}
 	}
 	
-	
 	/**
-	 * ф-я выводит диры в рутовой категории
-	 * Enter description here ...
+	 * выбирает на страницу DIR в рутовой категории в которых есть товары
 	 */
 	protected function createDir()
 	{
 		$this->displayCategoryNode(ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['name']));
 		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches);
 		$this->all_dirs($wwwarez);
-		
-		
-		
 		foreach (self::$GlobalConfig['smenu'][$this->category_id]['dirs'] as $value) 
 		{
 			$amount = 0;
@@ -189,8 +237,7 @@ class ControllerCategory extends Template\Template{
 	
 	
 	/**
-	 * ф-я выводит классы в дирах
-	 * Enter description here ...
+	 * выбирает на страницу CLASS в DIR в которых есть товар
 	 */
 	protected function createClasses()
 	{
@@ -228,7 +275,7 @@ class ControllerCategory extends Template\Template{
 		return False;
 	}
 	/**
-	 * функция рисует на странице информацию о категориях 
+	 * выбирает на страницу GROUP из CLASS в которых есть товары  
 	 */
 	protected function createGroup()
 	{
@@ -257,16 +304,15 @@ class ControllerCategory extends Template\Template{
 		
 	}
 	/**
-	 * функция рисует на странице информацию о продуктах в категории 
+	 * выбирает на страницу товары в GROUP 
 	 */
-	private function createProduct()
+	protected function createProduct()
 	{
-		//print 4;
-		//var_dump($this->parents);
 		if($this->actions > 0 && $this->action_val)
 			$this->parents->dirid .= " and w.warecode in (".implode(",", $this->action_val).") ";#$this->parents->search
 		if($this->searches)
 			$this->parents->dirid .= $this->searches;
+			
 		if($this->parents)
 		{
 			#print "ads";
@@ -302,14 +348,12 @@ class ControllerCategory extends Template\Template{
 			
 			$this->getProductMarkVal( $markid, &$param_m );
 			$this->getProductGroupVal($grid, $param_g);
-			
 		}
 	}
 	
-	
-	
-	
-	
+	/**
+	 * собирает на страницу DIR участвующие в акции в которых есть товар
+	 */
 	private function createDirAction()
 	{
 		$this->createParent();
@@ -372,7 +416,6 @@ class ControllerCategory extends Template\Template{
 		//если пустой category_id
 		if(!$this->category_id || $this->category_id<0 )
 		{
-			//$this->options = array('conditions' => "parent_id is null");
 			$cat_parrent_name = $this->parent_name = "Список категорий";
 			$cat_parrent_id = $this->parent_id = 0;
 			$this->category_id = 0;
@@ -385,9 +428,6 @@ class ControllerCategory extends Template\Template{
 			{
 				$cat_parrent_name = $this->parent_name = "Список категорий";
 				$cat_parrent_id = $this->parent_id = 0;
-				//$this->dir_id = $this->category_id;
-				
-				
 			}
 			else
 			{
@@ -441,6 +481,19 @@ class ControllerCategory extends Template\Template{
 		return false;//$this->options;
 	}
 	
+	/**
+	 * устанавливаем на страницу ноду search, вибираем товар соотведствующий запросу search
+	 */
+	private function getSearch()
+	{
+		$this->search = $this->searches; #XML тег search!!!! не удалять
+		$search = iconv("UTF-8",'CP1251', $this->searches);
+		$this->searches = " AND (UPPER(w.ware) like \"%".strtoupper($search)."%\" or UPPER(w.FullName) like \"%".strtoupper($search)."%\")";
+	}
+	
+	/**
+	 * переназначаем ID акции, выбираем товар для акции
+	 */
 	private function getActions()
 	{
 		switch ((int)$this->actions)
@@ -519,6 +572,11 @@ class ControllerCategory extends Template\Template{
 		return False;
 	}
 	
+	/**
+	 * собираем массив по производителям
+	 * @param int $markid
+	 * @param object $param
+	 */
 	private function getProductMarkVal( $markid, &$param )
 	{
 		foreach($markid as $val)
@@ -531,6 +589,11 @@ class ControllerCategory extends Template\Template{
 		}
 	}
 	
+	/**
+	 * собираем массив по группам товара
+	 * @param int $grid
+	 * @param object $param
+	 */
 	private function getProductGroupVal( $grid, &$param )
 	{
 		foreach($grid as $val)
@@ -543,6 +606,13 @@ class ControllerCategory extends Template\Template{
 		}
 	}
 	
+	
+	/**
+	 * выводим на страницу информацию о акции и блок акции
+	 * @param string $name
+	 * @param string $description
+	 * @param string $imgfile
+	 */
 	private function displayCategoryAction($name, $description, $imgfile = "")
 	{
 		$url = str_replace("/", "", $name);//link
@@ -564,6 +634,13 @@ class ControllerCategory extends Template\Template{
 		return $categorys;
 	}
 	
+	/**
+	 * выводим на страницу предыдущую категорию
+	 * @param int $key
+	 * @param string $value
+	 * @param int $amount
+	 * @param int $id
+	 */
 	private function displayCategoryRoot($key, $value, $amount, $id)
 	{
 			$category = $this->categories->addChild("category");
@@ -572,24 +649,48 @@ class ControllerCategory extends Template\Template{
 			$this->displayCategotyIcon($category, $id, $amount);
 	}
 	
+	/**
+	 * создаем ID для елементов DIR 
+	 * @param int $id
+	 * @param string $value
+	 * @param int $amount
+	 */
 	private function displayCategoryDir($id, $value, $amount)
 	{
 		$name = ToUTF(self::$Dirs[$value]);
 		$this->displayCategorySection($name, $id, $amount);
 	}
 	
+	/**
+	 * создаем ID для элементтов CLASS
+	 * @param int $id
+	 * @param string $value
+	 * @param int $amount
+	 */
 	private function displayCategoryClass($id, $value, $amount)
 	{
 		$name = ToUTF(self::$Classes[$this->dir_id][$value]);
 		$this->displayCategorySection($name, $id, $amount);
 	}
 	
+	/**
+	 * создает ID для GROUP
+	 * @param int $id
+	 * @param string $value
+	 * @param int $amount
+	 */
 	private function displayCategoryGroup($id, $value, $amount)
 	{
 		$name = ToUTF(self::$Groups[$this->dir_id][$this->class_id][$value]);
 		$this->displayCategorySection($name, $id, $amount);
 	}
 	
+	/**
+	 * создаем блок categories
+	 * @param string $name
+	 * @param int $id
+	 * @param int $amount
+	 */
 	private function displayCategorySection($name, $id, $amount)
 	{
 		$category = $this->categories->addChild("category");
@@ -598,6 +699,12 @@ class ControllerCategory extends Template\Template{
 		$this->displayCategotyIcon($category, $id, $amount);
 	}
 	
+	/**
+	 * создаем ссылку на карртинку для блока categories
+	 * @param object $category
+	 * @param int $id
+	 * @param int $amount
+	 */
 	private function displayCategotyIcon(&$category, $id, $amount)
 	{
 		$category->addChild("amount", $amount); 
@@ -608,6 +715,10 @@ class ControllerCategory extends Template\Template{
 		$icon->addAttribute("height", "180");
 	}
 	
+	/**
+	 * выводим на экран блок categories
+	 * @param string $name
+	 */
 	private function displayCategoryNode( $name )
 	{
 		$this->categories="";
@@ -615,6 +726,11 @@ class ControllerCategory extends Template\Template{
 		$this->categories->addAttribute("category_name", $name );
 	}
 	
+	/**
+	 * выводим на экран блок parent_category
+	 * @param int $cat_parrent_id
+	 * @param string $cat_parrent_name
+	 */
 	private function displayCategoryParentNode($cat_parrent_id, $cat_parrent_name)
 	{
 		$this->parent_category="";
@@ -622,6 +738,10 @@ class ControllerCategory extends Template\Template{
 		$this->parent_category->addChild("category_name", $cat_parrent_name);
 	}
 	
+	/**
+	 * собираем для вывода на экран блок продуктов 
+	 * @param obj $val
+	 */
 	private function displayProduct( $val )
 	{
 		$product = $this->products->addChild("product");
@@ -634,22 +754,36 @@ class ControllerCategory extends Template\Template{
 		$product->addChild("reviews_num", $val->reviews);
 		$product->addChild("inet_price", $val->inetprice);
 		
-		$dic = $val->getInetDiscountStatus($val->warecode, $this->region_id);
-		$product->addChild("card_discount", $dic);
-		
 		if($val->oldprice)
 			$old_price = $val->oldprice;
 		else
 			$old_price = $val->price;
 			
 		$product->addChild("old_price", $old_price);
-		
 		$product->addChild("price", $val->price);
+		
+		$dic = $val->getInetDiscountStatus($val->warecode, $this->region_id);
+		$product->addChild("card_discount", $dic);
+		
+		
+		$pickup = 0;
+		if(!$this->action_val)
+		{
+			$pickup = Models\Shops::getPickup($this->region_id, $val);
+		}
+		$product->addChild("pickup", $pickup);
+		
+		$delivery = Models\Segments::freeDelivery($val->warecode, $this->region_id, $val);
+		$product->addChild("delivery", $delivery);
+		
 		$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); 
 		$image->addAttribute("width", "180");
 		$image->addAttribute("height", "180");
 	}
 	
+	/**
+	 * выводим на экран блок продуктов
+	 */
 	private function displayProductNode()
 	{
 		$name = $this->parent_name;
@@ -661,6 +795,9 @@ class ControllerCategory extends Template\Template{
 		$this->products->addAttribute("category_name", $name);
 	}
 	
+	/**
+	 * выводим на экран параметры продуктов (сужающийся список)
+	 */
 	private function displayProductMark()
 	{
 		$param = $this->params->addChild("param"); 
@@ -672,7 +809,9 @@ class ControllerCategory extends Template\Template{
 		return $param;
 	}
 	
-	
+	/**
+	 * выводим на экран групировку продуктов (сужающийся список)
+	 */
 	private function displayProductGroup()
 	{
 		$param = $this->params->addChild("param"); 
@@ -686,13 +825,22 @@ class ControllerCategory extends Template\Template{
 	}
 	
 	
-	
+	/**
+	 * собираем сужающиеся списки
+	 * @param obj $param
+	 * @param string $name
+	 * @param string $val
+	 */
 	private function displayProductGroupOption(&$param, $name, $val)
 	{
 		$option = $param->addChild("option", $name);
 		$option->addAttribute("value", $val);
 	}
 	
+	/**
+	 * выводим на экран блок страниц
+	 * @param int $productes_count
+	 */
 	private function displayPageNode($productes_count)
 	{
 		$this->pages="";
@@ -700,6 +848,7 @@ class ControllerCategory extends Template\Template{
 		$this->pages->addChild("onpage", "20");
 		$this->pages->addChild("page", $this->page);
 	}
+	
 	/**
 	 * создает ноду с картинкой для акции
 	 * @param unknown_type $img
@@ -736,18 +885,6 @@ class ControllerCategory extends Template\Template{
 	}
 	
 	/**
-	 * устанавливает основные переменные из $_GET запроса
-	 */
-	private function setVar()
-	{
-		$this->region_id = get_key('region_id', 0);
-		$this->category_id = get_key('category_id', -1);
-		$this->actions = get_key('action', -1);
-		$this->searches = get_key('search');
-		$this->page = get_key('page', 0);
-	}
-	
-	/**
 	 * собирает ID категории
 	 * @param int $d
 	 * @param int $c
@@ -772,4 +909,26 @@ class ControllerCategory extends Template\Template{
 		$this->class_id = floor(($this->category_id % self::$Mult) / self::$MultC);
 		$this->group_id = floor((($this->category_id % self::$Mult) % self::$MultC) / self::$MultG);
 	}
+	
+	/**
+	 * подключает сторонние файлы, задает статические переменные
+	 */
+	private function includeFiles()
+	{
+		$GlobalConfig=array();
+		$rfile = MVIDEO_PATH;
+		
+		$GlobalConfig['RegionID']=$this->region_id;
+		require_once $rfile . '/lib/federal_info.lib.php';
+		require_once $rfile . '/lib/sdirs.lib.php';
+		require_once $rfile . '/www/classifier_'.$this->region_id.'.inc.php';
+		
+		self::$GlobalConfig = $GlobalConfig;
+		self::$Brands = $Brands;
+		self::$Dirs = $Dirs;
+		self::$Classes = $Classes;
+		self::$Groups = $Groups;
+	}
+	
+	
 }

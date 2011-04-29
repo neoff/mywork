@@ -45,16 +45,19 @@ class Warez extends ActiveRecord\Model
 		return array($where,$this->finder);
 	}
 	
+	/**
+	 * выбираем варез из БД согласно параметров
+	 * @param int $region_id
+	 * @param obj $parents
+	 * @param int|bool $page
+	 */
 	public static function getWarez($region_id, $parents, $page = False)
 	{
 		if($page > 0)
 			$page = ($page -1)*20;
 				
-		//print $page;
-		//var_dump($parents);
-		//var_dump(isset($parents->asdasdasdasd));
 		$limit="";
-		if($page!==False)
+		if($page!=False)
 			$limit = " limit 20 offset $page";
 		$sql_impl="";
 		
@@ -78,17 +81,11 @@ class Warez extends ActiveRecord\Model
 			if($parents->grid)
 				$sql_impl.=" and w.GrID = " .$parents->grid;
 		
-		/*if($parents->dirid && $parents->search)
-			$sql_impl.= " and ";
-			
-		if($parents->search)
-			$sql_impl.= $parents->search;*/
 		if(!$region_id || !$sql_impl)
 			return;
+		
 		$sql = 'select w.* from `warez_' .$region_id . '` as w 
 				where ' . $sql_impl." order by price ASC ". $limit;
-		//print $sql_impl;
-		#print $sql;
 		return self::find_by_sql($sql);
 	}
 	
@@ -136,18 +133,13 @@ class Warez extends ActiveRecord\Model
 		
 	}
 	
-	/*public static function getWarezAction($region_id, $array, $condition = "")
+	public static function getBigPrice($inetprice)
 	{
-		if($array)
-		{
-			return self::find_by_sql('select c.* from categories c left join warez_' .
-							$region_id . " w on (c.DirID=w.DirID and c.ClassID=w.ClassID and c.GrID=w.GrID ) 
-							where w.warecode in (".implode(",", $array).") $condition group BY c.category_id ");
-		}
-		else
-			return $array;
-		
-	}*/
+		if((int)$inetprice->inetprice > 3000)
+			return true;
+		return false;
+	}
+	
 	public static function getWarezAction($dir, $region_id = 1, $action = "", $search = "")
 	{
 		$sql = 'SELECT distinct w.warecode 
@@ -161,6 +153,7 @@ class Warez extends ActiveRecord\Model
 		
 		return self::find_by_sql($sql);
 	}
+	
 	public static function getRootCategoryChild($region_id = 1, $action = "", $search = "", $dcg = array())
 	{
 		//print $sql;
@@ -201,6 +194,109 @@ class Warez extends ActiveRecord\Model
 		return self::find_by_sql($sql);
 	}
 	
+	public static function getCertificate($region_id = 1, $warecode, $price)
+	{
+		
+		$join = 'JOIN linkw ON warez.warecode=linkw.warecodem 
+				JOIN certificati ON certificati.certwarecode=linkw.warecodel
+				JOIN scprices USING (certwarecode)';
+		/*$sql = "SELECT
+				certificati.certwarecode AS warecode,
+				certificati.ware,
+				MAX(warepricefrom) warepricefrom,
+				MAX(CertPrice) certprice
+				FROM warez_$region_id AS warez
+				JOIN linkw ON warez.warecode=linkw.warecodem
+				JOIN certificati ON certificati.certwarecode=linkw.warecodel
+				JOIN scprices USING (certwarecode)
+				WHERE warepricefrom<=$price
+				AND warez.warecode=$warecode
+				GROUP BY certificati.certwarecode";*/
+		
+		
+		
+		$sql = array(
+			'select' => "certificati.certwarecode AS warecode,
+						CONCAT(certificati.ware,' на ',warez.FullName) AS FullName,
+						certificati.ware,
+						MAX(warepricefrom) warepricefrom,
+						MAX(CertPrice) certprice",
+			'from' => 'warez_'.$region_id.' as warez',
+			'joins' => $join,
+			'conditions'=>array('warepricefrom<= ? AND warez.warecode= ? ', $price, $warecode),
+			'group' => 'certificati.certwarecode');
+		
+		return self::find('all', $sql);
+	}
+	
+	public static function getReleted($region_id, $val)
+	{
+		$join = "JOIN Pdb USING(warecode) 
+				LEFT JOIN sw ON warez.warecode=sw.warecode 
+				LEFT JOIN marks ON warez.mark=marks.MarkID,dirs,classes,groups ";
+		$pmin = 0.85 * $val->price;
+		$pmax   = 1.15 * $val->price;
+		$sql = array(
+			'select' => "DISTINCT warez.*, 
+						0 as end_for_cnt, 
+						0 as is_cnt_down, 
+						(Discounted > DC) AS Discountable,
+						IF(warez.InetQty,1,0) AS Presence,
+						sw.pkarta pkarta, 
+						dirs.DirName AS DirName, 
+						classes.ClassName AS ClassName, 
+						groups.GrName AS GrName, 
+						marks.MarkName AS MarkName",
+			'from' => 'warez_'.$region_id.' as warez',
+			'joins' => $join,
+			'group' => 'warez.warecode', 
+			'order' => 'warez.spool, warez.GrID, warez.Discounted ASC',
+			'limit' => 5,
+			'conditions'=>array('warez.Show 
+								AND warez.DirID= ?
+								AND warez.ClassID= ?
+								AND warez.GrID= ?
+								AND warez.GrID!=486 
+								AND warez.warecode!= ?
+								AND warez.Discounted>=? 
+								AND warez.Discounted<=? 
+								AND warez.InetQty > 0 
+								AND warez.ShopsQty > 0 
+								AND warez.DirID=dirs.DirID 
+								AND warez.ClassID=classes.ClassID 
+								AND warez.GrID=groups.GrID ', 
+								$val->dirid, 
+								$val->classid,
+								$val->grid,
+								$val->warecode,
+								$pmin,
+								$pmax
+								)
+		);
+		/*SELECT DISTINCT warez.*, 0 as end_for_cnt, 0 as is_cnt_down, (Discounted > DC) AS Discountable,IF(warez.InetQty,1,0) 
+		 AS Presence,sw.pkarta pkarta, dirs.DirName AS DirName, classes.ClassName AS ClassName, groups.GrName AS GrName, marks.MarkName AS MarkName 
+FROM warez_1 AS warez 
+JOIN Pdb USING(warecode) 
+LEFT JOIN sw ON warez.warecode=sw.warecode 
+LEFT JOIN marks ON warez.mark=marks.MarkID,dirs,classes,groups 
+WHERE warez.Show 
+AND warez.DirID=11 
+AND warez.ClassID=12 
+AND warez.GrID=1029 
+AND warez.GrID!=486 
+AND warez.warecode!=30012771 
+AND warez.Discounted>=671 
+AND warez.Discounted<=908 
+AND warez.InetQty > 0 
+AND warez.ShopsQty > 0 
+AND warez.DirID=dirs.DirID 
+AND warez.ClassID=classes.ClassID 
+AND warez.GrID=groups.GrID 
+GROUP BY warez.warecode 
+ORDER BY warez.spool, warez.GrID, warez.Discounted ASC LIMIT 5*/
+		return self::find('all', $sql);
+	}
+	/************* deprecated *************************/
 	public static function getClassId($dir, $region_id = 1, $action = "", $search = "")
 	{
 		$sql = 'SELECT distinct ClassID as result, w.warecode 
