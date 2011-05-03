@@ -17,57 +17,6 @@
 abstract class Template {
 	
 	/**
-	 * текущий номер региона
-	 * @var string
-	 */
-	protected $region_id;
-	
-	/**
-	 * текущий номер категории
-	 * @var int
-	 */
-	protected $category_id;
-	
-	/**
-	 * текущая акция
-	 * @var string
-	 */
-	protected $actions;
-	
-	/**
-	 * результатт поиска в БД
-	 * @var obj
-	 */
-	protected $searches;
-	
-	/**
-	 * модификатор для создания $dir_id
-	 * @var int
-	 */
-	protected static $Mult = 1000000000;
-	
-	/**
-	 * модификатор для создания $class_id
-	 * @var int
-	 */
-	protected static $MultC = 100000;
-	
-	/**
-	 * модификатор для создания $group_id
-	 * @var int
-	 */
-	protected static $MultG = 1;
-	
-	/**
-	 * текущая страница
-	 * @var int
-	 */
-	protected $page;
-	protected $product_id;
-	protected $ask;
-	protected $reviews;
-	
-	/**
 	 * DOM объекты
 	 * @var object
 	 */
@@ -135,20 +84,7 @@ abstract class Template {
 		}
 	}
 	
-	/**
-	 * устанавливает основные переменные из $_GET запроса
-	 */
-	protected function setVar()
-	{
-		$this->region_id = get_key('region_id', 0);
-		$this->category_id = get_key('category_id', -1);
-		$this->actions = get_key('action', -1);
-		$this->searches = get_key('search');
-		$this->page = get_key('page', 0);
-		$this->product_id = get_key('product_id');
-		$this->ask = get_key('aks');
-		$this->reviews = get_key('reviews');
-	}
+	
 	
 
 }

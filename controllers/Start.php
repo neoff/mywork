@@ -13,13 +13,17 @@
 	use Models;
 	use Template;
 	
-class ControllerStart extends Template\Template{
+class ControllerStart extends InterfaceTemplate{
 	public function index()
 	{
+		$this->region_id = 1;
+		$this->includeFiles();
+		$this->actions = 3;
 		$this->startpage = "";
-		$this->startpage->addChild("name");
-		$this->startpage->addChild("banner_img");
+		$this->startpage->addChild("startpage_name");
+		$this->getActionFederal($this->startpage);
+		/*$this->startpage->addChild("banner_img");
 		$this->startpage->addChild("action_name");
-		$this->startpage->addChild("action_id");
+		$this->startpage->addChild("action_id");*/
 	}
 }

@@ -14,7 +14,7 @@
 	use Template;
 	
 
-class ControllerProduct extends Template\Template{
+class ControllerProduct extends InterfaceTemplate{
 	
 	
 	public function index( $array )
@@ -65,7 +65,10 @@ class ControllerProduct extends Template\Template{
 		}
 	}
 	
-	
+	/**
+	 * выводим на экран блок categories
+	 * @param obj $category
+	 */
 	private function displayCategory($category)
 	{
 		$this->categories="";
@@ -85,23 +88,6 @@ class ControllerProduct extends Template\Template{
 		$this->product->addChild("title", StripTags($productes->ware));
 	}
 	
-
-	private function displayImage($prod, $code, $small="", $main="")
-	{
-		$img = "http://www.mvideo.ru/Pdb$small/$code.jpg";
-		
-		if (!$temp = getimagesize($img)) {
-			$temp = array(65, 65, 0, 0);
-		}
-		
-		list($width, $height, $type, $attr) = $temp;
-		
-		$image = $prod->addChild("image", $img);
-		$image->addAttribute("width", $width);
-		$image->addAttribute("height", $height);
-		if($main)
-			$image->addAttribute("main", "1");
-	}
 	
 	private function displayImages($prod, $code)
 	{
@@ -125,35 +111,10 @@ class ControllerProduct extends Template\Template{
 		//$mov->addChild("video", "http://www.mvideo.ru/Pdb/$this->product_id.jpg");
 	}
 	
-	private function displayPrice($prod, $val)
-	{
-		$prod->addChild("inet_price", $val->inetprice);
-		if($val->oldprice)
-			$old_price = $val->oldprice;
-		else
-			$old_price = $val->price;
-		$prod->addChild("old_price", $old_price);
-		$prod->addChild("price", $val->price);
-	}
 	
-	private function displayPickup($product, $val)
-	{
-		$pickup = Models\Shops::getPickup($this->region_id, $val);
-		$product->addChild("pickup", $pickup);
-	}
 	
-	private function displayDelivery($product, $val)
-	{
-		$delivery = Models\Segments::freeDelivery($val->warecode, $this->region_id, $val);
-		$product->addChild("delivery", $delivery);
-	}
 	
-	private function displayRating($prod, $val)
-	{
-		$val->getRatingRev();
-		$prod->addChild("rating", $val->rating);
-		$prod->addChild("reviews_num", $val->reviews);
-	}
+	
 	
 	private function getPdo($prod, $val)
 	{
@@ -216,11 +177,7 @@ class ControllerProduct extends Template\Template{
 		}
 	}
 	
-	private function displayDescription($prod, $val)
-	{
-		$val->getDesctiptions();
-		$prod->addChild("description", StripTags($val->description));
-	}
+
 	
 	private function displayOptions()
 	{

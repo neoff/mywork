@@ -23,7 +23,7 @@
 	use Closure;
 	
 	
-class ControllerCategory extends Template\Template{
+class ControllerCategory extends InterfaceTemplate{
 	/**
 	 * имя предыдущей категории
 	 * @var string
@@ -42,8 +42,6 @@ class ControllerCategory extends Template\Template{
 	 */
 	private $action_val = array();
 	
-	
-	
 	/**
 	 * объекты элемента parrent_category
 	 * @var obj
@@ -61,44 +59,6 @@ class ControllerCategory extends Template\Template{
 	 * @var obj
 	 */
 	private $options;
-	
-	
-	/**
-	 * массив с сайта mvideo массив всех  DIR
-	 * @var array
-	 */
-	protected static $TmpDir = array();
-	
-	/**
-	 * массив с сайта mvideo глобальных настроек
-	 * @var array
-	 */
-	protected static $GlobalConfig = array();
-	
-	/**
-	 * массив с сайта mvideo производителей товаров
-	 * @var array
-	 */
-	protected static $Brands = array();
-	
-	/**
-	 * массив с сайта mvideo используемых DIR
-	 * @var array
-	 */
-	protected static $Dirs = array();
-	
-	/**
-	 * массив с сайта mvideo используемых CLASS
-	 * @var array
-	 */
-	protected static $Classes = array();
-	
-	/**
-	 * массив с сайта mvideo используюемых GROUP
-	 * @var array
-	 */
-	protected static $Groups = array();
-	
 	
 	/**
 	 * текущий ID DIR без модификатора
@@ -503,7 +463,8 @@ class ControllerCategory extends Template\Template{
 				break;
 			case 3:
 				$action = 0;
-				return $this->getActionFederal();
+				$this->action = "";
+				return $this->getActionFederal($this->action);
 				break;
 			case 4:
 				$action = 24;
@@ -524,37 +485,21 @@ class ControllerCategory extends Template\Template{
 		$act = Models\Actions::first(array("segment_id"=>$action, "hidden"=>0));
 		
 		if($act)
-			return $this->displayCategoryAction($act->segment_name, $act->segment_info);
+		{
+			$this->action = "";
+			$url = $this->displayCategoryAction($this->action, $act->segment_name, $act->segment_info);
+			$categorys = $this->getActionsVal($url);
+			return $categorys;
+		}
 	}
 	
-	/**
-	 * текущая федеральная акция
-	 */
-	private function getActionFederal()
-	{
-		$time = time();
-		
-		foreach (self::$GlobalConfig['fed_act'] as $key => $val) 
-		{
-			
-			if($key < $time)
-			{
-				if($val['end_date']>=$time)
-				{
-					$url = str_replace("/", "", $val['link']);//link
-					$imgfile = "imgs/action/main/$url.jpg";
-					return $this->displayCategoryAction($val['link'], $val['name'], $imgfile);
-				}
-			}
-		}
-		
-	}
+	
 	/**
 	 * собирает товары участвующие в акции
 	 * в массив $this->action_val
 	 * @param unknown_type $name
 	 */
-	private function getActionsVal($name)
+	protected function getActionsVal($name)
 	{
 		
 		$options = array('select' => 'w.warecode',
@@ -607,32 +552,7 @@ class ControllerCategory extends Template\Template{
 	}
 	
 	
-	/**
-	 * выводим на страницу информацию о акции и блок акции
-	 * @param string $name
-	 * @param string $description
-	 * @param string $imgfile
-	 */
-	private function displayCategoryAction($name, $description, $imgfile = "")
-	{
-		$url = str_replace("/", "", $name);//link
-		$url_name = "http://www.mvideo.ru/".$url."-cond/";
-		
-		if(!$imgfile)
-		{
-		$imgfile = "imgs/action/header_$url.jpg";
-			$url_name = "http://www.mvideo.ru/".str_replace("_", "-", $url)."/?ref=left_bat_".$name;
-		}
-		
-		$this->action = "";
-		$this->displayActionImage($imgfile);
-		
-		$this->action->addChild("description", ToUTF($description));
-		$this->action->addChild("url", $url_name);
-		$this->action->addChild("link", "http://www.mvideo.ru/".$url."/");
-		$categorys = $this->getActionsVal($url);
-		return $categorys;
-	}
+	
 	
 	/**
 	 * выводим на страницу предыдущую категорию
@@ -747,38 +667,20 @@ class ControllerCategory extends Template\Template{
 		$product = $this->products->addChild("product");
 		$product->addChild("product_id", ToUTF($val->warecode));
 		$product->addChild("title", StripTags($val->name));
-		$val->getDesctiptions();
-		$product->addChild("description", StripTags($val->description));
-		$val->getRatingRev();
-		$product->addChild("rating", $val->rating);
-		$product->addChild("reviews_num", $val->reviews);
-		$product->addChild("inet_price", $val->inetprice);
+		$this->displayDescription($product, $val);
+		$this->displayRating($product, $val);
 		
-		if($val->oldprice)
-			$old_price = $val->oldprice;
-		else
-			$old_price = $val->price;
-			
-		$product->addChild("old_price", $old_price);
-		$product->addChild("price", $val->price);
+		$this->displayPrice($product, $val);
 		
 		$dic = $val->getInetDiscountStatus($val->warecode, $this->region_id);
 		$product->addChild("card_discount", $dic);
 		
 		
-		$pickup = 0;
-		if(!$this->action_val)
-		{
-			$pickup = Models\Shops::getPickup($this->region_id, $val);
-		}
-		$product->addChild("pickup", $pickup);
+		$this->displayPickup($product, $val);
 		
-		$delivery = Models\Segments::freeDelivery($val->warecode, $this->region_id, $val);
-		$product->addChild("delivery", $delivery);
+		$this->displayDelivery($product, $val);
 		
-		$image = $product->addChild("image", "http://www.mvideo.ru/Pdb/$val->warecode.jpg"); 
-		$image->addAttribute("width", "180");
-		$image->addAttribute("height", "180");
+		$this->displayImage($product, $val->warecode);
 	}
 	
 	/**
@@ -849,27 +751,7 @@ class ControllerCategory extends Template\Template{
 		$this->pages->addChild("page", $this->page);
 	}
 	
-	/**
-	 * создает ноду с картинкой для акции
-	 * @param unknown_type $img
-	 */
-	private function displayActionImage($img)
-	{
-		$imgdir = MVIDEO_PATH;
-		$fimgs = "http://www.mvideo.ru/$img";
-		
-		if(file_exists($imgdir."/www/".$img))
-		{
-			$imgsize = getimagesize($imgdir."/www/".$img);
-		
-			//создаем картинку
-			$images = $this->action->addChild("image", $fimgs);
-			
-			//задаем размеры
-			$images->addAttribute("width", $imgsize[0]);
-			$images->addAttribute("height", $imgsize[1]);
-		}
-	}
+	
 	
 	/**
 	 * собирает уникальные ID директорий из БД
@@ -910,25 +792,7 @@ class ControllerCategory extends Template\Template{
 		$this->group_id = floor((($this->category_id % self::$Mult) % self::$MultC) / self::$MultG);
 	}
 	
-	/**
-	 * подключает сторонние файлы, задает статические переменные
-	 */
-	private function includeFiles()
-	{
-		$GlobalConfig=array();
-		$rfile = MVIDEO_PATH;
-		
-		$GlobalConfig['RegionID']=$this->region_id;
-		require_once $rfile . '/lib/federal_info.lib.php';
-		require_once $rfile . '/lib/sdirs.lib.php';
-		require_once $rfile . '/www/classifier_'.$this->region_id.'.inc.php';
-		
-		self::$GlobalConfig = $GlobalConfig;
-		self::$Brands = $Brands;
-		self::$Dirs = $Dirs;
-		self::$Classes = $Classes;
-		self::$Groups = $Groups;
-	}
+	
 	
 	
 }
