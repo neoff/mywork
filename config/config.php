@@ -29,28 +29,30 @@
 	Routing\Config::initialize(function($cfg)
 	{
 		$cfg->set_controller_directory(ROOT_PATH . '/controllers');
-		
-		$prefix = "mobile";
+		$cfg->set_prefix("mobile");
 		
 		if(get_key('region_id', 0) != 0) 
 		{	
-			$_SERVER['REQUEST_URI'] = makeUrl(array($prefix,"shop"));;
+			$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"shop"));
 			
 			if(get_key('category_id', -1) >= 0 || get_key('action', -1) >=0 || get_key('search')) 
-				$_SERVER['REQUEST_URI'] = makeUrl(array($prefix,"category"));
+				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"category"));
 			if(get_key('product_id')) 
-				$_SERVER['REQUEST_URI'] = makeUrl(array($prefix,"product"));
+				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"product"));
+			if(get_key('actions')) 
+				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"actions"));
 		}
 		else {
 			if(get_key('start') == 1)
 			{
-				$_SERVER['REQUEST_URI'] = makeUrl(array($prefix,"start"));
+				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"start"));
 			}
 		}
 		
-		$cfg->Map("^\/?$prefix\/(\?region_id=0)?$", $controler="Region", $action="index");
-		$cfg->Map("^\/?$prefix\/shop\/?$", $controler="Shops", $action="index", $_GET);
-		$cfg->Map("^\/?$prefix\/category\/?$", $controler="Category", $action="index", $_GET);
-		$cfg->Map("^\/?$prefix\/product\/?$", $controler="Product", $action="index", $_GET);
-		$cfg->Map("^\/?$prefix\/start\/?$", $controler="Start", $action="index", $_GET);
+		$cfg->Map("(\?region_id=0)", $controler="Region", $action="index");
+		$cfg->Map("shop", $controler="Shops", $action="index", $_GET);
+		$cfg->Map("category", $controler="Category", $action="index", $_GET);
+		$cfg->Map("product", $controler="Product", $action="index", $_GET);
+		$cfg->Map("start", $controler="Start", $action="index", $_GET);
+		$cfg->Map("actions", $controler="Actions", $action="index", $_GET);
 	});

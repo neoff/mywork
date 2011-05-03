@@ -22,6 +22,7 @@ class Config extends ActiveRecord\Singleton
 	public $key;
 	private $controller_directory;
 	private $mapper;
+	public $prefix = "";
 
 	public static function initialize(Closure $initializer)
 	{
@@ -42,7 +43,7 @@ class Config extends ActiveRecord\Singleton
 		{
 			require_once $file;
 		}
-		
+		$addr = "^\/?$this->prefix\/$addr\/?$";
 		self::$route[$addr] =  array('Controllers\Controller' . $controler, $action, $argv);
 	}
 	
@@ -52,6 +53,11 @@ class Config extends ActiveRecord\Singleton
 			throw new ActiveRecord\ConfigException("Invalid or non-existent directory: $dir");
 
 		$this->controller_directory = $dir;
+	}
+	
+	public function set_prefix($prefix)
+	{
+		$this->prefix = $prefix;
 	}
 
 	/**

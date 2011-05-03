@@ -61,7 +61,7 @@ class ControllerProduct extends InterfaceTemplate{
 				$this->displayAks();
 				
 			if($this->reviews)
-				$this->displayReviews();
+				return $this->displayReviews();
 		}
 	}
 	
@@ -226,9 +226,17 @@ class ControllerProduct extends InterfaceTemplate{
 	}
 	
 	
-	
+	/**
+	 * выводит на екран отзывы пользователей
+	 * обрабатывает пост запрос на добавление нового отзыва
+	 */
 	private function displayReviews()
 	{
+		global $_POST;
+		
+		if($_POST)
+			if($this->getReviews($_POST))
+				return false;
 		$reviews = $this->product->addChild("reviews");
 		$reviews_m=Models\Reviews::all(array('warecode'=>$this->product_id, "approved"=>1));
 		foreach ($reviews_m as $key => $val)
@@ -236,7 +244,7 @@ class ControllerProduct extends InterfaceTemplate{
 			$review = $reviews->addChild("review");
 			$date = "";
 			if($val->add_date)
-				$date = $val->add_date->format("d.m.Y");
+				$date = $val->add_date->format("c");
 			$review->addChild("date", $date);
 			$review->addChild("author", ToUTF($val->name));
 			$review->addChild("city",  ToUTF($val->city));
@@ -244,5 +252,46 @@ class ControllerProduct extends InterfaceTemplate{
 			$review->addChild("title",  StripTags($val->title));
 			$review->addChild("text",  StripTags($val->text));
 		}
+		
+		return true;
 	}
+	
+	/**
+	 * собирает валидатор, проверяет пост запрос, записывает в базу данные
+	 * @param array $post
+	 */
+	private function getReviews(&$post)
+	{
+		$reviews = new Models\Reviews();
+		$required = (object)array('required' => true, 'type' => 'string');
+		$validate = array('name' => $required, 
+						'email' => $required, 
+						'city' => $required, 
+						'title' => $required, 
+						'rating' => $required,
+						'title' => $required,
+						'text' => $required);
+		if(!validatePost($validate, $post))
+			return true;
+			
+		$this->createDatabaseObject($reviews, $validate, $post);
+		$reviews->save();
+		return false;
+	}
+	
+	/**
+	 * собирает данные из пост запроса для записи в базу
+	 * @param obj $obj
+	 * @param obj $validate
+	 * @param array $post
+	 */
+	private function createDatabaseObject(&$obj, $validate, $post)
+	{
+		foreach ($validate as $key => $value)
+		{
+			$obj->$key = $post[$key];
+		}
+	}
+	
+	
 }

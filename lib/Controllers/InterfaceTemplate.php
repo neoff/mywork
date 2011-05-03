@@ -31,7 +31,7 @@ abstract class InterfaceTemplate extends Template\Template{
 	 * текущая акция
 	 * @var string
 	 */
-	protected $actions;
+	protected $action_id;
 	
 	/**
 	 * результатт поиска в БД
@@ -169,7 +169,7 @@ abstract class InterfaceTemplate extends Template\Template{
 		//$this->displayActionImage($imgfile);
 		$this->displayImage($prod, "", "", false, $imgfile);
 		
-		$prod->addChild("action_id", $this->actions);
+		$prod->addChild("action_id", $this->action_id);
 		$prod->addChild("action_name", ToUTF($description));
 		$prod->addChild("action_cond", $url_name);
 		$prod->addChild("action_url", "http://www.mvideo.ru/".$url."/");
@@ -307,7 +307,7 @@ abstract class InterfaceTemplate extends Template\Template{
 	{
 		$this->region_id = get_key('region_id', 0);
 		$this->category_id = get_key('category_id', -1);
-		$this->actions = get_key('action', -1);
+		$this->action_id = get_key('action', -1);
 		$this->searches = get_key('search');
 		$this->page = get_key('page', 0);
 		$this->product_id = get_key('product_id');

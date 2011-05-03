@@ -95,13 +95,13 @@ class ControllerCategory extends InterfaceTemplate{
 		if($this->searches)
 			$this->getSearch();
 			
-		if($this->actions > 0)
+		if($this->action_id > 0)
 			$this->category = $this->getActions();
 		
-		if($this->category_id >=0 && ($this->searches || $this->actions > 0))
+		if($this->category_id >=0 && ($this->searches || $this->action_id > 0))
 			$this->category = $this->createDirAction();
 			
-		if($this->category_id >=0 && !$this->searches && $this->actions < 0)
+		if($this->category_id >=0 && !$this->searches && $this->action_id < 0)
 		{
 			$this->createParent();
 			
@@ -121,7 +121,7 @@ class ControllerCategory extends InterfaceTemplate{
 		
 		if($this->class_id)
 		{
-			if($this->group_id || $this->actions > 0)
+			if($this->group_id || $this->action_id > 0)
 				$this->createProduct();
 			else
 				$this->createGroup();
@@ -268,7 +268,7 @@ class ControllerCategory extends InterfaceTemplate{
 	 */
 	protected function createProduct()
 	{
-		if($this->actions > 0 && $this->action_val)
+		if($this->action_id > 0 && $this->action_val)
 			$this->parents->dirid .= " and w.warecode in (".implode(",", $this->action_val).") ";#$this->parents->search
 		if($this->searches)
 			$this->parents->dirid .= $this->searches;
@@ -456,7 +456,7 @@ class ControllerCategory extends InterfaceTemplate{
 	 */
 	private function getActions()
 	{
-		switch ((int)$this->actions)
+		switch ((int)$this->action_id)
 		{
 			case 1:
 				$action = 6;
@@ -479,7 +479,7 @@ class ControllerCategory extends InterfaceTemplate{
 				$action = 28;
 				break;
 			default:
-				$action = $this->actions;
+				$action = $this->action_id;
 				break;
 		}
 		$act = Models\Actions::first(array("segment_id"=>$action, "hidden"=>0));

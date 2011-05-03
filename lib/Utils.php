@@ -35,7 +35,10 @@
 			require_once $file;
 	}
 	
-	
+	/**
+	 * из массива делает URL
+	 * @param array $url
+	 */
 	function makeUrl($url)
 	{
 		return implode($url, "/");
@@ -76,6 +79,57 @@
 		if (strpos($class_name, '\\') !== false)
 			return true;
 		return false;
+	}
+	
+	/**
+	 * декоратор для валидации пост запросов
+	 * helper, входящий массив должен быть в виде array("поле валидации" => array('' -> object( required, type)))
+	 * @param array $array - массив для валидации
+	 * @param array $post - пост запрос
+	 */
+	function validatePost($array, $post)
+	{
+		foreach ($array as $key => $value)
+		{
+			if(array_key_exists($key, $post))
+			{
+				//проверяем обязательное поле
+				if(array_key_exists('required', get_object_vars($value)))
+				{
+					if(empty($post[$key]))
+						return false;
+					
+				}
+				
+				//проверяем минимальную длинну
+				if(array_key_exists('min', get_object_vars($value)))
+				{
+					if(strlen($post[$key] < $value->len))
+						return false;
+					
+				}
+				
+				//проверяем максимальную длинну
+				if(array_key_exists('max', get_object_vars($value)))
+				{
+					if(strlen($post[$key] > $value->len))
+						return false;
+					
+				}
+				//проверяем тип 
+				if(array_key_exists('type', get_object_vars($value)))
+				{
+					$type = "is_".$value->type;
+					if(!$$type($post[$key]))
+						return false;
+					
+				}
+				
+			}
+			else
+				return false;
+		}
+		return true;
 	}
 	
 	/**

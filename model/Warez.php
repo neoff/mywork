@@ -194,27 +194,32 @@ class Warez extends ActiveRecord\Model
 		return self::find_by_sql($sql);
 	}
 	
+	/**
+	 * получаем список сертификатов на продукт
+	 * @param int $region_id
+	 * @param int $warecode
+	 * @param int $price
+	 * @example <pre>
+	 * SELECT
+	 *	certificati.certwarecode AS warecode,
+	 *	certificati.ware,
+	 *	MAX(warepricefrom) warepricefrom,
+	 *	MAX(CertPrice) certprice
+	 *	FROM warez_$region_id AS warez
+	 *	JOIN linkw ON warez.warecode=linkw.warecodem
+	 *	JOIN certificati ON certificati.certwarecode=linkw.warecodel
+	 *	JOIN scprices USING (certwarecode)
+	 *	WHERE warepricefrom<=$price
+	 *	AND warez.warecode=$warecode
+	 *	GROUP BY certificati.certwarecode
+	 * </pre>
+	 */
 	public static function getCertificate($region_id = 1, $warecode, $price)
 	{
 		
 		$join = 'JOIN linkw ON warez.warecode=linkw.warecodem 
 				JOIN certificati ON certificati.certwarecode=linkw.warecodel
 				JOIN scprices USING (certwarecode)';
-		/*$sql = "SELECT
-				certificati.certwarecode AS warecode,
-				certificati.ware,
-				MAX(warepricefrom) warepricefrom,
-				MAX(CertPrice) certprice
-				FROM warez_$region_id AS warez
-				JOIN linkw ON warez.warecode=linkw.warecodem
-				JOIN certificati ON certificati.certwarecode=linkw.warecodel
-				JOIN scprices USING (certwarecode)
-				WHERE warepricefrom<=$price
-				AND warez.warecode=$warecode
-				GROUP BY certificati.certwarecode";*/
-		
-		
-		
 		$sql = array(
 			'select' => "certificati.certwarecode AS warecode,
 						CONCAT(certificati.ware,' на ',warez.FullName) AS FullName,
@@ -229,6 +234,37 @@ class Warez extends ActiveRecord\Model
 		return self::find('all', $sql);
 	}
 	
+	/**
+	 * получаем список подобных товаров
+	 * по определенной маске
+	 * 
+	 * @param int $region_id
+	 * @param object $val - выборка таблицы warez_#
+	 * 
+	 * @example <pre>
+	 * SELECT DISTINCT warez.*, 0 as end_for_cnt, 0 as is_cnt_down, (Discounted > DC) AS Discountable,IF(warez.InetQty,1,0) 
+	 * AS Presence,sw.pkarta pkarta, dirs.DirName AS DirName, classes.ClassName AS ClassName, groups.GrName AS GrName, marks.MarkName AS MarkName 
+	 * FROM warez_1 AS warez 
+	 * JOIN Pdb USING(warecode) 
+	 * LEFT JOIN sw ON warez.warecode=sw.warecode 
+	 * LEFT JOIN marks ON warez.mark=marks.MarkID,dirs,classes,groups 
+	 * WHERE warez.Show 
+	 * AND warez.DirID=11 
+	 * AND warez.ClassID=12 
+	 * AND warez.GrID=1029 
+	 * AND warez.GrID!=486 
+	 * AND warez.warecode!=30012771 
+	 * AND warez.Discounted>=671 
+	 * AND warez.Discounted<=908 
+	 * AND warez.InetQty > 0 
+	 * AND warez.ShopsQty > 0 
+	 * AND warez.DirID=dirs.DirID 
+	 * AND warez.ClassID=classes.ClassID 
+	 * AND warez.GrID=groups.GrID 
+	 * GROUP BY warez.warecode 
+	 * ORDER BY warez.spool, warez.GrID, warez.Discounted ASC LIMIT 5
+	 * </pre>
+	 */
 	public static function getReleted($region_id, $val)
 	{
 		$join = "JOIN Pdb USING(warecode) 
@@ -273,27 +309,6 @@ class Warez extends ActiveRecord\Model
 								$pmax
 								)
 		);
-		/*SELECT DISTINCT warez.*, 0 as end_for_cnt, 0 as is_cnt_down, (Discounted > DC) AS Discountable,IF(warez.InetQty,1,0) 
-		 AS Presence,sw.pkarta pkarta, dirs.DirName AS DirName, classes.ClassName AS ClassName, groups.GrName AS GrName, marks.MarkName AS MarkName 
-FROM warez_1 AS warez 
-JOIN Pdb USING(warecode) 
-LEFT JOIN sw ON warez.warecode=sw.warecode 
-LEFT JOIN marks ON warez.mark=marks.MarkID,dirs,classes,groups 
-WHERE warez.Show 
-AND warez.DirID=11 
-AND warez.ClassID=12 
-AND warez.GrID=1029 
-AND warez.GrID!=486 
-AND warez.warecode!=30012771 
-AND warez.Discounted>=671 
-AND warez.Discounted<=908 
-AND warez.InetQty > 0 
-AND warez.ShopsQty > 0 
-AND warez.DirID=dirs.DirID 
-AND warez.ClassID=classes.ClassID 
-AND warez.GrID=groups.GrID 
-GROUP BY warez.warecode 
-ORDER BY warez.spool, warez.GrID, warez.Discounted ASC LIMIT 5*/
 		return self::find('all', $sql);
 	}
 	/************* deprecated *************************/

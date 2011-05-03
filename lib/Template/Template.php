@@ -46,7 +46,7 @@ abstract class Template {
 		$dtd = preg_replace("/Controller/", "", $dtd);
 		$dtd = strtolower($dtd);
 		
-		$xmlstr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE mvideo_xml SYSTEM \"http://".$_SERVER['HTTP_HOST']."/mobile/public/$dtd.dtd\">\n<mvideo_xml date=\"" . date("Y-m-d H:i:s") . "\">\n</mvideo_xml>";
+		$xmlstr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE mvideo_xml SYSTEM \"http://".$_SERVER['HTTP_HOST']."/mobile/public/$dtd.dtd\">\n<mvideo_xml date=\"" . date("c") . "\">\n</mvideo_xml>";
 		
 		$this->xml = new \SimpleXMLElement($xmlstr);
 		
