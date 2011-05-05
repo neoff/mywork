@@ -426,7 +426,7 @@ class ControllerCategory extends Template\Template{
 						if(in_array($this->parents->dirid, $value['dirs']))
 							{
 								$cat_parrent_id = $this->parents->parent_id = ToUTF($key);
-								$cat_parrent_name = $this->parents->parent_name = ToUTF($value['name']);
+								$cat_parrent_name = $this->parents->parent_name = ToUTF($value['catalogname']);
 								break;
 							}
 					}
