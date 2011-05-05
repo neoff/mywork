@@ -53,12 +53,13 @@ class Warez extends ActiveRecord\Model
 	 */
 	public static function getWarez($region_id, $parents, $page = False)
 	{
-		if($page > 0)
-			$page = ($page -1)*20;
-				
 		$limit="";
-		if($page!=False)
-			$limit = " limit 20 offset $page";
+		if($page > 0)
+		{
+			$offset = ($page -1)*20;
+			$limit = " limit 20 offset $offset";
+		}
+		
 		$sql_impl="";
 		
 		if(isset($parents->dirid))
@@ -86,6 +87,7 @@ class Warez extends ActiveRecord\Model
 		
 		$sql = 'select w.* from `warez_' .$region_id . '` as w 
 				where ' . $sql_impl." order by price ASC ". $limit;
+		//print $sql;
 		return self::find_by_sql($sql);
 	}
 	

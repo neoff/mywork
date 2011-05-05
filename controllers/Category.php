@@ -1,6 +1,6 @@
 <?php
 /**  
- * иодуль который достает категории товаров, проверяет акции и поиск, формирует 
+ * модуль который достает категории товаров, проверяет акции и поиск, формирует 
  * вывод категорий на экран, формирует вывод листинга товаров в категории
  * 
  * @package    Category
@@ -35,12 +35,6 @@ class ControllerCategory extends InterfaceTemplate{
 	 * @var int
 	 */
 	private $parent_id;
-	
-	/**
-	 * массив продуктов в акции
-	 * @var array
-	 */
-	private $action_val = array();
 	
 	/**
 	 * объекты элемента parrent_category
@@ -78,6 +72,14 @@ class ControllerCategory extends InterfaceTemplate{
 	 */
 	protected $group_id;
 	
+	/**
+	 * маркер сужающихся списков
+	 * @var bool|array
+	 */
+	private $filter = false;
+	
+	private $filter_mark;
+	private $filter_grid;
 	
 	/**
 	 * точка входа, обеспечивает ветвление
@@ -88,10 +90,16 @@ class ControllerCategory extends InterfaceTemplate{
 	public function index( $array )
 	{
 		if($array)
+		{
 			$this->setVar();
+			$this->filter = get_key('filter', false);
+		}
 		
 		$this->includeFiles();
 		
+		/*if($this->filter)
+			$this->getFilter();*/
+			
 		if($this->searches)
 			$this->getSearch();
 			
@@ -270,6 +278,8 @@ class ControllerCategory extends InterfaceTemplate{
 	{
 		if($this->action_id > 0 && $this->action_val)
 			$this->parents->dirid .= " and w.warecode in (".implode(",", $this->action_val).") ";#$this->parents->search
+		if($this->filter)
+			$this->getFilter($this->parents->dirid);
 		if($this->searches)
 			$this->parents->dirid .= $this->searches;
 			
@@ -298,19 +308,35 @@ class ControllerCategory extends InterfaceTemplate{
 			{
 				foreach ($productes_m as $key => $val)
 				{
-					if (!in_array($val->grid, $grid))
-						$grid[]=$val->grid;
-					if (!in_array($val->mark, $markid))
-						$markid[]=$val->mark;
 					$this->displayProduct( $val );
 				}
 			}
 			
-			$this->getProductMarkVal( $markid, &$param_m );
+			$this->createGroupMark($markid, $grid, $productes_all);
+			$this->getProductMarkVal($markid, $param_m);
 			$this->getProductGroupVal($grid, $param_g);
 		}
 	}
 	
+	/**
+	 * собираем группы и производителей
+	 * @param array $markid
+	 * @param array $grid
+	 * @param array $res
+	 */
+	private function createGroupMark(&$markid, &$grid, $res)
+	{
+		if($res)
+		{
+			foreach ($res as $val)
+			{
+				if (!in_array($val->grid, $grid))
+					$grid[]=$val->grid;
+				if (!in_array($val->mark, $markid))
+					$markid[]=$val->mark;
+			}
+		}
+	}
 	/**
 	 * собирает на страницу DIR участвующие в акции в которых есть товар
 	 */
@@ -426,7 +452,7 @@ class ControllerCategory extends InterfaceTemplate{
 						if(in_array($this->parents->dirid, $value['dirs']))
 							{
 								$cat_parrent_id = $this->parents->parent_id = ToUTF($key);
-								$cat_parrent_name = $this->parents->parent_name = ToUTF($value['name']);
+								$cat_parrent_name = $this->parents->parent_name = ToUTF($value[self::$Sname]);
 								break;
 							}
 					}
@@ -441,6 +467,15 @@ class ControllerCategory extends InterfaceTemplate{
 		return false;//$this->options;
 	}
 	
+	private function getFilter(&$obj)
+	{
+		//var_dump($this->filter);
+		foreach ($this->filter as $key => $value)
+		{
+			//key = 'filter_'.$key;
+			$obj .= ' and '.$key.' = '.$value.' ';
+		}
+	}
 	/**
 	 * устанавливаем на страницу ноду search, вибираем товар соотведствующий запросу search
 	 */
@@ -493,30 +528,6 @@ class ControllerCategory extends InterfaceTemplate{
 		}
 	}
 	
-	
-	/**
-	 * собирает товары участвующие в акции
-	 * в массив $this->action_val
-	 * @param unknown_type $name
-	 */
-	protected function getActionsVal($name)
-	{
-		
-		$options = array('select' => 'w.warecode',
-						'from' => 'segment_cache sc',
-						'joins'=>" join warez_$this->region_id w on (sc.warecode=w.warecode)",
-						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name' ");
-		
-		if($this->searches)
-			$options['conditions'] .= $this->searches;
-		$segment = Models\Segments::find('all', $options);
-		foreach ($segment as $val)
-		{
-			$this->action_val[] = $val->warecode;
-		}
-		return False;
-	}
-	
 	/**
 	 * собираем массив по производителям
 	 * @param int $markid
@@ -565,7 +576,7 @@ class ControllerCategory extends InterfaceTemplate{
 	{
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $key);
-			$category->addChild("category_name", ToUTF($value['name']));
+			$category->addChild("category_name", ToUTF($value[self::$Sname]));
 			$this->displayCategotyIcon($category, $id, $amount);
 	}
 	
@@ -680,7 +691,7 @@ class ControllerCategory extends InterfaceTemplate{
 		
 		$this->displayDelivery($product, $val);
 		
-		$this->displayImage($product, $val->warecode);
+		$this->displayImage($product, $val->warecode, '', array(180, 180, 0, 0));
 	}
 	
 	/**

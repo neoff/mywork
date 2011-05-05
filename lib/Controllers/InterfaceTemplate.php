@@ -118,10 +118,16 @@ abstract class InterfaceTemplate extends Template\Template{
 	protected static $Groups = array();
 	
 	/**
-	 * заглушка для продуктов в акции
-	 * @var bool
+	 * поле в массиве sdir
+	 * @var stirng
 	 */
-	private $action_val = false;
+	protected static $Sname = 'catalogname';
+	
+	/**
+	 * массив продуктов в акции
+	 * @var array
+	 */
+	protected $action_val = array();
 	
 	/**
 	 * текущая федеральная акция
@@ -139,6 +145,7 @@ abstract class InterfaceTemplate extends Template\Template{
 				if($val['end_date']>=$time)
 				{
 					$url = str_replace("/", "", $val['link']);//link
+					$this->getActionsVal($url);
 					$imgfile = "imgs/action/main/$url.jpg";
 					return $this->displayCategoryAction($prod, $val['link'], $val['name'], $imgfile);
 				}
@@ -177,6 +184,28 @@ abstract class InterfaceTemplate extends Template\Template{
 		return $url;
 	}
 	
+	/**
+	 * собирает товары участвующие в акции
+	 * в массив $this->action_val
+	 * @param string $name
+	 */
+	protected function getActionsVal($name)
+	{
+		
+		$options = array('select' => 'w.warecode',
+						'from' => 'segment_cache sc',
+						'joins'=>" join warez_$this->region_id w on (sc.warecode=w.warecode)",
+						'conditions' =>"sc.region_id=$this->region_id and sc.segment_name='$name' ");
+		
+		if($this->searches)
+			$options['conditions'] .= $this->searches;
+		$segment = Models\Segments::find('all', $options);
+		foreach ($segment as $val)
+		{
+			$this->action_val[] = $val->warecode;
+		}
+		return False;
+	}
 	
 	/**
 	 * выводит на страницу блок описания товара
@@ -252,22 +281,37 @@ abstract class InterfaceTemplate extends Template\Template{
 	 * @param bool $main
 	 * @param string $imgs - адрес картинки
 	 */
-	protected function displayImage($prod, $code, $small="", $main="", $imgs="")
+	protected function displayImage($prod, $code, $small="", $size = array(), $imgs="")
 	{
 		$img = "http://www.mvideo.ru/Pdb$small/$code.jpg";
 		if($imgs)
-			$img = "http://www.mvideo.ru/$imgs";
+			$img = "http://www.mvideos.ru/$imgs";
 		
-		$Headers  = get_headers($img);
-		//var_dump($Headers);
 		$temp = ""; 
-		
-		if($Headers[0]=='HTTP/1.1 200 OK')
-			$temp = getimagesize($img);
-			
+		if(!$size)
+		{
+			$Headers  = get_headers($img);
+			if($Headers[0]=='HTTP/1.1 200 OK')
+			{
+				//$size = (int)substr($Headers[4], 0, strlen('Content-Length: '));
+				$size = (int)$Headers[4];
+				if($size > 0)
+				{
+					$temp = getimagesize($img);
+				}
+			}
+		}
 		if(!$temp && !$imgs)
 			$temp = array(90, 81, 0, 0);
-			
+		
+		if($size)
+		{
+			$temp = $size;
+			$a_size = array_count_values($size);
+			if($a_size < 4)
+				$temp = array_fill($a_size, 4-$a_size, 0);
+		}
+		
 		if($temp)
 		{
 			list($width, $height, $type, $attr) = $temp;
@@ -275,8 +319,8 @@ abstract class InterfaceTemplate extends Template\Template{
 			$image = $prod->addChild("image", $img);
 			$image->addAttribute("width", $width);
 			$image->addAttribute("height", $height);
-			if($main)
-				$image->addAttribute("main", "1");
+			/*if($main)
+				$image->addAttribute("main", "1");*/
 		}
 	}
 	
@@ -298,6 +342,7 @@ abstract class InterfaceTemplate extends Template\Template{
 		self::$Dirs = $Dirs;
 		self::$Classes = $Classes;
 		self::$Groups = $Groups;
+		
 	}
 	
 	/**
