@@ -133,6 +133,20 @@
 	}
 	
 	/**
+	 * собирает данные из пост запроса для записи в базу
+	 * @param obj $obj
+	 * @param obj $validate
+	 * @param array $post
+	 */
+	function createDatabaseObject(&$obj, $validate, $post)
+	{
+		foreach ($validate as $key => $value)
+		{
+			$obj->$key = $post[$key];
+		}
+	}
+	
+	/**
 	 * переводит строку из cp1251 в utf-8
 	 * @param string $string
 	 */

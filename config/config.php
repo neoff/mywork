@@ -44,9 +44,10 @@
 		}
 		else {
 			if(get_key('start') == 1)
-			{
 				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"start"));
-			}
+				
+			if(get_key('polls', -1) >=0 ) 
+				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"polls"));
 		}
 		
 		$cfg->Map("(\?region_id=0)", $controler="Region", $action="index");
@@ -55,4 +56,5 @@
 		$cfg->Map("product", $controler="Product", $action="index", $_GET);
 		$cfg->Map("start", $controler="Start", $action="index", $_GET);
 		$cfg->Map("actions", $controler="Actions", $action="index", $_GET);
+		$cfg->Map("polls", $controler="Polls", $action="index", $_GET);
 	});
