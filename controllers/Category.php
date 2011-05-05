@@ -159,7 +159,7 @@ class ControllerCategory extends Template\Template{
 	 */
 	protected function createDir()
 	{
-		$this->displayCategoryNode(ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['name']));
+		$this->displayCategoryNode(ToUTF(self::$GlobalConfig['smenu'][$this->category_id]['catalogname']));
 		$wwwarez =  Models\Warez::getRootCategoryChild($this->region_id, $this->action_val, $this->searches);
 		$this->all_dirs($wwwarez);
 		
@@ -579,7 +579,7 @@ class ControllerCategory extends Template\Template{
 	{
 			$category = $this->categories->addChild("category");
 			$category->addChild("category_id", $key);
-			$category->addChild("category_name", ToUTF($value['name']));
+			$category->addChild("category_name", ToUTF($value['catalogname']));
 			$this->displayCategotyIcon($category, $id, $amount);
 	}
 	
