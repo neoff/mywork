@@ -65,6 +65,7 @@ abstract class Template {
 	 */
 	public function __construct($data = "")
 	{
+		//var_dump($_SERVER);
 		$this->mem = new \Memcache;
 		$this->mem->pconnect('localhost', 11211);
 		$child = get_called_class();
@@ -75,7 +76,7 @@ abstract class Template {
 		
 		//$this->mem_key = $dtd;
 		
-		$xmlstr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE mvideo_xml SYSTEM \"http://".$_SERVER['HTTP_HOST']."/mobile/public/$dtd.dtd\">\n<mvideo_xml date=\"" . date("c") . "\">\n</mvideo_xml>";
+		$xmlstr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE mvideo_xml SYSTEM \"http://".$_SERVER['HTTP_HOST'].$_SERVER['DOCUMENT_URI']."public/$dtd.dtd\">\n<mvideo_xml date=\"" . date("c") . "\">\n</mvideo_xml>";
 		
 		$this->xml = new \SimpleXMLElement($xmlstr);
 		
@@ -118,10 +119,11 @@ abstract class Template {
 				$dom->loadXML($doc, LIBXML_DTDLOAD|LIBXML_DTDATTR);
 				$myDoc = new MyDOMDocument($dom);
 				$isValid = $myDoc->validate();
-				/*if (!$isValid) 
+				if (!$isValid) 
 				{
+					print 111;
 					throw new \MyDomException($myDoc->errors);
-				}*/
+				}
 				
 				if(DEBUG)
 					$doc = preg_replace("/></", ">\n<", $doc);
