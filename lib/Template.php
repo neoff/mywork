@@ -54,7 +54,7 @@ abstract class Template {
 	
 	function __set($name="", $value = "")
 	{
-		//print $value;
+		//var_dump($name);
 		return $this->$name = $this->xml->addChild( $name, $value );
 	}
 	
