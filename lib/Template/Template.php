@@ -121,7 +121,6 @@ abstract class Template {
 				$isValid = $myDoc->validate();
 				if (!$isValid) 
 				{
-					print 111;
 					throw new \MyDomException($myDoc->errors);
 				}
 				

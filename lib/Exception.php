@@ -68,10 +68,14 @@ class Singleton {
 	
 }
 	
-/*	
+	
 class MyDomException extends Exception{
 	public function __construct($e)
 	{
+		global $except;
+		
+		$except = true;
+		
 		$this->dom = $e;
 		parent::__construct();
 		
@@ -122,7 +126,7 @@ class MyDomException extends Exception{
 		
 	}
 }
-*/
+
 
 class MyException extends Exception{
 	public function __construct($errno, $errstr, $errfile, $errline)
