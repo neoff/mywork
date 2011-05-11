@@ -42,9 +42,5 @@ class ControllerStart extends InterfaceTemplate
 		$this->startpage->addChild("startpage_name");
 		$this->getActionFederal($this->startpage);
 		$this->mem_time = ($this->mtime - time());
-		
-		/*$this->startpage->addChild("banner_img");
-		$this->startpage->addChild("action_name");
-		$this->startpage->addChild("action_id");*/
 	}
 }
