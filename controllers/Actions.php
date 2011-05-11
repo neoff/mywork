@@ -16,12 +16,19 @@
 class ControllerActions extends InterfaceTemplate{
 	
 	/**
+	 * время хранения кеша
+	 * @var int
+	 */
+	protected $mtime;
+	
+	/**
 	 * получаем гет запрос и просматриваем значения
 	 * точка входа
 	 * @param array $array
 	 */
 	public function index( $array )
 	{
+		$this->mem_key = 'actions';
 		if($array)
 			$this->setVar();
 			
@@ -69,7 +76,10 @@ class ControllerActions extends InterfaceTemplate{
 		//var_dump($actions);
 		foreach ($actions as $value)
 		{
-			//var_dump($value->start_date);
+			$a_time = $value->end_date->format('U');
+			if(!$this->mtime || $this->mtime > $a_time)
+				$this->mtime = $value->end_date->format('U');
+				
 			$act = $this->actions->addChild('action');
 			$act->addAttribute("start", $value->start_date->format('c'));
 			$act->addAttribute("end", $value->end_date->format('c'));
@@ -77,13 +87,14 @@ class ControllerActions extends InterfaceTemplate{
 			//картинки
 			$url = $this->crealeActionImageList($value);
 				
-			//ид акции
+			//ID акции
 			$this->setActionId($url);
 			
 			$imgs = sprintf('imgs/reklama/ico/%s.jpg', $value->id);
 			$act->addChild("action_description", StripTags($value->description));
 			$this->displayCategoryAction($act, $url, $value->name, $imgs);
 		}
+		$this->mem_time = ($this->mtime - time());
 	}
 	
 	/**

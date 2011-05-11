@@ -23,6 +23,14 @@ class ControllerRegion extends Template\Template{
 	 */
 	public function index()
 	{
+		$this->setVar();
+		$this->mem_key = 'region';
+		
+		if(!$this->mem_flush && $this->getMemObj())
+			return true;
+		
+		$this->mem_time = 60*60*24*7;
+		
 		$region_m = Models\Regions::all(array("virtual"=>0));
 		$this->regions = "";
 		//print_r($region_m);

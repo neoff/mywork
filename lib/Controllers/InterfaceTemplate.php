@@ -130,6 +130,18 @@ abstract class InterfaceTemplate extends Template\Template{
 	protected $action_val = array();
 	
 	/**
+	 * заглушка для мемкеша
+	 * @var string
+	 */
+	protected $mkey;
+	
+	/**
+	 * заглушка для мемкеша
+	 * @var int
+	 */
+	protected $mtime;
+	
+	/**
 	 * текущая федеральная акция
 	 * @param obj $prod - контейнер в который выводить блоки
 	 */
@@ -142,11 +154,15 @@ abstract class InterfaceTemplate extends Template\Template{
 			
 			if($key < $time)
 			{
-				if($val['end_date']>=$time)
+				if($val['end_date'] >= $time)
 				{
 					$url = str_replace("/", "", $val['link']);//link
 					$this->getActionsVal($url);
 					$imgfile = "imgs/action/main/$url.jpg";
+					
+					$this->mkey = $url;
+					$this->mtime = $val['end_date'];
+					
 					return $this->displayCategoryAction($prod, $val['link'], $val['name'], $imgfile);
 				}
 			}
@@ -285,17 +301,20 @@ abstract class InterfaceTemplate extends Template\Template{
 	{
 		$img = "http://www.mvideo.ru/Pdb$small/$code.jpg";
 		if($imgs)
-			$img = "http://www.mvideos.ru/$imgs";
+			$img = "http://www.mvideo.ru/$imgs";
 		
 		$temp = ""; 
 		if(!$size)
 		{
+			
 			$Headers  = get_headers($img);
+			
 			if($Headers[0]=='HTTP/1.1 200 OK')
 			{
-				//$size = (int)substr($Headers[4], 0, strlen('Content-Length: '));
-				$size = (int)$Headers[4];
-				if($size > 0)
+				$tmpsize = (int)substr($Headers[4], strlen('Content-Length: '));
+				//$size = $Headers[4];
+				//var_dump($size);
+				if($tmpsize > 0)
 				{
 					$temp = getimagesize($img);
 				}
@@ -314,6 +333,7 @@ abstract class InterfaceTemplate extends Template\Template{
 		
 		if($temp)
 		{
+			
 			list($width, $height, $type, $attr) = $temp;
 			
 			$image = $prod->addChild("image", $img);
@@ -350,6 +370,7 @@ abstract class InterfaceTemplate extends Template\Template{
 	 */
 	protected function setVar()
 	{
+		parent::setVar();
 		$this->region_id = get_key('region_id', 0);
 		$this->category_id = get_key('category_id', -1);
 		$this->action_id = get_key('action', -1);

@@ -30,8 +30,9 @@
 	{
 		$cfg->set_controller_directory(ROOT_PATH . '/controllers');
 		$cfg->set_prefix("mobile");
+		$region = get_key('region_id', -1);
 		
-		if(get_key('region_id', 0) != 0) 
+		if($region > 0) 
 		{	
 			$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"shop"));
 			
@@ -42,16 +43,20 @@
 			if(get_key('actions')) 
 				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"actions"));
 		}
-		else {
-			if(get_key('start') == 1)
-				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"start"));
+		else 
+		{
+			//if(get_key('start') == 1)
+			$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"start"));
 				
 			if(get_key('polls', -1) >=0 ) 
 				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"polls"));
+				
+			if($region === '0')
+				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"region"));
 		}
 		
-		$cfg->Map("(\?region_id=0)", $controler="Region", $action="index");
-		$cfg->Map("shop", $controler="Shops", $action="index", $_GET);
+		$cfg->Map("region", $controler="Region", $action="index");
+		$cfg->Map("shop", $controler="Shops", $action="index");
 		$cfg->Map("category", $controler="Category", $action="index", $_GET);
 		$cfg->Map("product", $controler="Product", $action="index", $_GET);
 		$cfg->Map("start", $controler="Start", $action="index", $_GET);
