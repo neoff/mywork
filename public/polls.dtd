@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT mvideo_xml ((polls))>
+<!ATTLIST mvideo_xml date CDATA #REQUIRED>
+<!ELEMENT polls ((poll*))>
+<!ELEMENT poll ((poll_id, poll_name, poll_url, poll_question*))>
+<!ATTLIST poll end CDATA #REQUIRED start CDATA #REQUIRED>
+<!ELEMENT poll_id (#PCDATA)>
+<!ELEMENT poll_name (#PCDATA)>
+<!ELEMENT poll_url (#PCDATA)>
+<!ELEMENT poll_question ((question*))>
+<!ELEMENT question ((title, comment, answers))>
+<!ELEMENT title (#PCDATA)>
+<!ATTLIST title name CDATA #REQUIRED>
+<!ELEMENT comment (#PCDATA)>
+<!ATTLIST comment name CDATA #IMPLIED>
+<!ELEMENT answers ((answer*))>
+<!ELEMENT answer (#PCDATA)>
+<!ATTLIST answer value CDATA #REQUIRED>

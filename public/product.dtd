@@ -4,35 +4,39 @@
 <!ELEMENT categories ((category_id, category_name))>
 <!ELEMENT category_id (#PCDATA)>
 <!ELEMENT category_name (#PCDATA)>
-<!ELEMENT product ((product_id, region_id*, title, images*, movies*, inet_price, old_price, price, rating, reviews_num, description, options*, aks*, reviews*, image* ))>
-<!ATTLIST product inetSale CDATA "" >
-<!ATTLIST product card_discount CDATA "" >
+<!ELEMENT product ((product_id, ((((title, inet_price, old_price, price, rating, reviews_num, description) | (product_name, description, price)), image) | (region_id, title, image*, images*, movies*, inet_price, old_price, price, pickup, delivery, rating, reviews_num, pdo?, service?, products?, description, options?, aks?, reviews?))))>
+<!ATTLIST product card_discount CDATA "" inetSale CDATA "">
 <!ELEMENT product_id (#PCDATA)>
 <!ELEMENT region_id (#PCDATA)>
 <!ELEMENT title (#PCDATA)>
-<!ELEMENT images ((img*))>
-<!ELEMENT img (#PCDATA)>
-<!ATTLIST img width CDATA #REQUIRED height CDATA #REQUIRED main CDATA "" >
-<!ELEMENT movies ((video*))>
-<!ELEMENT video (#PCDATA)>
+<!ELEMENT image (#PCDATA)>
+<!ATTLIST image height CDATA #REQUIRED width CDATA #REQUIRED>
+<!ELEMENT images ((image*))>
+<!ELEMENT movies EMPTY>
 <!ELEMENT inet_price (#PCDATA)>
 <!ELEMENT old_price (#PCDATA)>
 <!ELEMENT price (#PCDATA)>
+<!ELEMENT pickup (#PCDATA)>
+<!ELEMENT delivery (#PCDATA)>
 <!ELEMENT rating (#PCDATA)>
 <!ELEMENT reviews_num (#PCDATA)>
+<!ELEMENT pdo ((option*))>
+<!ELEMENT service ((option*))>
+<!ELEMENT products ((product*))>
+<!ELEMENT product_name (#PCDATA)>
 <!ELEMENT description (#PCDATA)>
+<!ELEMENT options ((option*))>
+<!ELEMENT option ((name, type?, value))>
+<!ATTLIST option id CDATA #IMPLIED>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT type (#PCDATA)>
+<!ELEMENT value (#PCDATA)>
+<!ELEMENT aks ((group+))>
+<!ELEMENT group ((product?))>
+<!ATTLIST group id CDATA #REQUIRED title CDATA #REQUIRED>
 <!ELEMENT reviews ((review*))>
 <!ELEMENT review ((date, author, city, rating, title, text))>
 <!ELEMENT date (#PCDATA)>
 <!ELEMENT author (#PCDATA)>
 <!ELEMENT city (#PCDATA)>
 <!ELEMENT text (#PCDATA)>
-<!ELEMENT options ((option*))>
-<!ELEMENT option ((name, value))>
-<!ELEMENT name (#PCDATA)>
-<!ELEMENT value (#PCDATA)>
-<!ELEMENT aks ((group*))>
-<!ELEMENT group ((product+))>
-<!ATTLIST group id CDATA #REQUIRED title CDATA #REQUIRED >
-<!ELEMENT image (#PCDATA)>
-<!ATTLIST image width CDATA #REQUIRED height CDATA #REQUIRED >

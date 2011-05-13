@@ -42,13 +42,14 @@
 				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"product"));
 			if(get_key('actions')) 
 				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"actions"));
+			
 		}
 		else 
 		{
 			//if(get_key('start') == 1)
 			$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"start"));
 				
-			if(get_key('polls', -1) >=0 ) 
+			if(get_key('polls', -1) >= 0 ) 
 				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"polls"));
 				
 			if($region === '0')

@@ -48,6 +48,13 @@ abstract class Template {
 	public $mem_key = false;
 	
 	/**
+	 * выставляем DTD валидацию, при включеном дебаге
+	 * если true валидации ен будет
+	 * @var bool
+	 */
+	public $dtd = false;
+	
+	/**
 	 * переназначаем сетер для создания ноды xml 
 	 * @param string $name
 	 * @param string $value
@@ -117,16 +124,19 @@ abstract class Template {
 			//{
 				$dom = new \DOMDocument;
 				$dom->loadXML($doc, LIBXML_DTDLOAD|LIBXML_DTDATTR);
-				$myDoc = new MyDOMDocument($dom);
-				$isValid = $myDoc->validate();
-				if (!$isValid) 
-				{
-					throw new \MyDomException($myDoc->errors);
-				}
-				
 				if(DEBUG)
+				{
+					if(!$this->dtd)
+					{
+						$myDoc = new MyDOMDocument($dom);
+						$isValid = $myDoc->validate();
+						if (!$isValid) 
+						{
+							throw new \MyDomException($myDoc->errors);
+						}
+					}
 					$doc = preg_replace("/></", ">\n<", $doc);
-				
+				}
 				
 				if($this->mem_key)
 					$this->mem->set($this->mem_key, $doc, MEMCACHE_COMPRESSED, $this->mem_time);
@@ -157,6 +167,7 @@ abstract class Template {
 	protected function setVar()
 	{
 		$this->mem_flush = get_key('flush', false);
+		$this->dtd = get_key('dtd', false);
 	}
 	
 

@@ -34,6 +34,7 @@ class ControllerPolls extends Template\Template
 	
 	public function index( $array )
 	{
+		$this->setVar();
 		if($array)
 			$this->poll_id = get_key('polls', 0);
 		

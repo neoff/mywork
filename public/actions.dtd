@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT mvideo_xml ((actions))>
+<!ATTLIST mvideo_xml date CDATA #REQUIRED>
+<!ELEMENT actions ((action*))>
+<!ELEMENT action ((action_description, image, action_id, action_name, action_cond, action_url))>
+<!ATTLIST action end CDATA #REQUIRED start CDATA #REQUIRED>
+<!ELEMENT action_description (#PCDATA)>
+<!ELEMENT image (#PCDATA)>
+<!ATTLIST image height CDATA #REQUIRED width CDATA #REQUIRED>
+<!ELEMENT action_id (#PCDATA)>
+<!ELEMENT action_name (#PCDATA)>
+<!ELEMENT action_cond (#PCDATA)>
+<!ELEMENT action_url (#PCDATA)>
