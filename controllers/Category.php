@@ -48,7 +48,6 @@ class ControllerCategory extends Template\Template{
 	public function index( $array )
 	{
 		
-		
 		if($array)
 		{
 			$this->setVar();
@@ -361,7 +360,7 @@ class ControllerCategory extends Template\Template{
 	 * @param object $parents_m
 	 * @return array $options
 	 */
-	private function createParent()
+	protected function createParent()
 	{
 		/*
 		 * ставим заголовки блока parents
