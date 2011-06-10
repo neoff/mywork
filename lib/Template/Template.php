@@ -126,7 +126,7 @@ abstract class Template {
 				$dom->loadXML($doc, LIBXML_DTDLOAD|LIBXML_DTDATTR);
 				if(DEBUG)
 				{
-					if(!$this->dtd)
+					if($this->dtd)
 					{
 						$myDoc = new MyDOMDocument($dom);
 						$isValid = $myDoc->validate();

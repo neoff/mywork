@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!ELEMENT mvideo_xml ((search?, action?, parent_category, params, products, pages?))>
-<!ATTLIST mvideo_xml date CDATA  #REQUIRED>
+<!ELEMENT mvideo_xml ((search?, action?, parent_category, categories?, params?, products?, pages?))>
+<!ATTLIST mvideo_xml date CDATA #REQUIRED>
 <!--элементы поиска, если есть-->
 <!ELEMENT search (#PCDATA)>
 <!--елементы акций, если есть-->
@@ -10,9 +10,15 @@
 <!ELEMENT action_cond (#PCDATA)>
 <!ELEMENT action_url (#PCDATA)>
 <!--родительская категория-->
-<!ELEMENT parent_category ((category_id, category_name))>
+<!ELEMENT parent_category ((category_id, category_name, category_icon?))>
 <!ELEMENT category_id (#PCDATA)>
 <!ELEMENT category_name (#PCDATA)>
+<!ELEMENT category_icon (#PCDATA)>
+<!ATTLIST category_icon height CDATA #REQUIRED width CDATA #REQUIRED>
+<!--категории-->
+<!ELEMENT category ((category_id, category_name, amount, category_icon))>
+<!ELEMENT categories ((category+))>
+<!ATTLIST categories category_id CDATA #REQUIRED category_name CDATA #REQUIRED>
 <!--параметры для сужающихся списков-->
 <!ELEMENT params ((param+))>
 <!ELEMENT param ((option+))>
