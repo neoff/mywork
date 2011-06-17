@@ -165,7 +165,7 @@ class ControllerProduct extends InterfaceTemplate{
 	
 	private function displayProducts($prod, $val)
 	{
-		$related = $prod->addChild("products");
+		$related = $prod->addChild("similar_products");
 		foreach ($val as $value) 
 		{
 			$rprod = $related->addChild("product");

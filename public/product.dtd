@@ -22,7 +22,7 @@
 <!ELEMENT reviews_num (#PCDATA)>
 <!ELEMENT pdo ((option*))>
 <!ELEMENT service ((option*))>
-<!ELEMENT products ((product*))>
+<!ELEMENT similar_products ((product*))>
 <!ELEMENT product_name (#PCDATA)>
 <!ELEMENT description (#PCDATA)>
 <!ELEMENT options ((option*))>
