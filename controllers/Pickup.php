@@ -31,14 +31,14 @@ class ControllerPickup extends Template\Template{
 		//hard code
 		$shop->addChild("shop_id", 11);
 		$shop->addChild("shop_name", 'М.ВИДЕО 24 часа на Чонгарском бульваре');
-		$node->addChild("address", 'Чонгарский б-р, 3, к.2');
+		$shop->addChild("address", 'Чонгарский б-р, 3, к.2');
 		$metro = $shop->addChild("metro");
-		$node->addChild("station", 'Варшавская');
+		$metro->addChild("station", 'Варшавская');
 		
 		$shop->addChild("shop_id", 14);
 		$shop->addChild("shop_name", 'Магазин на Измайловском валу');
-		$node->addChild("address", 'Измайловский Вал, 3');
+		$shop->addChild("address", 'Измайловский Вал, 3');
 		$metro = $shop->addChild("metro");
-		$node->addChild("station", 'Семеновская');
+		$metro->addChild("station", 'Семеновская');
 	}
 }
