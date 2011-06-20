@@ -50,7 +50,7 @@ class ControllerProduct extends InterfaceTemplate{
 			$this->displayImage($this->product, $this->product_id);
 			$this->displayImages($this->product, $this->product_id);
 			$this->displayMove();
-			//$this->display3d();
+			$this->display3d();
 			$this->displayPrice($this->product, $productes);
 			$this->displayPickup($this->product, $productes);
 			$this->displayDelivery($this->product, $productes);
@@ -131,7 +131,7 @@ class ControllerProduct extends InterfaceTemplate{
 	 */
 	private function display3d()
 	{
-		$mov = $this->product->addChild("3d");
+		$mov = $this->product->addChild("three_dimensional");
 		//$mov->addChild("video", "http://www.mvideo.ru/Pdb/$this->product_id.jpg");
 	}
 	
