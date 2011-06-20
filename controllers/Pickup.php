@@ -10,6 +10,7 @@
  *
  */
 
+	namespace Controllers;
 	use Models;
 	use Template;
 
