@@ -16,7 +16,10 @@
 
 class ControllerProduct extends InterfaceTemplate{
 	
-	
+	/**
+	 * точка входа принимает $_GET & $_POST
+	 * @param array $array
+	 */
 	public function index( $array )
 	{
 		//print_r($array);
@@ -47,6 +50,7 @@ class ControllerProduct extends InterfaceTemplate{
 			$this->displayImage($this->product, $this->product_id);
 			$this->displayImages($this->product, $this->product_id);
 			$this->displayMove();
+			$this->display3d();
 			$this->displayPrice($this->product, $productes);
 			$this->displayPickup($this->product, $productes);
 			$this->displayDelivery($this->product, $productes);
@@ -76,6 +80,10 @@ class ControllerProduct extends InterfaceTemplate{
 		$this->categories->addChild("category_name", ($category)?ToUTF($category->name):"Список категорий");
 	}
 	
+	/**
+	 * вывод блока продукт
+	 * @param obj $productes
+	 */
 	private function displayProduct( $productes )
 	{
 		$this->product="";
@@ -88,7 +96,11 @@ class ControllerProduct extends InterfaceTemplate{
 		$this->product->addChild("title", StripTags($productes->ware));
 	}
 	
-	
+	/**
+	 * показываем блок картинок
+	 * @param int $prod
+	 * @param int $code
+	 */
 	private function displayImages($prod, $code)
 	{
 		$imgs = $prod->addChild("images");
@@ -105,13 +117,23 @@ class ControllerProduct extends InterfaceTemplate{
 		}
 	}
 	
+	/**
+	 * блок видеоролика
+	 */
 	private function displayMove()
 	{
 		$mov = $this->product->addChild("movies");
 		//$mov->addChild("video", "http://www.mvideo.ru/Pdb/$this->product_id.jpg");
 	}
 	
-	
+	/**
+	 * блок видеоролика
+	 */
+	private function display3d()
+	{
+		$mov = $this->product->addChild("3d");
+		//$mov->addChild("video", "http://www.mvideo.ru/Pdb/$this->product_id.jpg");
+	}
 	
 	
 	
