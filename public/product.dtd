@@ -34,7 +34,8 @@
 <!ELEMENT aks ((group+))>
 <!ELEMENT group ((product?))>
 <!ATTLIST group id CDATA #REQUIRED title CDATA #REQUIRED>
-<!ELEMENT reviews ((review*))>
+<!ELEMENT reviews ((review_message*, review*))>
+<!ELEMENT review_message (#PCDATA)>
 <!ELEMENT review ((date, author, city, rating, title, text))>
 <!ELEMENT date (#PCDATA)>
 <!ELEMENT author (#PCDATA)>

@@ -91,6 +91,7 @@
 	{
 		foreach ($array as $key => $value)
 		{
+			//var_dump($key);
 			if(array_key_exists($key, $post))
 			{
 				//проверяем обязательное поле
@@ -120,11 +121,11 @@
 				if(array_key_exists('type', get_object_vars($value)))
 				{
 					$type = "is_".$value->type;
-					if(!$$type($post[$key]))
+					if(!call_user_func($type, $post[$key]))
 						return false;
 					
 				}
-				
+				//var_dump($key,$value, $post);
 			}
 			else
 				return false;

@@ -135,9 +135,11 @@ class ControllerProduct extends InterfaceTemplate{
 		//$mov->addChild("video", "http://www.mvideo.ru/Pdb/$this->product_id.jpg");
 	}
 	
-	
-	
-	
+	/**
+	 * опрашиваем базу ищем ПДО
+	 * @param unknown_type $prod
+	 * @param unknown_type $val
+	 */
 	private function getPdo($prod, $val)
 	{
 		$pdo = Models\Warez::getCertificate($this->region_id, $val->warecode, $val->price);
@@ -145,6 +147,11 @@ class ControllerProduct extends InterfaceTemplate{
 			return $this->displayPdo($prod, $pdo);
 	}
 	
+	/**
+	 * показываем блок ПДО
+	 * @param unknown_type $prod
+	 * @param unknown_type $val
+	 */
 	private function displayPdo($prod, $val)
 	{
 		$pdo = $prod->addChild("pdo");
@@ -157,6 +164,11 @@ class ControllerProduct extends InterfaceTemplate{
 		}
 	}
 	
+	/**
+	 * опрашиваем базу. ищем сервисы (установка и т.д.)
+	 * @param unknown_type $prod
+	 * @param unknown_type $val
+	 */
 	private function getService($prod, $val)
 	{
 		$cert = Models\Ikupons::getKupon($this->region_id, $val->mark, $val->dirid, $val->classid, $val->grid);
@@ -164,6 +176,11 @@ class ControllerProduct extends InterfaceTemplate{
 			return $this->displayService($prod, $cert);
 	}
 	
+	/**
+	 * показываем блок сервисов
+	 * @param unknown_type $prod
+	 * @param unknown_type $val
+	 */
 	private function displayService($prod, $val)
 	{
 		$pdo = $prod->addChild("service");
@@ -177,6 +194,11 @@ class ControllerProduct extends InterfaceTemplate{
 		}
 	}
 	
+	/**
+	 * ищем "похожие товары"
+	 * @param unknown_type $prod
+	 * @param unknown_type $val
+	 */
 	private function getProducts($prod, $val)
 	{
 		$product = Models\Warez::getReleted($this->region_id, $val);
@@ -185,6 +207,11 @@ class ControllerProduct extends InterfaceTemplate{
 			return $this->displayProducts($prod, $product);
 	}
 	
+	/**
+	 * показывем блок "похожие товары"
+	 * @param unknown_type $prod
+	 * @param unknown_type $val
+	 */
 	private function displayProducts($prod, $val)
 	{
 		$related = $prod->addChild("similar_products");
@@ -199,8 +226,9 @@ class ControllerProduct extends InterfaceTemplate{
 		}
 	}
 	
-
-	
+	/**
+	 * выводим на экран опции
+	 */
 	private function displayOptions()
 	{
 		$options = $this->product->addChild("options");
@@ -213,6 +241,9 @@ class ControllerProduct extends InterfaceTemplate{
 		}
 	}
 	
+	/**
+	 * выводим на екран аксесуары
+	 */
 	private function displayAks()
 	{
 		$limit = true;
@@ -256,10 +287,18 @@ class ControllerProduct extends InterfaceTemplate{
 	{
 		global $_POST;
 		
-		if($_POST)
-			if($this->getReviews($_POST))
-				return false;
 		$reviews = $this->product->addChild("reviews");
+		if($_POST)
+		{
+			if(!$this->getReviews($_POST))
+			{
+				$reviews->addChild("review_message", "error");
+			}
+			else 
+			{
+				$reviews->addChild("review_message", "succes");
+			}
+		}
 		$reviews_m=Models\Reviews::all(array('warecode'=>$this->product_id, "approved"=>1));
 		foreach ($reviews_m as $key => $val)
 		{
@@ -284,21 +323,26 @@ class ControllerProduct extends InterfaceTemplate{
 	 */
 	private function getReviews(&$post)
 	{
-		$reviews = new Models\Reviews();
+		$rev = new Models\Reviews();
 		$required = (object)array('required' => true, 'type' => 'string');
 		$validate = array('name' => $required, 
 						'email' => $required, 
-						'city' => $required, 
+						'city' => (object)array('type' => 'string'), 
 						'title' => $required, 
 						'rating' => $required,
 						'title' => $required,
 						'text' => $required);
 		if(!validatePost($validate, $post))
-			return true;
-			
-		$this->createDatabaseObject($reviews, $validate, $post);
-		$reviews->save();
-		return false;
+			return false;
+		
+		//var_dump($rev);
+		foreach ($validate as $key => $value)
+		{
+			$rev->{$key} = $post[$key];
+		}
+		//var_dump($rev);
+		$rev->save();
+		return true;
 	}
 	
 	/**
@@ -317,3 +361,4 @@ class ControllerProduct extends InterfaceTemplate{
 	
 	
 }
+

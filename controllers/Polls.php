@@ -28,7 +28,7 @@ class ControllerPolls extends Template\Template
 	
 	private $error = 0;
 	
-	private $error_message;
+	private $error_message = false;
 	
 	private static $answer = array(2 => "Да", 1 => "Нет");
 	
@@ -112,7 +112,7 @@ class ControllerPolls extends Template\Template
 	 */
 	private function displayError( $node )
 	{
-		if($this->error_message)
+		if($this->error_message !== false)
 		{
 			$node->addChild('error', $this->error);
 			$node->addChild('message', $this->error_message);
@@ -229,12 +229,17 @@ class ControllerPolls extends Template\Template
 			$post['email']->required = false;
 			
 			if(!validatePost($post, $_POST))
-				return true;
+				return false;
 				
 			$feedback = new Models\Feedback();
-			$this->createDatabaseObject($feedback, $post, $_POST);
+			foreach ($post as $key => $value)
+			{
+				$feedback->{$key} = $_POST[$key];
+			}
+			$feedback->crt_time = date("c");
 			$feedback->save();
-			
+			$this->error = 0;
+			$this->error_message = "success";
 			
 		}
 		$this->displayQestion($array);
@@ -275,8 +280,15 @@ class ControllerPolls extends Template\Template
 				return true;
 				
 			$delivery = new Models\DeliveryAnswers();
-			$this->createDatabaseObject($delivery, $post, $_POST);
+			foreach ($post as $key => $value)
+			{
+				$delivery->{$key} = $_POST[$key];
+			}
+			$feedback->crt_time = date("c");
 			$delivery->save();
+			
+			$this->error = 0;
+			$this->error_message = "success";
 		}
 		$this->displayQestion($array);
 	}
