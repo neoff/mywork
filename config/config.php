@@ -44,6 +44,8 @@
 				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"actions"));
 			if(get_key('pickup_product_id')) 
 				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"pickup"));
+			if(get_key('shops_product_id')) 
+				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"shops"));
 			
 		}
 		else 
@@ -63,6 +65,7 @@
 		$cfg->Map("category", $controler="Category", $action="index", $_GET);
 		$cfg->Map("product", $controler="Product", $action="index", $_GET);
 		$cfg->Map("pickup", $controler="Pickup", $action="index", $_GET);
+		$cfg->Map("shops", $controler="Pickup", $action="shops", $_GET);
 		$cfg->Map("start", $controler="Start", $action="index", $_GET);
 		$cfg->Map("actions", $controler="Actions", $action="index", $_GET);
 		$cfg->Map("polls", $controler="Polls", $action="index", $_GET);
