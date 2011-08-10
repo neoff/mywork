@@ -266,6 +266,55 @@ abstract class InterfaceTemplate extends Template\Template{
 	}
 	
 	/**
+	 * выводит на страницу блок магазинов
+	 * @param unknown_type $product
+	 * @param unknown_type $val
+	 */
+	protected function displayShops($node, $val, $address = true)
+	{
+		$shop = $node->addChild("shop");
+		$shop->addChild("shop_id", $val->shop_id);
+		$shop->addChild("shop_name", ToUTF($val->name));
+		
+		$this->displayMetro($shop, $val);
+		
+		if($val->address && $address)
+			$this->displayAdress($shop, $val);
+			
+		return $shop;
+	}
+	
+	private function displayMetro(&$node, $val)
+	{
+		$metro = $node->addChild("metro");
+		
+		if($val->metro)
+		{
+			$c = explode(",", $val->metro);
+			if(count($c)>1) 
+			{
+				foreach ($c as $v) 
+				{
+					$metro->addChild("station", preg_replace("/^\s+?/i", "", ToUTF($v)));
+				}
+			}
+			else $metro->addChild("station", ToUTF($val->metro));
+		}
+	}
+	
+	
+	private function displayAdress(&$node, $val)
+	{
+		$adresss = ToUTF($val->address);
+		$pattern = array("/^МО,\s*?г.\s*?/","/^МО,\s*?/","/^ул.\s*/",
+						"/^г.\s*?Москва,\s*?ул.\s*/",
+						"/^г.\s*?Москва,\s*/", "/^Москва,\s*ул.\s*/", 
+						"/^Москва,\s*/","/^г.\s*/","/^Коммунальная зона\s*/", "/^\s+?/");
+		
+		$node->addChild("address", preg_replace($pattern, '', $adresss));
+	}
+	
+	/**
 	 * выводит на страницу блок доставки
 	 * @param obj $product - контейнер в который выводить блоки
 	 * @param obj $val - значение Актив Рекорд

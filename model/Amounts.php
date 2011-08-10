@@ -16,4 +16,9 @@ class Amounts extends ActiveRecord\Model
 {
 	static $table_name = 'amounts';
 	static $connection = CONNECTION;
+	/*static $alias_attribute = array(
+		'DirID' => 'dirid', 
+		'ClassID'=>'classid',
+		'GrID'=>'grid'
+		);*/
 }

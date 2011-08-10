@@ -25,7 +25,10 @@ class Warez extends ActiveRecord\Model
 		'name' => 'fullname', 
 		'price'=>'discounted',
 		'oldprice'=>'oldprice',
-		'inetprice'=>'inetdiscounted'
+		'inetprice'=>'inetdiscounted',
+		'DirID' => 'dirid', 
+		'ClassID'=>'classid',
+		'GrID'=>'grid'
 		);
 	
 	
@@ -137,7 +140,7 @@ class Warez extends ActiveRecord\Model
 	
 	public static function getBigPrice($inetprice)
 	{
-		if((int)$inetprice->inetprice > 3000)
+		if((int)$inetprice->price >= 3000)
 			return true;
 		return false;
 	}
@@ -364,6 +367,7 @@ class Warez extends ActiveRecord\Model
 		
 		return self::find_by_sql($sql);
 	}
+	
 
 }
 

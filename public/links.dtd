@@ -1,0 +1,15 @@
+<?xml encoding="UTF-8"?>
+
+<!ELEMENT mvideo_xml (links?,link_content?)>
+<!ATTLIST mvideo_xml xmlns CDATA #FIXED '' date CDATA #REQUIRED>
+
+<!ELEMENT links (link)+>
+<!ELEMENT link (id,description)>
+
+<!ELEMENT link_content (description,small,big,html)>
+
+<!ELEMENT small (#PCDATA)>
+<!ELEMENT big (#PCDATA)>
+<!ELEMENT html (#PCDATA)>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT description (#PCDATA)>

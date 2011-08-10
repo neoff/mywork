@@ -14,14 +14,22 @@
 	use Models;
 	use Template;
 	
-class ControllerShops extends Template\Template{
+class ControllerShops extends InterfaceTemplate{
 	
-	private $region_id;
+	/**
+	 * количество товаров в магазине
+	 */
+	private static $counts = array(
+						0 => "Нет в наличии",
+						1 => "Мало",
+						2 => "Достаточно",
+						3 => "Много"
+					);
 	
 	public function index()
 	{
 		$this->setVar();
-		$this->region_id = get_key('region_id', 1);
+		//$this->region_id = get_key('region_id', 1);
 		
 		$this->mem_key = 'region_'.$this->region_id;
 		
@@ -33,8 +41,8 @@ class ControllerShops extends Template\Template{
 		//var_dump($shop_id);
 		//list($shop_id, $width, $height) = $shop_id;
 		
-		$options = array('region_id' => $this->region_id, "publication" => 1);
-		$shop_m = Models\Shops::all($options);
+		
+		$shop_m = Models\Shops::getAllShops($this->region_id);
 		//print_r($shops);
 		
 		$this->createShopNode();
@@ -42,6 +50,64 @@ class ControllerShops extends Template\Template{
 		foreach ($shop_m as $key => $val)
 		{
 			$this->displayShops($val);
+		}
+	}
+	
+	/**
+	 * 
+	 * $counts = array(
+	 * 					0 - нет в наличии
+	 * 					1 - мало
+	 * 					2 - достаточно
+	 * 					3 - много
+	 * 				)
+	 */
+	public function shops()
+	{
+		$rfile = MVIDEO_PATH;
+		require_once $rfile . '/lib/classes/ProductCard.class.php';
+		
+		$this->setVar();
+		$this->product_id = get_key('shops_product_id');
+		
+		$shop_m = Models\Shops::getAllShops($this->region_id);
+		$options = array("_warecode"=>$this->product_id);
+		list($where, $array) = Models\Warez::SetParam($this->region_id, $options);
+		$productes = Models\Warez::sql($this->region_id, $where, $array);
+		
+		$this->xml->addChild("product_id", $this->product_id);
+		$this->createShopNode();
+		
+		if($shop_m)
+		{
+			foreach ($shop_m as $key => $val)
+			{
+				//var_dump($val);
+				$shop = parent::displayShops($this->shops, $val);
+				
+				$shop->addChild("day_hours", ToUTF($val->day_hours));
+				$shop->addChild("holiday_hours", ToUTF($val->holyday_hours));
+		
+				$shop->addChild("count", 'Нет в наличии');
+				$options = array('warecode' => $this->product_id, "shop_id" => $val->shop_id);
+				$amount = Models\Amounts::find('first', $options);
+				if($amount)
+				{
+					//var_dump($amount);
+					if($productes)
+					{
+						//var_dump($productes);
+						$counts = \ProductCard::ShopQtyName($productes[0], $amount->amount);
+						$shop->count = self::$counts[$counts];
+						//var_dump($counts);
+					}
+					
+					
+				}
+				
+				
+				
+			}
 		}
 	}
 	
@@ -55,19 +121,12 @@ class ControllerShops extends Template\Template{
 	}
 	
 	
-	private function displayShops($val)
+	
+	protected function displayShops($val)
 	{
-		$shop = $this->shops->addChild("shop");
-		$shop->addChild("shop_id", $val->shop_id);
-		$shop->addChild("shop_name", ToUTF($val->name));
-		$metro = $shop->addChild("metro");
+		//$shop = $this->shops->addChild("shop");
+		$shop = parent::displayShops($this->shops, $val);
 		
-		$this->addStantion($metro, $val);
-		
-		$this->addAdress($shop, $val);
-		
-		$shop->addChild("day_hours", ToUTF($val->day_hours));
-		$shop->addChild("holiday_hours", ToUTF($val->holyday_hours));
 		$shop->addChild("phone", ToUTF($val->phone));
 		$this->addCoords($shop, $val);
 		
@@ -77,33 +136,6 @@ class ControllerShops extends Template\Template{
 		$this->addImage($shop, $val);
 	}
 	
-	
-	private function addAdress(&$node, $val)
-	{
-		$adresss = ToUTF($val->address);
-		$pattern = array("/^МО,\s*?г.\s*?/","/^МО,\s*?/","/^ул.\s*/",
-						"/^г.\s*?Москва,\s*?ул.\s*/",
-						"/^г.\s*?Москва,\s*/", "/^Москва,\s*ул.\s*/", 
-						"/^Москва,\s*/","/^г.\s*/","/^Коммунальная зона\s*/", "/^\s+?/");
-		
-		$node->addChild("address", preg_replace($pattern, '', $adresss));
-	}
-	
-	private function addStantion(&$node, $val)
-	{
-		if($val->metro)
-		{
-			$c = explode(",", $val->metro);
-			if(count($c)>1) 
-			{
-				foreach ($c as $v) 
-				{
-					$node->addChild("station", preg_replace("/^\s+?/i", "", ToUTF($v)));
-				}
-			}
-			else $node->addChild("station", ToUTF($val->metro));
-		}
-	}
 	
 	private function addCoords(&$node, $val)
 	{

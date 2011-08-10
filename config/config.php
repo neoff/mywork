@@ -55,6 +55,9 @@
 				
 			if(get_key('polls', -1) >= 0 ) 
 				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"polls"));
+			
+			if(get_key('links', -1) >= 0 ) 
+				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"links"));
 				
 			if($region === '0')
 				$_SERVER['REQUEST_URI'] = makeUrl(array($cfg->prefix,"region"));
@@ -62,11 +65,12 @@
 		
 		$cfg->Map("region", $controler="Region", $action="index");
 		$cfg->Map("shop", $controler="Shops", $action="index");
+		$cfg->Map("shops", $controler="Shops", $action="shops");
 		$cfg->Map("category", $controler="Category", $action="index", $_GET);
 		$cfg->Map("product", $controler="Product", $action="index", $_GET);
 		$cfg->Map("pickup", $controler="Pickup", $action="index", $_GET);
-		$cfg->Map("shops", $controler="Pickup", $action="shops", $_GET);
 		$cfg->Map("start", $controler="Start", $action="index", $_GET);
 		$cfg->Map("actions", $controler="Actions", $action="index", $_GET);
 		$cfg->Map("polls", $controler="Polls", $action="index", $_GET);
+		$cfg->Map("links", $controler="Links", $action="index");
 	});

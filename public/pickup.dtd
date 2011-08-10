@@ -1,0 +1,13 @@
+<?xml encoding="UTF-8"?>
+
+<!ELEMENT mvideo_xml (product_id,pickup_shops)>
+<!ATTLIST mvideo_xml date CDATA #REQUIRED>
+
+<!ELEMENT product_id (#PCDATA)>
+<!ELEMENT pickup_shops (shop)*>
+<!ELEMENT shop (shop_id,shop_name,metro,address)>
+<!ELEMENT shop_id (#PCDATA)>
+<!ELEMENT shop_name (#PCDATA)>
+<!ELEMENT metro (station)*>
+<!ELEMENT address (#PCDATA)>
+<!ELEMENT station (#PCDATA)>
