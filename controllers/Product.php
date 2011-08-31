@@ -269,7 +269,7 @@ class ControllerProduct extends InterfaceTemplate{
 			$prod->addChild("product_id", $val->warecode);
 			$prod->addChild("title", StripTags($val->ware));
 			
-			$this->displayPrice($prod, $prod);
+			$this->displayPrice($prod, $val);
 			
 			$this->displayRating($prod, $val);
 			

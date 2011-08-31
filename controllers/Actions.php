@@ -86,7 +86,8 @@ class ControllerActions extends InterfaceTemplate{
 			
 			//картинки
 			$url = $this->crealeActionImageList($value);
-				
+			
+			$this->action_id = "";
 			//ID акции
 			$this->setActionId($url);
 			
