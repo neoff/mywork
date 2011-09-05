@@ -184,7 +184,7 @@ abstract class InterfaceTemplate extends Template\Template{
 		
 		if(!$imgfile)
 		{
-			$imgfile = "imgs/action/header_$url.jpg";
+			$imgfile = "imgs/action/main/$url.jpg";
 			$url_name = "http://www.mvideo.ru/".str_replace("_", "-", $url)."/?ref=left_bat_".$name;
 		}
 		

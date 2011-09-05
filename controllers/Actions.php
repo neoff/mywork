@@ -85,7 +85,7 @@ class ControllerActions extends InterfaceTemplate{
 			$act->addAttribute("end", $value->end_date->format('c'));
 			
 			//картинки
-			$url = $this->crealeActionImageList($value);
+			$url = $this->createActionImageList($value);
 			
 			$this->action_id = "";
 			//ID акции
@@ -102,7 +102,7 @@ class ControllerActions extends InterfaceTemplate{
 	 * собираем ссылку на картинку
 	 * @param obj $value
 	 */
-	private function crealeActionImageList($value)
+	private function createActionImageList($value)
 	{
 		preg_match("@^/.*?/@i", $value->url, $urls);
 		$url="";
