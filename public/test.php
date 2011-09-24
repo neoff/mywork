@@ -1,6 +1,6 @@
 <?php
 /**
-  * 
+  *
   *
   * @package    personal
   * @subpackage
@@ -10,37 +10,18 @@
   *
   */
   ?>
-  
+
   name=TestName&mail=test@test.ru&city=N&rating=3&title=TestTitle&text=TestTest
-  <form method=POST action="/mobile/?polls=feedback">
-  *<input type=text name="name">
-  *<input type=text name="email">
-  *<input type=text name="shop_id">
-  *<input type=text name="region_id">
-  *<input type=text name="order_date">
-  <select name=sales_rating>
-  <option>1</option>
-  <option>2</option>
-  <option>3</option>
-  </select>
-  <textarea rows="" cols="" name=sales_comment></textarea>
-  <select name=cashier_rating>
-  <option>1</option>
-  <option>2</option>
-  <option>3</option>
-  </select>
-  <textarea rows="" cols="" name=cashier_comment></textarea>
-  <select name=inspector_rating>
-  <option>1</option>
-  <option>2</option>
-  <option>3</option>
-  </select>
-  <textarea rows="" cols="" name=inspector_comment></textarea>
-  <select name=recommend>
-  <option>1</option>
-  <option>2</option>
-  </select>
+  <form method=POST action="/mobile/?cart=1&region_id=6">
+  <input type="hidden" name="cart" value=1>
+  name - <input type=text name="name" value=1><br>
+  phone - <input type=text name="phone" value=1><br>
+  product_count - <input type=text name="ids[11032137]" value=1><br>
+  shops - <input type=text name="shops[11032137]" value=1><br>
+  kupon (podves) - <input type=text name="kupon[11032137][807076]" ><br>
+  cert (pdo2) - <input type=text name="cert[11032137][289935]" ><br>
+
   <input type=submit>
-  
+
   </form>
-	phpinfo();
+	phpinfo();http://spb.mvideo.ru/homeshop/?p=cart&ids[11032137]=1&pickup=618&ref=select_store_product
