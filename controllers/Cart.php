@@ -16,17 +16,71 @@
 
 
 class ControllerCart extends InterfaceTemplate{
+	/**
+	 * список товаров для заказа
+	 * @var array
+	 */
 	private $warez = array();
+	
+	/**
+	 * номер товара с которым произошла ошибка во время заказа
+	 * @var int
+	 */
 	private $warez_id_rror;
+	
+	/**
+	 * номер магазина с которым произошла ошибка во время заказа
+	 * @var int
+	 */
 	private $shops_id_error;
+	
+	/**
+	 * SOAP объект заказа
+	 * @var obj
+	 */
 	private $order;
+	
+	/**
+	 * содержимое заказа
+	 * @var obj
+	 */
 	private $order_info;
+	
+	/**
+	 * объект содержит информацию о товаре
+	 * @var obj
+	 */
 	private $tmp_warez;
+	
+	/**
+	 * описание ошибки
+	 * @var string
+	 */
 	private $error;
+	
+	/**
+	 * массив магазинов выбранных для заказа
+	 * @var array
+	 */
 	private $shops;
-	private $shop_name = array();
-	private $order_id;
+	
+	/**
+	 * адреса магазинов в заказе
+	 * @var array
+	 */
+	private $shop_address = array();
+	
+	/**
+	 * массив для вывода на экран
+	 * @var array
+	 */
 	private $out = array();
+	
+	/**
+	 * основнфя точка входа, вызывает метода валидации передаваемых данных
+	 * @param GET $array
+	 * @return метод выводящий страницу на экран
+	 */
 	public function index($array)
 	{
 		ini_set("soap.wsdl_cache_enabled", "0");
@@ -52,11 +106,16 @@ class ControllerCart extends InterfaceTemplate{
 				}
 			}
 		}
-
-
+		
 		return $this->displayOutput();
 	}
-
+	
+	/**
+	 * собирает данные о пользователе
+	 * формирует данные о заказе
+	 * @param POST $array
+	 * @return bool
+	 */
 	private function makeOrderInfo($array)
 	{
 		if(!isset($array['name']) || !isset($array['phone']))
@@ -64,34 +123,39 @@ class ControllerCart extends InterfaceTemplate{
 			$this->error = "Некорректно заполнены поля";
 			return false;
 		}
-
+		
 		$mail = "";
 		if(isset($array['mail']))
 			$mail = $array['mail'];
-
+		
 		$this->order = new \stdClass();
 		$this->order->user_id = 'c16b61d8bc55d8792b8e60215fa4ca26';
 		$this->order->fio	= $array['name'];
 		$this->order->phone	= "+7".$array['phone'];
 		$this->order->email	= $mail;
 		$this->order->wares = array();
-
+		
 		return true;
 		#(int)$array['shop_id'];
 	}
-
+	
+	/**
+	 * получает информацию о товаре, проверяет наличие товара на сайте М.Видео
+	 * @param POST $array
+	 * @return boolean
+	 */
 	private function getWarez($array)
 	{
 		$this->error = "Не выбрано ниодного товара";
-
+		
 		if(isset($array['ids']) && is_array($array['ids']))
 			$this->error = false;
-
+		
 		if($this->error)
 			return false;
-
+		
 		$client = new \SoapClient("http://www.mvideo.ru/soap/mvideo.wsdl",array("trace"=>1,"exceptions"=>0));
-
+		
 		try
 		{
 			$result = $client->GetWareInfo(implode(", ", array_keys($array['ids'])), $this->region_id);
@@ -101,14 +165,14 @@ class ControllerCart extends InterfaceTemplate{
 			$this->error = $e->faultstring;
 			return false;
 		}
-
+		
 		if (is_soap_fault($result))
 		{
-
+			
 			$this->error = $result->faultstring;
 			return false;
 		}
-
+		
 		foreach($result->WareInfoList AS $ware)
 		{
 			//$ware->ware = mb_convert_encoding($ware->ware,'utf-8','cp1251');
@@ -121,10 +185,13 @@ class ControllerCart extends InterfaceTemplate{
 				return false;
 			}
 		}
-
+		
 		return true;
 	}
-
+	
+	/**
+	 * выводит xml страницу с результатом или с ошибкой
+	 */
 	private function displayOutput()
 	{
 		$error = !empty($this->error);
@@ -143,7 +210,7 @@ class ControllerCart extends InterfaceTemplate{
 				$error_shops = $this->orders->addChild("error_shop");
 				$error_shops->addChild("shop_id", $this->shops_id_error);
 			}
-			//var_dump($this->order_info);
+			//обработка заказов
 			/*if($this->order_info)
 			{
 				$order_error = $this->order->addChild("error_order");
@@ -157,23 +224,28 @@ class ControllerCart extends InterfaceTemplate{
 			$order = $this->orders->addChild("order");
 			foreach ($this->out as $value)
 			{
-
+				
 				$order->addChild("order_id", $value->responseText);
 				$order->addChild("order_date", date("c"));
-				$order->addChild("order_shop_address", StripTags($this->shop_name[$value->order->shop_id]));
+				$order->addChild("order_shop_address", StripTags($this->shop_address[$value->order->shop_id]));
 			}
 		}
 
 	}
-
-
+	
+	/**
+	 * "раскладывает товары по магазинам"
+	 * объеденяет товары выбранные в одинаховых магазинах
+	 * @param POST $array
+	 * @return bool
+	 */
 	private function makeShops($array)
 	{
 		$this->error = "Не выбран магазин";
 
 		if(isset($array['shops']))
 			$this->error = false;
-
+		
 		foreach ($array['shops'] as $key => $value)
 		{
 			//$this->order->shop_id = (int)$value;
@@ -185,18 +257,22 @@ class ControllerCart extends InterfaceTemplate{
 			}
 			$sid = $sids->shop_id;
 			$this->shop_name[$sid] = $sids->address;*/
-
+			
 			if(!isset($this->warez[$key]))
 			{
 				$this->error = "Товар не найден в базе данных";
 				return false;
 			}
 			$this->shops[$value] = $this->warez[$key];
-
+			
 		}
 		return true;
 	}
-
+	
+	/**
+	 * формирует объект для заказа
+	 * @return bool
+	 */
 	private function makeOrders()
 	{
 		foreach ($this->shops as $key => $value)
@@ -209,8 +285,8 @@ class ControllerCart extends InterfaceTemplate{
 				$this->shops_id_error = $key;
 				return false;
 			}
-			$this->shop_name[$sids->shop_id] = $sids->address;
-
+			$this->shop_address[$sids->shop_id] = $sids->address;
+			
 			$this->order->shop_id = (string)$sids->shop_id;
 			$this->order->wares[] = $value;
 			$this->order_info = $this->order;
@@ -228,10 +304,14 @@ class ControllerCart extends InterfaceTemplate{
 		}
 		return true;
 	}
-
+	
+	/**
+	 * отправляет заказ на сервер Pick-up
+	 * @return bool
+	 */
 	private function pickupProxy()
 	{
-
+		
 		$client = new \SoapClient('http://192.168.1.225/ws/pickup.wsdl',array('trace' => true));
 		try
 		{
@@ -243,14 +323,13 @@ class ControllerCart extends InterfaceTemplate{
 			$this->error = 'Ошибка при создании заказа: '.$e->faultstring;
 			return false;
 		}
-
+		
 		if ($out->responseCode > 0)
 		{
 			$this->error= 'Ошибка при создании заказа: '.$out->responseText;
 			return false;
 		}
-
+		
 		return $out;
-		//$out = $client->createOrder(new SoapVar($this->order, SOAP_ENC_OBJECT));
 	}
 }
